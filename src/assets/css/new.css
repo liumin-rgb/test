@@ -1,0 +1,61 @@
+/*时间控件*/
+.el-input__inner{
+	height:.34rem;
+	border-color:#0f66cc;
+}
+
+/*弹框*/
+.ant-modal .ant-modal-body{padding:.1rem}
+.ant-modal  .ant-modal-header{text-align: center;}
+ .ant-modal .ant-modal-footer{text-align:center;}
+ .ant-modal .ant-btn-primary:hover, .ant-btn-primary:focus{
+        background-color: #0f66cc;
+        border-color: #0f66cc;
+  }
+.ant-modal .ant-btn-primary{
+        background-color: #0f66cc;
+        border-color: #0f66cc;
+  }
+
+/*tooltip*/
+.el-tooltip__popper.is-light{
+	border:none;
+	background: #fff0d6;
+}
+
+.el-tooltip__popper .popper__arrow::after{
+	border-color: transparent transparent #fff0d6 transparent;
+}
+
+
+/*表格*/
+.el-table td, .el-table th{
+	padding:5px 0 !important;
+}
+.el-table thead{color:#333 !important;font-weight:500 !important;}
+
+.el-table .table-header{background:#f4f7fc;color:#333;font-weight:600;}
+
+/*开关*/
+.ant-switch-checked{background:#2e6eb4 !important;}
+
+/*弹框*/
+  .ant-modal-body{padding:.1rem}
+  .ant-modal-header{text-align: center;}
+  .ant-modal-footer{text-align:center;}
+  .ant-btn-primary:hover, .ant-btn-primary:focus{
+        background-color: #0f66cc;
+        border-color: #0f66cc;
+  }
+  .ant-btn-primary{
+        background-color: #0f66cc;
+        border-color: #0f66cc;
+  }
+/*bigger*/
+  .bigModel{top:.2rem !important;width:8.5rem !important;}
+  
+
+
+  /*单选按钮*/
+  span.ant-radio + *{padding-left:0 !important;padding-right:0 !important;}
+.ant-radio-wrapper{margin-left:.08rem !important;margin-right: 0 !important;}
