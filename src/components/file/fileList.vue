@@ -137,6 +137,7 @@
         visible:false,
         operation:'all',
         gData,
+        multipleSelection:'',
         tableData: [/* {
           date: '2016-05-02',
           name: '--',

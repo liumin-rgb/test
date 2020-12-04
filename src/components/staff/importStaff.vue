@@ -103,7 +103,7 @@ export default {
   }
   }
 
-.uploadS{width:3.5rem;font-size: .1rem; padding-left:.1rem;line-height: .25rem;}
+.uploadS{width:3rem;font-size: .1rem; padding-left:.1rem;line-height: .25rem;}
 .tab/deep/.el-table{font-size: .12rem}
 
 </style>

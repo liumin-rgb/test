@@ -60,7 +60,13 @@
       <div class="margin05rem">
       <span class="pc-button font10" @click="addStaff()">添加</span>
        <span class="pc-button font10" @click="removeStaff()">删除</span>
-
+  <el-table :data="tableData" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+        <el-table-column type="selection"></el-table-column>
+        <el-table-column prop="date" label="姓名" sortable></el-table-column>
+        <el-table-column prop="date" label="姓名" sortable></el-table-column>
+        <el-table-column prop="" label="工号" sortable></el-table-column>
+        <el-table-column prop="name" label="部门"></el-table-column>
+  </el-table>
       </div>
     </div>
     </div>
@@ -77,6 +83,8 @@
     chooseJob:false,//是否选择岗位
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
+    tableData:[],
+    multipleSelection:'',
     treeData:[
   {
     title: 'parent 1',
@@ -127,6 +135,9 @@
     onChange(e){
      console.log(e);
     },
+    handleSelectionChange(val) {
+          this.multipleSelection = val;
+        },
 
     }
   };
