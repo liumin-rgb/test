@@ -1,11 +1,11 @@
 <template>
   <a-modal v-model="visible" title="文件格式自定义" :afterClose="handleCancel">
       <div class="format ">
-       <div class="flex paddingL2rem gray">
+       <div class="flex paddingLR2rem gray">
          <div class=" textInput"><span class="label1">第一项</span><select class='pc-input width1rem'/></div>
          <div class=" textInput"><span class="label1">第二项</span><select  class='pc-input width1rem'/></div>
        </div>
-       <div class="flex paddingL2rem gray">
+       <div class="flex paddingLR2rem gray">
          <div class=" textInput"><span class="label1">第三项</span><select  class='pc-input width1rem'/></div>
          <div class=" textInput"><span class="label1">分隔符</span><input  class='pc-input width1rem'/></div>
        </div>

@@ -53,9 +53,16 @@
   }
 /*bigger*/
   .bigModel{top:.2rem !important;width:8.5rem !important;}
-  
+
 
 
   /*单选按钮*/
   span.ant-radio + *{padding-left:0 !important;padding-right:0 !important;}
 .ant-radio-wrapper{margin-left:.08rem !important;margin-right: 0 !important;}
+.ant-radio-checked .ant-radio-inner{border-color:#2e6eb4 !important;}
+.ant-radio-inner::after{background-color: #2e6eb4 !important;}
+/*多选按钮*/
+
+.ant-checkbox-checked .ant-checkbox-inner{
+  background-color: #2e6eb4 !important;
+    border-color: #2e6eb4 !important;}

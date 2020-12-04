@@ -47,11 +47,11 @@
             height="250"
             style="width: 100%"
             stripe
+             @selection-change="handleSelectionChange"
             :header-cell-class-name="'table-header'"
             >
             <el-table-column
-              prop="date"
-              label=""
+              type="selection"
             >
             </el-table-column>
             <el-table-column
@@ -180,7 +180,9 @@
         closeTagManage(){
           this.visible=false;
         },
-
+          handleSelectionChange(val) {
+                this.multipleSelection = val;
+              },
          onDragEnter(info) {
               console.log(info);
               // expandedKeys 需要受控时设置

@@ -95,10 +95,32 @@ const router = new Router({
            meta : {
                title : '权限分配'
            },
+
          },
 
        ],
  },
+ {
+       path: '/personalHome',
+       name:'personalHome',
+       component: resolve => require(['@/page/personalHome'], resolve),
+       meta : {
+           title : '主页',
+ 		   noLogin:true
+       },
+       children:[
+         {
+               path: '/changePassword',
+               name:'changePassword',
+               component: resolve => require(['@/page/changePassword'], resolve),
+               meta : {
+                   title : '修改密码',
+         		   noLogin:true
+               }
+         },
+       ]
+ },
+
  /* {
    path: '/tinymce',
    name:'tinymce',

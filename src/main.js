@@ -27,7 +27,8 @@ import {
   MessageBox,
   Loading,
   Tree,
-  Switch
+  Switch,
+  Popover
 } from 'element-ui'
 
 Vue.use(Table);
@@ -35,7 +36,7 @@ Vue.use(TableColumn);
 Vue.use(Loading);
 Vue.use(Tree);
 Vue.use(Switch);
-
+Vue.use(Popover);
 window.eventBus = new Vue(); //注册全局事件对象
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$MessageBox=MessageBox;

@@ -1,14 +1,14 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" >
-    <a-layout-sider :trigger="null" theme="light" style="background: #0F66CC;">
+    <a-layout-sider :trigger="null" theme="light" class="container">
      <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
-      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']" style="background:none;" >
+      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  class="leftMenu">
         <a-menu-item  @click="toUrl('myTask')" >
-         <a-icon type="pie-chart" />
+         <i class="iconfont icon-renwu font16"></i>
         <span>我的任务</span>
         </a-menu-item>
         <a-sub-menu :key="'menu'+index" v-for="(obj,index) in menuList" style="background:none;" >
-                   <span slot="title"><a-icon type="user" />{{obj.name}}</span>
+                   <span slot="title"><i :class="['iconfont','font16',obj.icon]"></i>{{obj.name}}</span>
                    <a-menu-item :key="'subMenu'+index+index1" v-for="(obj1,index1) in obj.subMenuList" @click="toUrl(obj1.url)" style="background:none;">
                      {{obj1.name}}
                    </a-menu-item>
@@ -20,7 +20,11 @@
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
           <div class="pc-header-one"></div>
-          <div class="pc-header-two"><span>系统管理员</span></div>
+          <div class="pc-header-two">
+            <span class="color999 font16 verTop">系统管理员</span>
+            <i class="iconfont icon-tuichu2 font30 themeColor pointer" @click="logout"></i>
+             <i class="iconfont icon-mima font30 themeColor pointer" @click="set"></i>
+            </div>
         </div>
       </a-layout-header>
       <a-layout-content
@@ -37,15 +41,22 @@
 export default {
   data() {
     return {
-   menuList: [{name:'文件管理',icon:'',url:'',subMenuList:[{name:'文档中心',url:'fileList'}]},
-             {name:'培训管理',icon:'',url:'',subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
-             {name:'人员管理',icon:'',url:'',subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
+   menuList: [{name:'文件管理',icon:'icon-wenjian',url:'',subMenuList:[{name:'文档中心',url:'fileList'}]},
+             {name:'培训管理',icon:'icon-kejipeixun',url:'',subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
+             {name:'人员管理',icon:'icon-renyuan',url:'',subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
              ]
     };
   },
   methods:{
     toUrl(url){
       this.$router.push({path:url,query:{}})
+    },
+    logout(){
+      utils.cache.removeItem('TOKEN');
+      this.$router.push({path: 'login'});
+    },
+    set(){
+     this.$router.push({path: 'changePassword'});
     },
   }
 }
@@ -78,7 +89,7 @@ export default {
 .menuLogo{
       text-align: center;
       margin: 0.1rem 0 0.3rem 0;
-    img{width:30%}
+    img{width:.6rem}
 }
 
 .pc-header{
@@ -94,4 +105,8 @@ export default {
 
   }
 }
+
+.container{background: url(../assets/img/leftBackground.png);}
+.leftMenu{background: none;color:#fff;}
+
 </style>

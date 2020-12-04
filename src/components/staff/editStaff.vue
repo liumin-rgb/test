@@ -18,7 +18,23 @@
              <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class='pc-input' readonly="true"/></div></td>
              <td><div class=" textInput"><span class="label font12 weight600">工号</span><input class='pc-input' /></div></td>
              <td  rowspan="4">
-               <div></div>
+                 <a-upload
+                     name="avatar"
+                     list-type="picture-card"
+                     class="avatar-uploader"
+                     :show-upload-list="false"
+                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                     :before-upload="beforeUpload"
+                     @change="handleChange"
+                   >
+                     <img v-if="imageUrl" :src="imageUrl" alt="avatar" style="width:100%"/>
+                     <div v-else>
+                       <a-icon :type="loading ? 'loading' : 'plus'" />
+                       <div class="ant-upload-text">
+                         上传图片
+                       </div>
+                     </div>
+                   </a-upload>
              </td>
            </tr>
             <tr>
@@ -105,6 +121,11 @@
 </template>
 
 <script>
+  function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
   export default {
     name: 'editStaff',
     components:{},
@@ -113,7 +134,9 @@
         toggle1:true,
         toggle11:false,
         toggle2:false,
-       flag:1 //1:新增 2：修改
+        flag:1 ,//1:新增 2：修改
+        loading: false,
+        imageUrl: '',
       }
     },
     created(){
@@ -123,10 +146,33 @@
       goBack(){
         this.$router.go(-1);
       },
-         onChange(e) {
+      onChange(e) {
             console.log(e.target.value);
           },
-
+      handleChange(info) {
+            if (info.file.status === 'uploading') {
+              this.loading = true;
+              return;
+            }
+            if (info.file.status === 'done') {
+              // Get this url from response in real world.
+              getBase64(info.file.originFileObj, imageUrl => {
+                this.imageUrl = imageUrl;
+                this.loading = false;
+              });
+            }
+          },
+          beforeUpload(file) {
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            if (!isJpgOrPng) {
+              this.$message.error('You can only upload JPG file!');
+            }
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+              this.$message.error('Image must smaller than 2MB!');
+            }
+            return isJpgOrPng && isLt2M;
+          }
     }
   };
 
@@ -163,4 +209,21 @@
 .t1-leave-active {transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);}
 .t1-enter, .t1-leave-to{transform: translateX(5px);opacity: 0;}
 
+/deep/.ant-upload.ant-upload-select-picture-card{
+  width: 1.04rem;
+  height: 1.2rem;
+}
+ /deep/.avatar-uploader > .ant-upload {
+  width: 1.04rem;
+  height: 1.2rem;
+}
+/deep/.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+/deep/.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
 </style>

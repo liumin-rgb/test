@@ -158,8 +158,12 @@ li {
 .marginB1VH{margin-top:1vh;}
 .marginB2VH{margin-top:2vh;}
 
-.paddingL1rem{padding:0 0.1rem}
-.paddingL2rem{padding:0 0.2rem}
+.paddingLR1rem{padding:0 0.1rem}
+.paddingLR2rem{padding:0 0.2rem}
+.paddingTB1rem{padding:0.1rem 0}
+.paddingTB2rem{padding:0.2rem 0}
+
+.margin05rem{margin-top:.05rem}
 
 .textAlignR{text-align:right}
 .textAlignL{text-align:left}
@@ -173,6 +177,8 @@ li {
 /*
 字体通用
 */
+.font30{font-size:.30rem !important;}
+.font20{font-size:.20rem !important;}
 .font18{font-size:.18rem !important;}
 .font16{font-size:.16rem !important;}
 .font12{font-size:.12rem !important;}
@@ -194,11 +200,17 @@ li {
   display: flex;
   display: -webkit-flex;
 }
+.flexCol{
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+}
 .flexBtw{
   display: flex;
   display: -webkit-flex;
   justify-content: space-between;
 }
+.flex1{flex:1}
 
 
 /*pc通用样式*/
@@ -214,6 +226,11 @@ li {
 .label1{
   display: inline-block;
   width: 0.6rem;
+  text-align: right;
+}
+.label2{
+  display: inline-block;
+  width: 1rem;
   text-align: right;
 }
 
@@ -257,6 +274,8 @@ li {
 .white{color:#fff !important;}
 .themeColor{color:#2e6eb4 !important}
 .gray{color:#333}
+.color999{color:#999}
+
 .pc-button {
 	/*按钮通用样式 */
 	/* width: 1.05rem;
@@ -343,6 +362,11 @@ li {
   height:.2rem;
   color:#fff;
 }
+.bigInput{
+  border-radius: 3px;
+  width:3rem;
+  height:.25rem;
+}
 
 /* textarea通用 */
 .pc-textarea{
@@ -352,6 +376,12 @@ li {
 	border-radius: 5px;
   margin:.02rem 0.1rem;
   width:3.5rem;
+}
+
+.textareaOne{
+  height:.6rem;
+  border: 1px solid #2e6eb4;
+  border-radius: 5px;
 }
 
 
@@ -460,3 +490,5 @@ li {
 .switchOn{
 
 }
+
+::placeholder{padding-left:.1rem;color:#999}

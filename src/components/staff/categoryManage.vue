@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="visible" title="修改详情页类目名称" @ok="handleOk">
+  <a-modal v-model="visible" title="修改详情页类目名称" :afterClose="handleCancel">
       <div class="tag-one">
        <div class="tag-one-create"><span class="pc-button buttonNoback font10"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
        <div class="tag-one-drag">

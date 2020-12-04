@@ -17,11 +17,11 @@
       </div>
      <!-- <transition-group name="t1"> -->
       <div v-show="toggle1==true">
-    <div class="flex paddingL2rem gray">
+    <div class="flex paddingLR2rem gray">
       <div class="width50 textInput"><span class="label">文件名称</span><input class='pc-input'/></div>
       <div class="width50 textInput"><span class="label">文档编号</span><input  class='pc-input'/></div>
     </div>
-    <div class="flex paddingL2rem gray">
+    <div class="flex paddingLR2rem gray">
       <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input'/></div>
       <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input'/></div>
     </div>
