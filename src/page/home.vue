@@ -108,5 +108,9 @@ export default {
 
 .container{background: url(../assets/img/leftBackground.png);}
 .leftMenu{background: none;color:#fff;}
+/deep/.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
+ background: #fff;
+ color:#2e6eb4;
+}
 
 </style>

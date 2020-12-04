@@ -62,10 +62,9 @@
        <span class="pc-button font10" @click="removeStaff()">删除</span>
   <el-table :data="tableData" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="date" label="姓名" sortable></el-table-column>
-        <el-table-column prop="date" label="姓名" sortable></el-table-column>
+        <el-table-column prop="" label="姓名" sortable></el-table-column>
         <el-table-column prop="" label="工号" sortable></el-table-column>
-        <el-table-column prop="name" label="部门"></el-table-column>
+        <el-table-column prop="" label="部门"></el-table-column>
   </el-table>
       </div>
     </div>
