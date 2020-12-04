@@ -30,7 +30,7 @@
       <a-layout-content
         :style="{ margin: '.14rem .14rem',minHeight: '2.8rem' }"
       >
-      <transition name="fadeLeft">
+      <transition name="t1">
         <router-view></router-view>
       </transition>
       </a-layout-content>
@@ -41,12 +41,14 @@
 export default {
   data() {
     return {
+   transitionName:'',
    menuList: [{name:'文件管理',icon:'icon-wenjian',url:'',subMenuList:[{name:'文档中心',url:'fileList'}]},
              {name:'培训管理',icon:'icon-kejipeixun',url:'',subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
              {name:'人员管理',icon:'icon-renyuan',url:'',subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
              ]
     };
   },
+
   methods:{
     toUrl(url){
       this.$router.push({path:url,query:{}})
@@ -106,11 +108,13 @@ export default {
   }
 }
 
+.t1-enter-active {transition: all 0.3s ease;}
+.t1-leave-active {transition: all 0.3s cubic-bezier(1.0, 0.5, 0.8, 1.0);}
+.t1-enter, .t1-leave-to{transform: translateX(10px);opacity: 0;}
+
+/*菜单样式*/
 .container{background: url(../assets/img/leftBackground.png);}
 .leftMenu{background: none;color:#fff;}
-/deep/.ant-menu.ant-menu-dark .ant-menu-item-selected, .ant-menu-submenu-popup.ant-menu-dark .ant-menu-item-selected{
- background: #fff;
- color:#2e6eb4;
-}
+
 
 </style>
