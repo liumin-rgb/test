@@ -22,6 +22,7 @@
         <span v-show="queryType=='high'"><span class="label">入职时间：</span><input class="pc-input" /></span>
       </div>
       <div class="list-search-three">
+        <span class="pc-button buttonNoback" @click=""><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
         <span class="pc-button buttonNoback" @click="openImport"><i class="iconfont icon-shangchuan1 "></i>批量导入</span>
         <span class="pc-button buttonNoback" @click="addStaff"><i class="iconfont icon-jiahao"></i>添加</span>
         <span class="pc-button buttonNoback" @click="changeCategory">修改详情页类目名称</span>

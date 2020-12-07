@@ -7,21 +7,21 @@ const router = new Router({
    //mode:'history',
    //base: '/',
   routes: [
-   /*  {
+     {
         path: '/',
         redirect : 'login',
         meta : {
             title : '登录页'
 
 	}
-  }, */
+  },
   {
         path: '/login',
         name:'login',
         component: resolve => require(['@/page/login'], resolve),
         meta : {
             title : '登录页',
-  		   noLogin:true
+  		      noLogin:true
         }
   },
  {
@@ -145,8 +145,8 @@ const router = new Router({
 })
 
 
-/* router.beforeEach((to, from, next) => {
-  if(!to.meta.noLogin) {
+router.beforeEach((to, from, next) => {
+ /* if(!to.meta.noLogin) {
     const token = utils.cache.get('TOKEN') || ''
 
 		if(token) {
@@ -154,9 +154,9 @@ const router = new Router({
 		} else {
 		  return router.push('login')
 		}
-  }
+  } */
   next();
-}); */
+}); 
  router.afterEach((to,from)=>{
 	document.title=to.meta.title||'';
 })

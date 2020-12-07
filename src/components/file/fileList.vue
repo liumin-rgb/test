@@ -4,18 +4,33 @@
       <div>
         <div class="font12 weight600">文件夹目录</div>
         <div class="textAlignR">
-          <span class="pc-button buttonNoback font10 ">新建文件夹</span>
+          <!-- <span class="pc-button buttonNoback font10 ">新建文件夹</span> -->
           <span class="pc-button buttonNoback font10" @click="openTagManage('all')">标签管理</span>
         </div>
       </div>
        <a-tree
            class="draggable-tree"
-           :default-expanded-keys="expandedKeys"
            draggable
+		       show-icon
+           blockNode="true"
            :tree-data="gData"
            @dragenter="onDragEnter"
            @drop="onDrop"
-         />
+           @select="onSelect"
+           :icon='getIcon'
+           defaultExpandParent
+         >
+         <template slot="custom" slot-scope="item">
+                <span>{{item.title}}</span>
+                <i :class="['iconfont icon-jiahao themeColor',item.showBtn?'':'displayN']"  @click.stop="appendNode(item)"></i>
+                 <i :class="['iconfont icon-tubiao09 themeColor',item.showBtn?'':'displayN']" @click.stop="editNode(item)"></i>
+                 <i :class="['iconfont icon-shanchu themeColor',item.showBtn?'':'displayN']" @click.stop="deleteNode(item)"></i>
+         </template>
+        <!-- <template slot='switcherIcon'>
+         <i class="iconfont icon-wenjianjia" :selected="!selected"></i>
+          <i class="iconfont icon-dakaizhuangtaiwenjianjia" :selected="selected"></i>
+        </template> -->
+         </a-tree>
 
     </div>
     <div class="list-main-two">
@@ -89,7 +104,7 @@
           </el-table>
       </div>
       <div class="list-bottom">
-       <Pagination :value="pageIndex" :maxPage="maxPage" @changePage="changePage"/>
+       <Pagination :value="pageIndex" :maxPage="maxPage" />
       </div>
     </div>
     <TagManage :visible="visible" :operation="operation" @closeTagManage="closeTagManage"/>
@@ -99,44 +114,48 @@
 <script>
   import Pagination from '../Pagination'
   import TagManage from './tagManage'
-  const x = 3;
-  const y = 2;
-  const z = 1;
-  const gData = [];
-
-  const generateData = (_level, _preKey, _tns) => {
-    const preKey = _preKey || '0';
-    const tns = _tns || gData;
-
-    const children = [];
-    for (let i = 0; i < x; i++) {
-      const key = `${preKey}-${i}`;
-      tns.push({ title: key, key });
-      if (i < y) {
-        children.push(key);
-      }
-    }
-    if (_level < 0) {
-      return tns;
-    }
-    const level = _level - 1;
-    children.forEach((key, index) => {
-      tns[index].children = [];
-      return generateData(level, key, tns[index].children);
-    });
-  };
-  generateData(z);
   export default {
     name: 'fileList',
     components:{Pagination,TagManage},
     data() {
       return {
-        pageIndex:'1',
-        maxPage:'10',
+        pageIndex:1,
+        maxPage:10,
         showSelect:false,
         visible:false,
         operation:'all',
-        gData,
+        gData:[
+  {
+    title: '0-0',
+    key: '0-0',
+    scopedSlots: { title: 'custom' },
+    showBtn:false,
+    children: [
+      {
+        title: '0-0-1',
+        key: '0-0-1',
+        scopedSlots: { title: 'custom' },
+        showBtn:true,
+        children: [
+          { title: '0-0-1-0', key: '0-0-1-0', showBtn:false,scopedSlots: { title: 'custom' } },
+          { title: '0-0-1-1', key: '0-0-1-1', showBtn:false,scopedSlots: { title: 'custom' } },
+          { title: '0-0-1-2', key: '0-0-1-2', showBtn:false,scopedSlots: { title: 'custom' } }
+        ]
+      },
+    ]
+  },
+  {
+    title: '0-1',
+    key: '0-1',
+    scopedSlots: { title: 'custom' },
+    showBtn:false,
+    children: [
+      { title: '0-1-0-0', key: '0-1-0-0', showBtn:false,scopedSlots: { title: 'custom' } },
+      { title: '0-1-0-1', key: '0-1-0-1',showBtn:false, scopedSlots: { title: 'custom' } },
+      { title: '0-1-0-2', key: '0-1-0-2', showBtn:false,scopedSlots: { title: 'custom' } }
+    ]
+  },
+],
         multipleSelection:'',
         tableData: [/* {
           date: '2016-05-02',
@@ -245,6 +264,56 @@
               }
               this.gData = data;
             },
+            appendNode(data){
+                //模拟添加
+                      const newChild = { title: '新建文件夹',
+                        key: 'ceshi1',
+                        scopedSlots: { title: 'custom' },
+                        children: [] }
+                      if (!data.children) {
+                        this.$set(data, 'children', [])
+                      }
+                      data.children.push(newChild)
+            },
+            editNode(data){
+           this.searchOption(data, this.treeData, 'edit');
+            },
+            deleteNode(data){
+            this.searchOption(data, this.treeData,'delete');
+            },
+            //递归查找
+           searchOption (option, arr, type = 'delete') {
+                 console.log(option, arr)
+                 for (let s = 0; s < arr.length; s++) {
+                   console.log(arr[s].key, option.key)
+                   if (arr[s].key === option.key) {
+                     if (type === 'delete') {
+                       arr.splice(s, 1)
+                     } else {
+                     //这是模拟数据编辑数据
+                       this.$set(arr, s, {
+                         title: '12121212',
+                         key: '12121212',
+                         scopedSlots: { title: 'custom' }
+                       })
+                     }
+                     break
+                   } else if (arr[s].children && arr[s].children.length > 0) { // 递归条件
+                     this.searchOption(option, arr[s].children,type)
+                   } else {
+                     continue
+                   }
+                 }
+               },
+            getIcon(props){
+               const { isLeaf, expanded } = props;
+                      /* if (isLeaf) {
+                        return <a-icon type="home" />;
+                      } */
+                    /*  return <a-icon type={expanded ? "folder-open" : "folder"} />; */
+                    return <i class={expanded?"iconfont icon-dakaizhuangtaiwenjianjia themeColor":"iconfont icon-wenjianjia themeColor"}></i>;
+            },
+
 
     }
   };

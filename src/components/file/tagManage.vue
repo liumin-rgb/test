@@ -3,7 +3,7 @@
       <div class="tag-one" v-if="operation=='all'">
        <div class="tag-one-create"><span class="pc-button buttonNoback font10"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
        <div class="tag-one-drag">
-         <draggable v-model="tagList"  :move="onMove" @update="datadragEnd" :options="{animation: 300}" >
+         <draggable v-model="tagList"    :options="{animation: 300}" >
          	<div  v-for="obj in tagList" class="pc-drag">
             <span contenteditable="true" style="outline: none;" @blur="obj=$event.target.innerHTML">{{obj}}</span>
          <span>
@@ -46,7 +46,7 @@
                <a-button key="back" @click="handleCancel">
                  取消
                </a-button>
-               <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
+               <a-button key="submit" type="primary"  @click="handleOk">
                  提交
                </a-button>
         </template>

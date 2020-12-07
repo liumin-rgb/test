@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18669307",
+      "name": "打开状态文件夹",
+      "font_class": "dakaizhuangtaiwenjianjia",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "18669294",
+      "name": "文件夹",
+      "font_class": "wenjianjia",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
       "icon_id": "15885751",
       "name": "转换",
       "font_class": "zhuanhuan1",
