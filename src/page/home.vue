@@ -113,8 +113,8 @@ export default {
 .t1-enter, .t1-leave-to{transform: translateX(10px);opacity: 0;}
 
 /*菜单样式*/
-.container{background: url(../assets/img/leftBackground.png);}
-.leftMenu{background: none;color:#fff;}
+.container{background: url(../assets/img/leftBackground.png) !important;}
+.leftMenu{background: none !important;color:#fff !important;}
 
 
 </style>
