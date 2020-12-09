@@ -2,7 +2,7 @@
 	<div class="page">
 	<div class="page-totalNum">122条</div>
 	<div class="page-picker">
-    <div class="page-picker-show"><span>展示数据</span><select class="pc-input inputOne"/></div>
+    <div class="page-picker-show"><span>展示数据</span><select class="pc-input inputOne" v-model="pageSizeCode" ><option v-for="(obj,index) in pageSizeList" :value="index">{{obj}}</option></select></div>
 		<div class="page-picker-num">
 		<div class="page-picker-num-btn" @click="prePage"><i class="el-icon-arrow-left"></i>上页</div>
 		<div @click="num !== threeDot ? (pageNo = num) : ''"
@@ -22,28 +22,28 @@
 		props:{
 			maxPage: {
 			  type: Number,
-			  default: 10
-			},
-			value:{
-			  type: Number,
 			  default: 1
+			},
 
-			}
 		},
 		data(){
 			return{
 			pageNo:1,
+      pageSizeCode:0,
 			threeDot: '···',
 			tempPageNo:1,
+      pageSizeList:[10,20,30,50,100],
 		}
 		},
 		watch: {
-		  value(val) {
-		    this.pageNo = val;
-			/* this.tempPageNo=val; */
-		  },
+      pageSizeCode(val){
+        let pageSize=this.pageSizeList[val];
+        let parentVal={pageSize:pageSize,pageIndex:this.pageNo};
+        this.$emit('changePage', parentVal);
+      },
 		  pageNo(val) {
-		    this.$emit('changePage', val);
+        let parentVal={pageSize:this.pageSizeList[this.pageSizeCode],pageIndex:val};
+		  this.$emit('changePage', parentVal);
 			this.tempPageNo=val;
 		  },
 		  max(val) {
@@ -78,7 +78,7 @@
 				  if(/^[1-9][0-9]{0,3}$/.test(this.tempPageNo * 1)) {
 				    let num = this.tempPageNo * 1;
 				    this.pageNo = num > this.maxPage ? this.maxPage : num;
-				  /*  this.tempPageNo = '' */
+
 				  }
 
 			},

@@ -1,7 +1,7 @@
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-const origin = 'https://bmsurvey-api-test.chinacloudsites.cn/api'
+const origin = 'http://18.162.116.86/api'
 const path = require('path')
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
         target: origin,
         changeOrigin: true,
 		// ws: true,        //如果要代理 websockets，配置这个参数
-		secure:true,//请求https
+		//secure:true,//请求https
         pathRewrite: {
           '^api': ''
         }

@@ -1,5 +1,5 @@
-const baseUrl = 'https://bmsurvey-api-test.chinacloudsites.cn/api';//https://bmsurvey-api-test.chinacloudsites.cn/api
-
+//const baseUrl = 'http://18.162.116.86/api';
+const baseUrl = '';
 export default {
   baseUrl,
 }

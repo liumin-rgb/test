@@ -1,19 +1,20 @@
 <template>
   <a-modal v-model="visible" title="修改详情页类目名称" :afterClose="handleCancel">
-      <div class="tag-one">
-<!--       <div class="tag-one-create"><span class="pc-button buttonNoback font10"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
- -->       <div class="tag-one-drag">
-         <draggable v-model="tagList"  :move="onMove" @update="datadragEnd" :options="{animation: 300}" >
-         	<div  v-for="obj in tagList" class="pc-drag">
-            <span contenteditable="true" style="outline: none;" @blur="obj=$event.target.innerHTML">{{obj}}</span>
+     <a-spin :spinning="spinning">
+      <div class="tag-one" >
+ <div class="tag-one-drag">
+         <draggable v-model="tagList"  :options="{animation: 300}"  filter=".forbid"   :move="onMove">
+         	<div  v-for="(obj,index) in tagList" :class="index==0?'pc-drag forbid':'pc-drag'" >
+            <span contenteditable="true" style="outline: none;" @blur="obj.name=$event.target.innerHTML">{{obj.name}}</span>
          <span>
           <i class="iconfont icon-shanchu themeColor weight600 font16 pointer"></i>
-         	<i class="iconfont icon-tuodong themeColor weight600 font16 pointer"></i>
+         	<i class="iconfont icon-tuodong themeColor weight600 font16 pointer" :style="index==0?'color:#999 !important':''"></i>
           </span>
-            </div>
+          </div>
          </draggable>
        </div>
       </div>
+       </a-spin>
         <template slot="footer">
                <a-button key="back" @click="handleCancel">
                  取消
@@ -32,23 +33,61 @@ export default {
   props:{
     visible:{
       default:false,
-      type:Boolean
+      type:Boolean,
+      spinning:false
     },
   },
   data() {
     return {
-      tagList:[]
+      tagList:[],
+      loading1:false,
+      loading:false,
     }
   },
+  watch:{
+    visible:function(newVal){
+      if(newVal==true){
+        this.queryCategory();
+      }
+    }
+    },
+
   created(){
-    this.tagList=['标签1','标签2','标签3','标签4'];
+
   },
   methods:{
+       //禁止拖动的项
+            onMove(e){
+              console.log(e.relatedContext.element.id);
+             if(e.relatedContext.index==0) return false;
+              return true;
+           },
+    queryCategory(){
+      this.spinning=true;
+      let url="/api/Employee/getEmployeeInfoSequence"
+      utils.request.get(url).then((res) => {
+        this.spinning=false;
+        if(res){
+          this.tagList=res.categoryList||[];
+        }
+      })
+    },
     handleCancel(){
       this.$emit("closeModel");
     },
     handleOk(){
-    this.handleCancel()
+      this.loading=true;
+      let url="/api/Employee/updateEmployeeInfoSequence"
+      let params={
+        fixedCategoryList:this.tagList
+      }
+      utils.request.post(url,params).then((res) => {
+        this.loading=false;
+        if(res){
+           this.handleCancel()
+        }
+      })
+
     }
 
   }
@@ -59,6 +98,8 @@ export default {
   .tag-one{
     padding:0 0.2rem;
     color:#333;
+    overflow: auto;
+    height:50vh;
     &-create{text-align: right;}
     &-drag{
      padding:.1rem 0;

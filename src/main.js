@@ -28,7 +28,8 @@ import {
   Loading,
   Tree,
   Switch,
-  Popover
+  Popover,
+  DatePicker
 } from 'element-ui'
 
 Vue.use(Table);
@@ -37,6 +38,7 @@ Vue.use(Loading);
 Vue.use(Tree);
 Vue.use(Switch);
 Vue.use(Popover);
+Vue.use(DatePicker);
 window.eventBus = new Vue(); //注册全局事件对象
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$MessageBox=MessageBox;

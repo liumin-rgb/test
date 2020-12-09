@@ -475,8 +475,6 @@ li {
     display:none
 
 }
-
-
   .list-bottom{
       position: absolute;
       right: 1vw;
@@ -491,4 +489,8 @@ li {
 
 }
 
+.icon-xing{
+	color: #ef3340;
+	padding: .02rem;
+}
 ::placeholder{padding-left:.1rem;color:#999}

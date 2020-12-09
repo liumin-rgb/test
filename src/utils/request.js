@@ -21,16 +21,6 @@ instance.interceptors.request.use(config => {
 })
 //返回拦截器
 instance.interceptors.response.use(response => {
-	//response.request.responseType='blob';
-  //loadingInstance.close()
-  //console.log("%c 返回数据>>>>>>>", 'color:green', response.config.url + '\n', response.data);
-  let disposition=response.headers["content-disposition"];
-	if(disposition){
-	let arr1=disposition.split(";")[1];
-	let fileName=arr1.split("=")[1];
-	fileName=fileName.split(".")[0];
-	utils.cache.setSession("fileName",fileName)
-	}
 	return response.data;
 }, error => {
   //loadingInstance.close();
