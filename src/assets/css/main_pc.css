@@ -493,4 +493,23 @@ li {
 	color: #ef3340;
 	padding: .02rem;
 }
+/*切换块*/
+.list-tab>div {
+	background: url(../img/bg_blue.png);
+	color: #fff;
+	font-size: .16rem;
+	width: 1.6rem;
+	height: .44rem;
+	text-align: center;
+	line-height: .44rem;
+	font-weight: 500;
+	background-size:100%;
+	cursor: pointer;
+}
+.title_light_blue{
+	background: url(../img/bg_lightBlue.png) !important;
+	background-size:100% !important;
+	color:#0f66cc !important;
+}
+
 ::placeholder{padding-left:.1rem;color:#999}
