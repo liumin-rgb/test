@@ -155,8 +155,8 @@ li {
 .marginT1VH{margin-top:1vh;}
 .marginT2VH{margin-top:2vh;}
 
-.marginB1VH{margin-top:1vh;}
-.marginB2VH{margin-top:2vh;}
+.marginB1VH{margin-bottom:1vh;}
+.marginB2VH{margin-bottom:2vh;}
 
 .paddingLR1rem{padding:0 0.1rem}
 .paddingLR2rem{padding:0 0.2rem}

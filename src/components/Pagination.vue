@@ -1,6 +1,6 @@
 <template>
 	<div class="page">
-	<div class="page-totalNum">122条</div>
+	<div class="page-totalNum">{{totalCount}}条</div>
 	<div class="page-picker">
     <div class="page-picker-show"><span>展示数据</span><select class="pc-input inputOne" v-model="pageSizeCode" ><option v-for="(obj,index) in pageSizeList" :value="index">{{obj}}</option></select></div>
 		<div class="page-picker-num">
@@ -24,6 +24,10 @@
 			  type: Number,
 			  default: 1
 			},
+      totalCount:{
+        type: Number,
+        default: 0
+      }
 
 		},
 		data(){

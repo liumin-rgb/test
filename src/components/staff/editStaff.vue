@@ -9,7 +9,7 @@
   </div>
   <div class="list-main-body">
     <div class="list-head" @click="toggle=!toggle">
-      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle==false"></i>基本信息</div>
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle==false"></i>{{basicInfo}}</div>
       </div>
       <transition name="t1">
      <div v-show="toggle==true">
@@ -112,7 +112,11 @@
      </div>
      <transition>
     <div class="marginT1VH" v-show="obj.toggle==true">
-
+   <Contract v-if="obj.name=='合同履历'" :flag="flag"/>
+   <Experience v-if="obj.name=='工作经历'" :flag="flag"/>
+   <Qualifications v-if="obj.name=='执业资格'" :flag="flag"/>
+   <ContinueEducation v-if="obj.name=='继续教育'" :flag="flag"/>
+   <RewardPunish v-if="obj.name=='奖罚信息'" :flag="flag"/>
     </div>
     </transition>
     </div>
@@ -129,6 +133,11 @@
 </template>
 
 <script>
+  import Contract from "../editStaff/contract"
+  import Experience from "../editStaff/experience"
+  import Qualifications from"../editStaff/qualifications"
+  import ContinueEducation from"../editStaff/continueEducation"
+  import RewardPunish from"../editStaff/RewardPunish"
   function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -136,7 +145,7 @@
   }
   export default {
     name: 'editStaff',
-    components:{},
+    components:{Contract,Experience,Qualifications,ContinueEducation,RewardPunish},
     data() {
       return{
         toggle:true,
@@ -144,6 +153,7 @@
         flag:'add' ,//add 添加 edit 编辑 check 查看
         loading: false,
         imageUrl: '',
+        basicInfo:'基本信息',
         tagList:[],
         workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
         politicalList:[{code:'0',text:'全部'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
@@ -203,7 +213,7 @@
           }
         }
         let url="/api/Employee/insert";
-        let params=this.staffInfo=this.staffInfo;;
+        let params=staffInfo;;
         utils.request.post(url,params).then((res) => {
           if(res){
 
@@ -214,7 +224,8 @@
         let url="/api/Employee/getEmployeeInfoSequence"
         utils.request.get(url).then((res) => {
           if(res){
-            let tagList=res.categoryList||[];
+            let tagList=res||[];//categoryList
+            this.basicInfo=tagList[0].name||'基本信息';
             tagList.shift();
             tagList.forEach((item)=>{
               item.toggle=false;
@@ -287,7 +298,7 @@
     &-body{
       width:100%;
       margin-top:.1rem;
-      height:72vh;
+      height:78vh;
       overflow: auto;
     }
   }

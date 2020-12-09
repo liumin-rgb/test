@@ -63,7 +63,7 @@
       </el-table>
     </div>
     <div class="list-bottom">
-      <Pagination  :maxPage="maxPage"  @changePage="changePage" />
+      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
     </div>
     <ImportStaff :visible="visible1" @closeModel="closeModel" @openModel2="openModel2" />
     <InsureImport :visible="visible2" @closeModel="closeModel2" />
@@ -92,6 +92,7 @@
         pageIndex: 1,
         pageSize:10,
         maxPage: 10,
+        totalCount:0,
         isOrdinarySearch: true, //true 普通 false:高级
         searchInfo:{
           name:'',
@@ -151,6 +152,7 @@
         	utils.request.post(url,params).then((res) => {
         		if(res){
               let totalCount=res.totalCount;
+              this.totalCount=totalCount;
               this.maxPage=Math.ceil(totalCount/this.pageSize);
              let items=res.items;
               this.tableData=items;
