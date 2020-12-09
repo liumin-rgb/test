@@ -64,9 +64,9 @@
          label:'审批人',
         },
        editorInit: {
-         language_url: '/static/tinymce/zh_CN.js',
+         language_url: '../../../static/tinymce/zh_CN.js',
          language: 'zh_CN',
-         skin_url: '/static/tinymce/skins/ui/oxide',
+         skin_url: '../../../static/tinymce/skins/ui/oxide',
          min_height: 280,
          max_height:500,
         toolbar:'forecolor backcolor bold italic underline   | alignleft aligncenter alignright alignjustify outdent indent | \

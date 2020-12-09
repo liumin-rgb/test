@@ -87,7 +87,6 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
 }
-.ant-menu-dark .ant-menu-inline.ant-menu-sub{background: none;box-shadow: none;}
 .menuLogo{
       text-align: center;
       margin: 0.1rem 0 0.3rem 0;
@@ -113,6 +112,7 @@ export default {
 .t1-enter, .t1-leave-to{transform: translateX(10px);opacity: 0;}
 
 /*菜单样式*/
+.ant-menu-dark .ant-menu-inline.ant-menu-sub{background: none !important;box-shadow: none !important;}
 .container{background: url(../assets/img/leftBackground.png) !important;}
 .leftMenu{background: none !important;color:#fff !important;}
 
