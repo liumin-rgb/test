@@ -137,7 +137,7 @@
   import Experience from "../editStaff/experience"
   import Qualifications from"../editStaff/qualifications"
   import ContinueEducation from"../editStaff/continueEducation"
-  import RewardPunish from"../editStaff/RewardPunish"
+  import RewardPunish from"../editStaff/rewardPunish"
   function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
