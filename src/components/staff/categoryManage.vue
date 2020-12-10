@@ -7,7 +7,7 @@
          	<div  v-for="(obj,index) in tagList" :class="index==0?'pc-drag forbid':'pc-drag'" >
             <span contenteditable="true" style="outline: none;" @blur="obj.name=$event.target.innerHTML">{{obj.name}}</span>
          <span>
-          <i class="iconfont icon-shanchu themeColor weight600 font16 pointer"></i>
+         <!-- <i class="iconfont icon-shanchu themeColor weight600 font16 pointer"></i> -->
          	<i class="iconfont icon-tuodong themeColor weight600 font16 pointer" :style="index==0?'color:#999 !important':''"></i>
           </span>
           </div>
@@ -85,7 +85,7 @@ export default {
       this.loading=true;
       let url="/api/Employee/updateEmployeeInfoSequence"
       let params={
-        fixedCategoryList:this.tagList
+        employeeInfoList:this.tagList
       }
       utils.request.post(url,params).then((res) => {
         this.loading=false;

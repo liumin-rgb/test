@@ -8,7 +8,7 @@
         <span>我的任务</span>
         </a-menu-item>
         <a-sub-menu :key="'menu'+index" v-for="(obj,index) in menuList" style="background:none;" >
-                   <span slot="title"><i :class="['iconfont','font16',obj.icon]"></i>{{obj.name}}</span>
+                   <span slot="title"><i :class="['iconfont','font16',obj.icon]"></i><span> {{obj.name}}</span></span>
                    <a-menu-item :key="'subMenu'+index+index1" v-for="(obj1,index1) in obj.subMenuList" @click="toUrl(obj1.url)" style="background:none;">
                      {{obj1.name}}
                    </a-menu-item>
@@ -66,7 +66,7 @@ export default {
 <style  lang="less">
   body>div:nth-child(1){
      height: 100%;
-      } 
+      }
   .ant-layout{
      height: 100%;
       }

@@ -40,7 +40,7 @@
     },
     methods:{
       login(){
-       this.$router.push({path:'fileList',query:{}});
+       this.$router.push({path:'staffInfo',query:{}});
        return;
 		  let params={
 			  email:this.email,

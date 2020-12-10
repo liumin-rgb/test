@@ -135,7 +135,9 @@
           infoType: this.info.id,
           data: this.tableObj
         }
+        this.loading=true;
         utils.operateStaffInfo.addOrUpdateInfoByType(params).then((data) => {
+          this.loading=false;
           this.queryInfo();
           this.handleCancel()
         });

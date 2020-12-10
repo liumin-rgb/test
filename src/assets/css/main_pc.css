@@ -186,6 +186,7 @@ li {
 .text-line{text-decoration: underline;}
 .border-bottom-line{border-bottom:1px solid rgba(62,62,62,0.3)}
 .border-top-line{border-top:1px solid rgba(62,62,62,0.3)}
+.borderGray{border:1px solid #efefef !important;}
 .weight600{font-weight:600;}
 
 /*通用百分比  */
@@ -275,6 +276,7 @@ li {
 .themeColor{color:#2e6eb4 !important}
 .gray{color:#333}
 .color999{color:#999}
+.backGray{background:#efefef;}
 
 .pc-button {
 	/*按钮通用样式 */
@@ -354,7 +356,10 @@ li {
 	border-radius: 5px;
 	box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1);
   margin:.02rem 0.1rem;
+  /* padding-left: .1rem; */
 }
+
+
 .inputOne{
   background: #2e6eb4;
   border-radius: 3px;

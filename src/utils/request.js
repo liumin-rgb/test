@@ -1,45 +1,46 @@
 import axios from 'axios'
 import Global from './../assets/lib/globalConfig.js'
 import common from './common.js'
+import loading from '../plugins/loading.js'
+
  let instance = axios.create({
   timeout: 50000,
 });
-/* import { Loading } from 'element-ui'; */
-const option={fullscreen:true,text:'loading...'};
  let loadingInstance;
 //请求拦截器
 instance.interceptors.request.use(config => {
 	let token=utils.cache.get("TOKEN")||'';
- // loadingInstance= Loading.service(option);
+  loading.showLoading(config.isLoad);
   config.headers['Content-Type'] = 'application/json;charset=UTF-8';
   config.headers['Authorization']=token?'Bearer ' + token:'';
   return config;
 }, error => {
-  //loadingInstance.close();
+  loading.closeLoading();
   console.log('请求失败!!!-----'+error.message);
   return Promise.reject(error);
 })
 //返回拦截器
 instance.interceptors.response.use(response => {
+  loading.closeLoading();
 	return response.data;
 }, error => {
-  //loadingInstance.close();
+ loading.closeLoading();
   console.log('返回失败!!!-----'+error.message);
 })
 export default {
   axios: axios,
-  get(service,isLoad) {
+  get(service,isLoad=false) {
     // let token = utils.cache.get('TOKEN') || '';
-    return instance.get(Global.baseUrl + service,isLoad)
+    return instance.get(Global.baseUrl + service,{isLoad:isLoad})
   },
-  post(service, params,isLoad) {
+  post(service, params,isLoad=false) {
     console.log("%c 请求数据>>>>>>>", 'color:pink', JSON.parse(JSON.stringify(params)));
-    return instance.post(Global.baseUrl + service, params,isLoad,)
+    return instance.post(Global.baseUrl + service, params,{isLoad:isLoad})
   },
-  delete(service,params,isLoad) {
-	  return instance.delete(Global.baseUrl + service,params,isLoad,)
+  delete(service,params,isLoad=false) {
+	  return instance.delete(Global.baseUrl + service,params,{isLoad:isLoad})
 	},
-  put(service,params,isLoad) {
-	  return instance.put(Global.baseUrl + service,params,isLoad,)
+  put(service,params,isLoad=false) {
+	  return instance.put(Global.baseUrl + service,params,{isLoad:isLoad})
 	},
 }

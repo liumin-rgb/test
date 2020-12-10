@@ -9,21 +9,21 @@
         </div>
         <div class="tab flexBtw marginT1VH marginB1VH">
      <el-table :data="tableData1" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
-           <el-table-column type="selection"></el-table-column>
+          
            <el-table-column prop="" label="姓名" ></el-table-column>
            <el-table-column prop="" label="工号" ></el-table-column>
            <el-table-column prop="" label="部门" ></el-table-column>
      </el-table>
 
          <el-table :data="tableData2" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
-              <el-table-column type="selection" ></el-table-column>
+            
               <el-table-column prop="" label="姓名"  ></el-table-column>
               <el-table-column prop="" label="工号" ></el-table-column>
               <el-table-column prop="" label="部门"></el-table-column>
          </el-table>
 
       <el-table :data="tableData3" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
-           <el-table-column type="selection" width="30"></el-table-column>
+          
            <el-table-column prop="" label="姓名" ></el-table-column>
            <el-table-column prop="" label="工号"></el-table-column>
            <el-table-column prop="" label="部门"></el-table-column>
@@ -94,7 +94,6 @@ export default {
            //utils.box.toast("失败");
          }
           }
-          this.handleCancel();
           }
           );
     },

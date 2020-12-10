@@ -20,8 +20,7 @@
       <div>
         <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
             class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span>
-        <span v-show="!isOrdinarySearch" class="positionR"><span class="label">入职时间：</span>
-            <el-date-picker  v-model="searchInfo.workingDateStart" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>
+        <span v-show="!isOrdinarySearch" class="positionR"><span class="label">入职时间：</span><el-date-picker  v-model="searchInfo.workingDateStart" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>
             -
             <el-date-picker  v-model="searchInfo.workingDateEnd" value-format="yyyy-MM-dd"  type="date" placeholder=" 请选择"></el-date-picker>
 </span>
@@ -34,15 +33,16 @@
       </div>
     </div>
     <div class="list-table">
+      <a-spin :spinning="spinning"  tip="Loading...">
       <el-table :data="tableData" border height="250"  :header-cell-class-name="'table-header'">
-        <el-table-column prop="employeeNo" label="工号" sortable></el-table-column>
-        <el-table-column prop="name" label="姓名" sortable></el-table-column>
+        <el-table-column prop="employeeNo" label="工号" sortable width="70"></el-table-column>
+        <el-table-column prop="name" label="姓名" sortable width="70"></el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
           <template slot-scope="scope"> <span>{{scope.row.sex==1?'男':'女'}}</span></template>
         </el-table-column>
         <el-table-column prop="birthday" label="出生日期"></el-table-column>
         <el-table-column prop="age" label="年龄" width="50"></el-table-column>
-        <el-table-column prop="marriage" label="婚姻">
+        <el-table-column prop="marriage" label="婚姻" width="50">
           <template slot-scope="scope"> <span>{{scope.row.marriage==0?'未知':scope.row.marriage==1?'已婚':'未婚'}}</span></template>
         </el-table-column>
         <el-table-column prop="political" label="政治面貌">
@@ -50,8 +50,8 @@
         </el-table-column>
         <el-table-column prop="workingDate" label="入职时间"></el-table-column>
         <el-table-column prop="mobile" label="手机长号"></el-table-column>
-        <el-table-column prop="seniority" label="工作年限"></el-table-column>
-        <el-table-column prop="department" label="部门"></el-table-column>
+        <el-table-column prop="seniority" label="工作年限" width="70"></el-table-column>
+        <el-table-column prop="department" label="部门" width="60"></el-table-column>
         <el-table-column prop="education" label="学历" width="50">
           <template slot-scope="scope"> <span>{{scope.row.education| filter1(educationList)}}</span></template>
         </el-table-column>
@@ -65,6 +65,7 @@
                     <p @click="toStaffInfo('edit',scope.row.id)">编辑</p>
                     <p @click="offWork(scope.row.id)">离职</p>
                     <p @click="resetPassword(scope.row.id)">重置密码</p>
+                    <p @click="deleteStaff(scope.row.id)">删除</p>
                     </div>
                     <div slot="reference" class="name-wrapper">
                      <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
@@ -73,6 +74,7 @@
                 </template>
         </el-table-column>
       </el-table>
+      </a-spin>
     </div>
     <div class="list-bottom">
       <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
@@ -98,6 +100,7 @@
     },
     data() {
       return {
+        spinning:false,
         visible1: false,
         visible2: false,
         visible3: false,
@@ -109,12 +112,12 @@
         searchInfo:{
           name:'',
           employeeNo:'',
-          workingStatus:"0",
-          political:"0",
-          education:"0",
-          department:0,
-          seniorityStart:'',
-          seniorityEnd:'',
+          workingStatus:0,
+          political:0,
+          education:0,
+          department:"",
+          seniorityStart:0,
+          seniorityEnd:0,
           workingDateStart:'',
           workingDateEnd:''
         },
@@ -189,13 +192,20 @@
           isOrdinarySearch:this.isOrdinarySearch,
           ...this.searchInfo
         }
-        	utils.request.post(url,params).then((res) => {
+         this.spinning=true;
+        	utils.request.post(url,params,false).then((res) => {
+            this.spinning=false;
         		if(res){
-              let totalCount=res.totalCount;
-              this.totalCount=totalCount;
-              this.maxPage=Math.ceil(totalCount/this.pageSize);
-             let items=res.items;
-              this.tableData=items;
+              if(res.success==true){
+                let totalCount=res.result.totalCount;
+                 this.totalCount=totalCount;
+                 this.maxPage=Math.ceil(totalCount/this.pageSize);
+                let items=res.result.items;
+                 this.tableData=items;
+              }else{
+
+              }
+
             }
             });
       },

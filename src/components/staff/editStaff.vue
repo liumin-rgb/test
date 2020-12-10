@@ -18,7 +18,7 @@
        </div>
          <table class="table">
            <tr>
-             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><select class="pc-input" v-model="staffInfo.workingStatus" @change="getSelectInfo('workingStatus')" id="workingStatus"><option v-for="obj in workStatusList" :value="obj.code" >{{obj.text}}</option></select></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="staffInfo.workingStatus==1?'在职':'离职'" readonly="readonly" /></div></td>
              <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input class='pc-input' v-model="staffInfo.employeeNo"/></div></td>
              <td  rowspan="4">
                  <a-upload
@@ -42,10 +42,10 @@
            </tr>
             <tr>
             <td><div class=" textInput"><span class="label font12 weight600" ref="name"><span class="icon-xing">*</span>姓名</span><input class='pc-input' v-model="staffInfo.name"/></div></td>
-             <td><div class=" textInput"><span class="label font12 weight600" ref="birthday"><span class="icon-xing">*</span>出生日期</span><el-date-picker  v-model="staffInfo.birthday" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getAge"></el-date-picker></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600" ref="birthday">出生日期</span><el-date-picker  v-model="staffInfo.birthday" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getAge"></el-date-picker></div></td>
              <td></td></tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="age"><span class="icon-xing">*</span>年龄</span><input class='pc-input'  v-model="staffInfo.age" readonly="true"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600" ref="age">年龄</span><input class='pc-input'  v-model="staffInfo.age" readonly="true"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600" ref="sex"><span class="icon-xing">*</span>性别</span>
                <a-radio-group name="radioGroup" :default-value="staffInfo.sex" @change="getRadioValue($event,'sex')"><a-radio :value="1"> 男</a-radio><a-radio :value="2"> 女</a-radio></a-radio-group>
                </div>
@@ -63,8 +63,8 @@
                <td></td>
              </tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="workingDate"><span class="icon-xing">*</span>参加工作时间</span><el-date-picker  v-model="staffInfo.workingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getworkAge"></el-date-picker></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="officeWorkingDate"><span class="icon-xing">*</span>科室工作时间</span><el-date-picker  v-model="staffInfo.officeWorkingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600" ref="workingDate">参加工作时间</span><el-date-picker  v-model="staffInfo.workingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getworkAge"></el-date-picker></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600" ref="officeWorkingDate">科室工作时间</span><el-date-picker  v-model="staffInfo.officeWorkingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
                <td><div class=" textInput"><span class="label font12 weight600">工作年限</span><input class='pc-input'  v-model="staffInfo.seniority"/></div></td>
              </tr>
              <tr>
@@ -85,7 +85,7 @@
                </tr>
                 <tr>
                 <td><div class=" textInput"><span class="label font12 weight600">民族</span><input class='pc-input' v-model="staffInfo.nation" /></div></td>
-                 <td><div class=" textInput"><span class="label font12 weight600">婚姻状况</span><a-radio-group name="radioGroup1" :default-value="staffInfo.marriage" @change="getRadioValue($event,'marriage')"><a-radio :value="0"> 未知</a-radio><a-radio :value="1"> 已婚</a-radio><a-radio :value="2"> 未婚</a-radio></a-radio-group>
+                 <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>婚姻状况</span><a-radio-group name="radioGroup1" :default-value="staffInfo.marriage" @change="getRadioValue($event,'marriage')"><a-radio :value="0"> 未知</a-radio><a-radio :value="1"> 已婚</a-radio><a-radio :value="2"> 未婚</a-radio></a-radio-group>
                  </div>
                  </td>
                  <td><div class=" textInput"><span class="label font12 weight600">政治面貌</span><select class="pc-input" v-model="staffInfo.political"  @change="getSelectInfo('political')" id="political"><option v-for="obj in politicalList" :value="obj.code" >{{obj.text}}</option></select></div></td>
@@ -168,7 +168,7 @@
   "name": "",
   "birthday": "",
   "age": "",
-  "sex": 1,
+  "sex": 0,
   "department": "",
   "position": "",
   "positionDate": "",
@@ -233,7 +233,7 @@
         if(this.flag=='add'){
          let url="/api/Employee/insertEmployee";
          let params=staffInfo;;
-         utils.request.post(url,params).then((res) => {
+         utils.request.post(url,params,true).then((res) => {
            if(res){
             if(res.success==true){
               utils.box.toast("添加成功","success");

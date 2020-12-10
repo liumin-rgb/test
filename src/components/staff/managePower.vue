@@ -8,7 +8,18 @@
           <span class="pc-button buttonNoback font10" @click="addBranch()" v-show="showButton">添加下属组织机构</span>
         </div>
       </div>
-      <a-tree :tree-data="treeData" show-icon default-expand-all :default-selected-keys="['0-0-0']" @select="onSelect" @onCheck="onCheck">
+      <a-tree
+       class="draggable-tree"
+       draggable
+       @dragenter="onDragEnter"
+       @drop="onDrop"
+      :tree-data="treeData"
+      show-icon
+      blockNode="true"
+      defaultExpandParent
+      :default-selected-keys="['0-0-0']"
+      @select="onSelect"
+      @onCheck="onCheck">
           <a-icon slot="switcherIcon" type="down" />
          <!-- <a-icon slot="smile" type="smile-o" />
           <a-icon slot="meh" type="smile-o" /> -->
@@ -143,6 +154,67 @@
     closeModel(){
          this.visible = false;
     },
+    onDragEnter(info) {
+         console.log(info);
+         // expandedKeys 需要受控时设置
+         // this.expandedKeys = info.expandedKeys
+       },
+       onDrop(info) {
+         console.log(info);
+         const dropKey = info.node.eventKey;
+         const dragKey = info.dragNode.eventKey;
+         const dropPos = info.node.pos.split('-');
+         const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+         const loop = (data, key, callback) => {
+           data.forEach((item, index, arr) => {
+             if (item.key === key) {
+               return callback(item, index, arr);
+             }
+             if (item.children) {
+               return loop(item.children, key, callback);
+             }
+           });
+         };
+         const data = [...this.treeData];
+
+         // Find dragObject
+         let dragObj;
+         loop(data, dragKey, (item, index, arr) => {
+           arr.splice(index, 1);
+           dragObj = item;
+         });
+         if (!info.dropToGap) {
+           // Drop on the content
+           loop(data, dropKey, item => {
+             item.children = item.children || [];
+             // where to insert 示例添加到尾部，可以是随意位置
+             item.children.push(dragObj);
+           });
+         } else if (
+           (info.node.children || []).length > 0 && // Has children
+           info.node.expanded && // Is expanded
+           dropPosition === 1 // On the bottom gap
+         ) {
+           loop(data, dropKey, item => {
+             item.children = item.children || [];
+             // where to insert 示例添加到尾部，可以是随意位置
+             item.children.unshift(dragObj);
+           });
+         } else {
+           let ar;
+           let i;
+           loop(data, dropKey, (item, index, arr) => {
+             ar = arr;
+             i = index;
+           });
+           if (dropPosition === -1) {
+             ar.splice(i, 0, dragObj);
+           } else {
+             ar.splice(i + 1, 0, dragObj);
+           }
+         }
+         this.treeData = data;
+       },
     }
   };
 </script>

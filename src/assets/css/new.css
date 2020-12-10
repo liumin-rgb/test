@@ -35,6 +35,7 @@
 .el-table thead{color:#333 !important;font-weight:500 !important;}
 
 .el-table .table-header{background:#f4f7fc;color:#333;font-weight:600;}
+.el-table .cell{padding-left:5px}
 
 /*开关*/
 .ant-switch-checked{background:#2e6eb4 !important;}
@@ -72,6 +73,9 @@
  background: #fff !important;
  color:#2e6eb4 !important;
  font-weight:600 !important;
+}
+.ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a{
+  color:#fff !important;
 }
 
 

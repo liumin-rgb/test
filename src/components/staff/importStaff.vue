@@ -9,6 +9,7 @@
           :headers="headers"
            :customRequest="upload"
           @change="handleChange"
+
         >
         <span class="pc-input uploadS displayLB">请选择<i class="iconfont icon-jurassic_upload-content floatR"></i></span>
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
@@ -93,10 +94,15 @@ export default {
      	 			if(res){
      	 			if (res.success == true) {
                this.tableData=res.result||[];
+               item.onSuccess(res, item.file);
      	 			} else {
-     	 				//utils.box.toast(res.message);
+               item.onSuccess(res, item.file);
+     	 				utils.box.toast("上传失败");
      	 			}
-     	 			 }
+     	 			 }else{
+                item.onSuccess(res, item.file);
+               utils.box.toast("上传失败");
+             }
      	 		});
     },
     handleChange(info){

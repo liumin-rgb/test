@@ -43,42 +43,96 @@
       flag:{
         default:"check",
         type:String,
+      },
+      info: {
+        default: () => {},
+        type: Object,
+      },
+      staffId: {
+        default: "",
+        type: String,
       }
     },
     data() {
-      return{
-     tableData:[],
-     visible:false,
-     loading:false,
-     pageIndex: 1,
-     pageSize:10,
-     maxPage: 10,
-     totalCount:0,
+      return {
+        tableData: [{
+          "id": 0,
+          "employeeId": 0,
+          "signDate": "1",
+          "validDate": "1",
+          "invalidDate": "1"
+        }],
+        tableObj: {
+          "id": 0,
+          "employeeId": 0,
+          "signDate": "",
+          "validDate": "",
+          "invalidDate": ""
+        },
+        visible: false,
+        loading: false,
+        pageIndex: 1,
+        pageSize: 10,
+        maxPage: 10,
+        totalCount: 0,
+        type: 1 ,//1添加 2修改
+        ids:[]
       }
     },
     methods:{
-      editInfo(type){
-       this.visible=true;
-       if(type==1){ //新增
-
-       }else{ //编辑
-
-       }
+      queryInfo() {
+        if (this.info.toggle == false) return;
+        let params = {
+          id: this.staffId,
+          infoType: this.info.id,
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize
+        }
+        utils.operateStaffInfo.getInfoByType(params).then((data) => {
+          this.tableData = data.contractDtos || this.tableData;
+        });
       },
-      deleteInfo(){
+      editInfo(type) {
+        this.visible = true;
+        this.type = type;
+      },
+      changePage(val) {
+        this.pageIndex = val.pageIndex;
+        this.pageSize = val.pageSize;
+        this.queryInfo();
+      },
+      deleteInfo() {
+           utils.box.confirm("是否确认删除？").then(()=>{
+          	 this.confirmDeleteInfo();
+
+          	 });
+      },
+      confirmDeleteInfo() {
+        let params = {
+          infoType: this.info.id,
+          ids: this.ids
+        }
+        utils.operateStaffInfo.deleteInfoByType(params).then((data) => {
+          this.queryInfo();
+          this.handleCancel();
+        });
 
       },
-      changePage(val){
-        this.pageIndex=val.pageIndex;
-        this.pageSize=val.pageSize;
-       // this.queryInfo();
+      handleOk() {
+        let params = {
+          isAdd: this.type == 1 ? true : false,
+          infoType: this.info.id,
+          data: this.tableObj
+        }
+        utils.operateStaffInfo.addOrUpdateInfoByType(params).then((data) => {
+          this.queryInfo();
+          this.handleCancel()
+        });
+
       },
-     handleCancel(){
-       this.visible=false;
-     },
-     handleOk(){
-     this.handleCancel()
-     },
+      handleCancel() {
+        this.visible = false;
+      },
 
     }
   };
