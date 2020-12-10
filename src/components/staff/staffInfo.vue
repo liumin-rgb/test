@@ -62,9 +62,9 @@
           <template slot-scope="scope">
                   <el-popover trigger="hover" placement="bottom">
                     <div class="pointer themeColor ">
-                    <p>编辑</p>
-                    <p>离职</p>
-                    <p>重置密码</p>
+                    <p @click="toStaffInfo('edit',scope.row.id)">编辑</p>
+                    <p @click="offWork(scope.row.id)">离职</p>
+                    <p @click="resetPassword(scope.row.id)">重置密码</p>
                     </div>
                     <div slot="reference" class="name-wrapper">
                      <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
@@ -125,7 +125,7 @@
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
         tableData: [
           {
-                "id": 0,
+                "id": 22,
                 "employeeNo": 1223,
                 "name": "liza",
                 "sex": 1,
@@ -198,6 +198,24 @@
             }
             });
       },
+      offWork(id){
+        		  utils.box.confirm("是否确认离职？").then(()=>{
+        		  			 this.confirmOffWork(id);
+        		  			 });
+
+      },
+      confirmOffWork(id){
+
+      },
+      resetPassword(id){
+        		  utils.box.confirm("是否确认重置密码？").then(()=>{
+        		  			 this.confirmResetPassword(id);
+        		  			 });
+
+      },
+      confirmResetPassword(id){
+
+      },
       openImport() {
         this.visible1 = true;
       },
@@ -211,11 +229,12 @@
       closeModel3() {
         this.visible3 = false;
       },
-      toStaffInfo(status) {
+      toStaffInfo(status,id) {
         this.$router.push({
           path: 'editStaff',
           query: {
-            flag: status
+            flag: status,
+            id:id||''
           }
         });
       },

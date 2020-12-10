@@ -66,7 +66,7 @@ export default {
 <style  lang="less">
   body>div:nth-child(1){
      height: 100%;
-      }
+      } 
   .ant-layout{
      height: 100%;
       }

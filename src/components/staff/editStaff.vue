@@ -113,7 +113,7 @@
      </div>
      <transition>
     <div class="marginT1VH" v-show="obj.toggle==true">
-   <Contract v-if="obj.name=='合同履历'" :flag="flag"/>
+   <Contract v-if="obj.name=='合同履历'" :flag="flag" :info="obj" :staffId="id"/>
    <Experience v-if="obj.name=='工作经历'" :flag="flag"/>
    <Qualifications v-if="obj.name=='执业资格'" :flag="flag"/>
    <ContinueEducation v-if="obj.name=='继续教育'" :flag="flag"/>
@@ -161,6 +161,7 @@
         politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
        spinning:false,
+       id:'',//员工id
         staffInfo:{
   "workingStatus": 1,
   "employeeNo": "",
@@ -197,12 +198,26 @@
     },
     created(){
       this.flag=this.$route.query.flag;
+      this.id=this.$route.query.id||'';
       if(this.flag!='add'){
+        this.queryBasicInfo();
         this.queryCategory();
       }
     },
     methods:{
-      saveInfo(){
+      queryBasicInfo(){  //查询基本信息
+     let url="/api/Employee/"+this.id+"/Employee";
+        utils.request.get(url).then((res) => {
+          if(res){
+             if(res.success==true){
+               this.staffInfo=res.result||this.staffInfo;
+             }else{
+               utils.box.toast(res.error.message);
+             }
+          }
+          })
+      },
+      saveInfo(){  //添加/修改
         let staffInfo=this.staffInfo;
         for(var key in  staffInfo){
           if(this.$refs[key]){
@@ -215,13 +230,31 @@
             }
           }
         }
-        let url="/api/Employee/insert";
-        let params=staffInfo;;
-        utils.request.post(url,params).then((res) => {
-          if(res){
-
-          }
-          })
+        if(this.flag=='add'){
+         let url="/api/Employee/insertEmployee";
+         let params=staffInfo;;
+         utils.request.post(url,params).then((res) => {
+           if(res){
+            if(res.success==true){
+              utils.box.toast("添加成功","success");
+            }else{
+              utils.box.toast(res.error.message);
+            }
+           }
+           })
+        }else{
+          let url="/api/Employee/updateEmployee";
+          let params=staffInfo;;
+          utils.request.put(url,params).then((res) => {
+            if(res){
+              if(res.success==true){
+                utils.box.toast("修改成功","success");
+              }else{
+                utils.box.toast(res.error.message);
+              }
+            }
+            })
+        }
       },
       queryCategory(){
         this.spinning=true;
@@ -229,13 +262,17 @@
         utils.request.get(url).then((res) => {
           this.spinning=false;
           if(res){
-            let tagList=res||[];//categoryList
-            this.basicInfo=tagList[0].name||'基本信息';
-            tagList.shift();
-            tagList.forEach((item)=>{
-              item.toggle=false;
-            })
-            this.tagList=tagList;
+            if(res.success==true){
+              let tagList=res.result.employeeInfoList||[];//categoryList
+              this.basicInfo=tagList[0].name||'基本信息';
+              tagList.shift();
+              tagList.forEach((item)=>{
+                item.toggle=false;
+              })
+              this.tagList=tagList;
+            }else{
+                utils.box.toast(res.error.message);
+            }
           }
         })
       },

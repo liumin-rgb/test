@@ -36,7 +36,7 @@ export default {
 }
 </script>
 <style  lang="less">
-  body>div{
+  body>div:nth-child(1){
      height: 100%;
       }
   .ant-layout{

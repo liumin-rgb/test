@@ -58,7 +58,7 @@
         <span class="themeColor weight600">人员列表</span>
       </div>
       <div class="margin05rem">
-      <span class="pc-button font10" @click="addStaff()">添加</span>
+      <span class="pc-button font10" @click="visible=true">添加</span>
        <span class="pc-button font10" @click="removeStaff()">删除</span>
   <el-table :data="tableData" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
@@ -69,13 +69,15 @@
       </div>
     </div>
     </div>
+    <AddStaff :visible="visible" @closeModel="closeModel"/>
   </div>
 </template>
 
 <script>
-
+  import AddStaff from "../staff/addStaff"
   export default {
     name: 'managePower',
+    components:{AddStaff},
     data() {
       return {
     showButton:false, //是否显示添加下属机构
@@ -84,6 +86,7 @@
     radioValue:1,
     tableData:[],
     multipleSelection:'',
+    visible:false,
     treeData:[
   {
     title: 'parent 1',
@@ -135,9 +138,11 @@
      console.log(e);
     },
     handleSelectionChange(val) {
-          this.multipleSelection = val;
+       this.multipleSelection = val;
         },
-
+    closeModel(){
+         this.visible = false;
+    },
     }
   };
 </script>

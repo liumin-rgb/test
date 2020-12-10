@@ -68,7 +68,13 @@ export default {
       utils.request.get(url).then((res) => {
         this.spinning=false;
         if(res){
-          this.tagList=res.categoryList||[];
+          if(res.success==true){
+           this.tagList=res.result.employeeInfoList||[];
+          }else{
+            let error=res.error||{};
+            utils.box.toast(error.message);
+          }
+
         }
       })
     },

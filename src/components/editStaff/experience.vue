@@ -14,7 +14,7 @@
      </el-table>
    <Pagination :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
   </div>
-  <a-modal v-model="visible" title="工作经历_新增">
+  <a-modal v-model="visible" title="工作经历">
       <div class="format">
         <div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>开始时间</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
          <div class=" textInput"><span class="label font12 weight600">结束时间</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
