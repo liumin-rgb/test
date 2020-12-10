@@ -34,7 +34,7 @@
   left:0;
   bottom: 0;
   right: 0;
-  z-index:998
+  z-index:5000
 }
 .plul{ position:fixed;z-index: 999;}
 .lds-spinner {
