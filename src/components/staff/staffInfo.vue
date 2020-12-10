@@ -112,7 +112,7 @@
           workingStatus:"0",
           political:"0",
           education:"0",
-          department:"0",
+          department:0,
           seniorityStart:'',
           seniorityEnd:'',
           workingDateStart:'',
@@ -155,6 +155,9 @@
 
       }
     },
+    created(){
+      this.queryInfo();
+    },
     methods: {
       getSelectInfo(id){
         this.searchInfo[id]=this.getSelectValue(id);
@@ -181,12 +184,10 @@
       queryInfo(){
         let url = "/api/Employee/pagedlist";
         let params={
-          searchInput:{
           pageIndex:this.pageIndex,
           pageSize:this.pageSize,
           isOrdinarySearch:this.isOrdinarySearch,
           ...this.searchInfo
-          }
         }
         	utils.request.post(url,params).then((res) => {
         		if(res){

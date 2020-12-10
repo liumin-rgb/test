@@ -6,34 +6,36 @@
        <a-upload
           name="file"
           :multiple="true"
-          action=""
           :headers="headers"
+           :customRequest="upload"
           @change="handleChange"
         >
         <span class="pc-input uploadS displayLB">请选择<i class="iconfont icon-jurassic_upload-content floatR"></i></span>
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
         </a-upload>
         </div>
-         <div><span class="pc-button">下载模板</span></div>
+         <div @click="downloadTemplate"><span class="pc-button">下载模板</span></div>
          </div>
          <div class="tab">
          <el-table
              :data="tableData"
              border
              style="width: 100%"
+             height="300"
          		     :header-cell-class-name="'table-header'">
              <el-table-column
-               prop=""
+               type="index"
                label="序号"
               >
              </el-table-column>
              <el-table-column
-               prop=""
+               prop="message"
                label="错误消息"
                >
+               <template slot-scope="scope"><span style="color:#af1e2b">{{scope.row.message}}</span></template>
              </el-table-column>
              <el-table-column
-               prop=""
+               prop="employeeNo"
                label="工号">
              </el-table-column>
              <el-table-column
@@ -41,7 +43,7 @@
                label="姓名">
              </el-table-column>
              <el-table-column
-               prop=""
+               prop="department"
                label="部门">
              </el-table-column>
            </el-table>
@@ -75,6 +77,38 @@ export default {
 
   },
   methods:{
+
+    downloadTemplate(){
+      let url='/api/Employee/template';
+      utils.download(url,'模板');
+    },
+    upload(item){
+     	 		let url = "/api/Employee/template";
+     			 const form = new FormData();
+     			   // 文件对象
+     			  form.append("file", item.file);
+     			  // 本例子主要要在请求时添加特定属性，所以要用自己方法覆盖默认的action
+     			// form.append("clientType", 'xxx');
+     	 		utils.request.post(url,form,{headers: {"content-type": "multipart/form-data"}}).then((res) => {
+     	 			if(res){
+     	 			if (res.success == true) {
+               this.tableData=res.result||[];
+     	 			} else {
+     	 				//utils.box.toast(res.message);
+     	 			}
+     	 			 }
+     	 		});
+    },
+    handleChange(info){
+       if (info.file.status !== 'uploading') {
+              console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+              utils.box.toast("上传成功","success");
+            } else if (info.file.status === 'error') {
+              utils.box.toast("上传失败");
+            }
+          },
     handleCancel(){
       this.$emit("closeModel");
     },

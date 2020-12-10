@@ -80,7 +80,8 @@
         pageSize: 10,
         maxPage: 10,
         totalCount: 0,
-        type: 1 //1添加 2修改
+        type: 1 ,//1添加 2修改
+        ids:[]
       }
     },
     watch: {
@@ -106,23 +107,23 @@
         this.visible = true;
         this.type = type;
       },
-      deleteInfo() {
-
-      },
       changePage(val) {
         this.pageIndex = val.pageIndex;
         this.pageSize = val.pageSize;
         this.queryInfo();
       },
       deleteInfo() {
+           utils.box.confirm("是否确认删除？").then(()=>{
+          	 this.confirmDeleteInfo();
 
+          	 });
       },
       confirmDeleteInfo() {
         let params = {
           infoType: this.info.id,
-          ids: []
+          ids: this.ids
         }
-        utils.operateStaffInfo.addOrUpdateInfoByType(params).then((data) => {
+        utils.operateStaffInfo.deleteInfoByType(params).then((data) => {
           this.queryInfo();
           this.handleCancel();
         });
@@ -138,7 +139,7 @@
           this.queryInfo();
           this.handleCancel()
         });
-       
+
       },
       handleCancel() {
         this.visible = false;

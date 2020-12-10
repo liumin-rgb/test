@@ -201,5 +201,16 @@ const common = {
     }
     return returnAge; //返回周岁年龄
   },
+  getFileName(name){
+  	let date=new Date();
+  	 let year=date.getFullYear();
+  	 let month=date.getMonth()+1;
+  	 let day=date.getDate();
+  	 let hour=date.getHours();
+  	 let minute=date.getMinutes();
+  	 let seconds=date.getSeconds();
+  	 let time=year+''+month+day+hour+minute+seconds+seconds;
+  	 return name+'-'+time;
+  },
 }
 export default common
