@@ -104,6 +104,7 @@
              </transition>
        </div>
        </transition>
+       <a-spin :spinning="spinning"  tip="Loading...">
       <div v-for="(obj,index) in tagList">
      <div class="list-head" @click="obj.toggle=!obj.toggle">
       <div><i class="iconfont icon-jiantou themeColor" v-show="obj.toggle==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="obj.toggle==false"></i>{{obj.name}}</div>
@@ -120,6 +121,7 @@
     </div>
     </transition>
     </div>
+    </a-spin>
 <!--
     <div class="list-head">
        <div><i class="iconfont icon-jiantou themeColor"></i></div>
@@ -155,9 +157,10 @@
         imageUrl: '',
         basicInfo:'基本信息',
         tagList:[],
-        workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
-        politicalList:[{code:'0',text:'全部'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
-        educationList:[{code:'0',text:'全部'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
+        workStatusList:[{code:'0',text:'请选择'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
+        politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
+        educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
+       spinning:false,
         staffInfo:{
   "workingStatus": 1,
   "employeeNo": "",
@@ -221,8 +224,10 @@
           })
       },
       queryCategory(){
+        this.spinning=true;
         let url="/api/Employee/getEmployeeInfoSequence"
         utils.request.get(url).then((res) => {
+          this.spinning=false;
           if(res){
             let tagList=res||[];//categoryList
             this.basicInfo=tagList[0].name||'基本信息';

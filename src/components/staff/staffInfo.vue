@@ -34,28 +34,40 @@
       </div>
     </div>
     <div class="list-table">
-      <el-table :data="tableData" border height="250" style="width:unset" :header-cell-class-name="'table-header'">
-        <el-table-column prop="" label="工号" sortable></el-table-column>
-        <el-table-column prop="date" label="姓名" sortable></el-table-column>
-        <el-table-column prop="name" label="性别"></el-table-column>
-        <el-table-column prop="address" label="出生日期"></el-table-column>
-        <el-table-column prop="address" label="年龄"></el-table-column>
-        <el-table-column prop="address" label="婚姻"></el-table-column>
-        <el-table-column prop="address" label="政治面貌"></el-table-column>
-        <el-table-column prop="address" label="入职时间"></el-table-column>
-        <el-table-column prop="address" label="手机长号"></el-table-column>
-        <el-table-column prop="address" label="工作年限"></el-table-column>
-        <el-table-column prop="address" label="部门"></el-table-column>
-        <el-table-column prop="address" label="学历"></el-table-column>
-        <el-table-column prop="address" label="在职状态"></el-table-column>
-        <el-table-column prop="address" label="操作">
+      <el-table :data="tableData" border height="250"  :header-cell-class-name="'table-header'">
+        <el-table-column prop="employeeNo" label="工号" sortable></el-table-column>
+        <el-table-column prop="name" label="姓名" sortable></el-table-column>
+        <el-table-column prop="sex" label="性别" width="50">
+          <template slot-scope="scope"> <span>{{scope.row.sex==1?'男':'女'}}</span></template>
+        </el-table-column>
+        <el-table-column prop="birthday" label="出生日期"></el-table-column>
+        <el-table-column prop="age" label="年龄" width="50"></el-table-column>
+        <el-table-column prop="marriage" label="婚姻">
+          <template slot-scope="scope"> <span>{{scope.row.marriage==0?'未知':scope.row.marriage==1?'已婚':'未婚'}}</span></template>
+        </el-table-column>
+        <el-table-column prop="political" label="政治面貌">
+          <template slot-scope="scope"> <span>{{scope.row.political | filter1(politicalList)}}</span></template>
+        </el-table-column>
+        <el-table-column prop="workingDate" label="入职时间"></el-table-column>
+        <el-table-column prop="mobile" label="手机长号"></el-table-column>
+        <el-table-column prop="seniority" label="工作年限"></el-table-column>
+        <el-table-column prop="department" label="部门"></el-table-column>
+        <el-table-column prop="education" label="学历" width="50">
+          <template slot-scope="scope"> <span>{{scope.row.education| filter1(educationList)}}</span></template>
+        </el-table-column>
+        <el-table-column prop="workingStatus" label="在职状态">
+          <template slot-scope="scope"> <span>{{scope.row.workingStatus| filter1(workStatusList)}}</span></template>
+        </el-table-column>
+        <el-table-column prop="address" label="操作" align="center" width="50">
           <template slot-scope="scope">
                   <el-popover trigger="hover" placement="bottom">
+                    <div class="pointer themeColor ">
                     <p>编辑</p>
                     <p>离职</p>
                     <p>重置密码</p>
+                    </div>
                     <div slot="reference" class="name-wrapper">
-                     :
+                     <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
                     </div>
                   </el-popover>
                 </template>
@@ -112,8 +124,35 @@
         departmentList:[{code:'0',text:'全部'}],
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
         tableData: [
-
+          {
+                "id": 0,
+                "employeeNo": 1223,
+                "name": "liza",
+                "sex": 1,
+                "birthday": "1993-12-09",
+                "age": 28,
+                "marriage": 1,
+                "political": 1,
+                "workingDate": "2019-10-20",
+                "mobile": 18621290873,
+                "seniority": "1", //工作年限
+                "department": "Lab",
+                "education": 0,
+                "workingStatus": 1
+              }
         ]
+      }
+    },
+    filters:{
+      filter1:function(val1,val2){
+        let arr=val2.filter((item)=>{
+          return item.code==val1&&item.code!=0;
+        })
+        if(arr.length>0){
+          return arr[0].text||'';
+        }
+        return '';
+
       }
     },
     methods: {
@@ -211,6 +250,9 @@
       margin-top: 0.1rem;
     }
   }
+  /*列表*/
+
+
  /*时间控件*/
   /deep/.el-table th>.cell{padding-left:5px;padding-right:0;}
   /deep/.el-input__inner{height:.25rem;border: 1px solid #2e6eb4;}

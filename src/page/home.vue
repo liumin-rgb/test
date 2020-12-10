@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" >
-    <a-layout-sider :trigger="null" theme="light" class="container">
+    <a-layout-sider :trigger="null" theme="light" class="container" :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
      <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  class="leftMenu">
         <a-menu-item  @click="toUrl('myTask')" >
@@ -16,7 +16,7 @@
 
       </a-menu>
     </a-layout-sider>
-    <a-layout>
+    <a-layout :style="{ marginLeft: '200px' }">
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
           <div class="pc-header-one"></div>
