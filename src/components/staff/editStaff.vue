@@ -245,7 +245,7 @@
         }else{
           let url="/api/Employee/updateEmployee";
           let params=staffInfo;;
-          utils.request.put(url,params).then((res) => {
+          utils.request.put(url,params,true).then((res) => {
             if(res){
               if(res.success==true){
                 utils.box.toast("修改成功","success");

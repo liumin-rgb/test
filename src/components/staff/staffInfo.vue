@@ -34,7 +34,7 @@
     </div>
     <div class="list-table">
       <a-spin :spinning="spinning"  tip="Loading...">
-      <el-table :data="tableData" border height="250"  :header-cell-class-name="'table-header'">
+      <el-table :data="tableData" border height="360"  :header-cell-class-name="'table-header'">
         <el-table-column prop="employeeNo" label="工号" sortable width="70"></el-table-column>
         <el-table-column prop="name" label="姓名" sortable width="70"></el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
