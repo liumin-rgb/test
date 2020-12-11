@@ -65,7 +65,7 @@
      levelList:[{code:'0',text:'请选择'},{code:'1',text:'初级'},{code:'2',text:'中级'},{code:'3',text:'高级'},{code:'4',text:'特级'}],
      pageIndex: 1,
      pageSize:10,
-     maxPage: 10,
+     maxPage: 1,
      totalCount:0,
       }
     },

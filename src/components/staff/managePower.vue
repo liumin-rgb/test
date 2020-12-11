@@ -69,12 +69,20 @@
         <span class="themeColor weight600">人员列表</span>
       </div>
       <div class="margin05rem">
-      <span class="pc-button font10" @click="visible=true">添加</span>
-       <span class="pc-button font10" @click="removeStaff()">删除</span>
+      <span class="pc-button" @click="visible=true">添加</span>
+       <span class="pc-button" @click="removeStaff()">删除</span>
   <el-table :data="tableData" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="" label="姓名" sortable></el-table-column>
-        <el-table-column prop="" label="工号" sortable></el-table-column>
+        <el-table-column prop="" label="姓名" >
+          <template slot="header" slot-scope="scope">
+                 <span class="pointer"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
+                </template>
+        </el-table-column>
+        <el-table-column prop="" label="工号" >
+         <template slot="header" slot-scope="scope">
+                <span class="pointer"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
+               </template>
+        </el-table-column>
         <el-table-column prop="" label="部门"></el-table-column>
   </el-table>
       </div>

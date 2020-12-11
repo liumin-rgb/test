@@ -1,5 +1,6 @@
 <template>
       <div class="pop-spinner">
+      <!-- <a-spin size="large" tip="Loading..." /> -->
       <div class="lds-spinner" >
           <div></div>
           <div></div>

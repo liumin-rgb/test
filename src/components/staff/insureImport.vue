@@ -5,7 +5,7 @@
           <span><span class="label1">姓名：</span><input class="pc-input"/></span>
           <span><span class="label1">工号：</span><input class="pc-input"/></span>
            <span><span class="label1">部门：</span><input class="pc-input"/></span>
-           <span class="pc-button">搜索</span>
+           <span class="pc-button" @click="search">搜索</span>
         </div>
         <div class="tab flexBtw marginT1VH marginB1VH">
      <el-table :data="tableData1" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
@@ -58,7 +58,7 @@ export default {
     return {
         pageIndex: 1,
         pageSize:10,
-        maxPage: 10,
+        maxPage: 1,
         totalCount:0,
         tableData:[],
         tableData1:[],
@@ -79,6 +79,9 @@ export default {
     },
   },
   methods:{
+    search(){
+      
+    },
     changePage(val){
       this.pageIndex=val.pageIndex;
       this.pageSize=val.pageSize;

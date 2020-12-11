@@ -11,7 +11,7 @@ textarea,
 select {
 	margin: 0;
 	padding: 0;
-	font-family: PingFang SC, PingFang SC-Medium;
+	font-family: SimHei;
 	-webkit-box-sizing: border-box;
 }
 
@@ -212,7 +212,9 @@ li {
   justify-content: space-between;
 }
 .flex1{flex:1}
-
+.flexWrap{
+  flex-wrap: wrap;
+}
 
 /*pc通用样式*/
 .textInput{
@@ -280,18 +282,16 @@ li {
 
 .pc-button {
 	/*按钮通用样式 */
-	/* width: 1.05rem;
-	height: .33rem; */
 	border-radius: 25px;
 	color: #fff;
-/* 	line-height: .33rem; */
 	text-align: center;
 	cursor: pointer;
 	background: #2e6eb4;
-  padding:0.02rem 0.15rem;
+  padding:0.02rem 0.1rem;
   position: relative;
   margin:0.02rem;
   display: inline-block;
+  font-size:.12rem
 }
 .buttonNoback{
   border: 2px solid #2e6eb4;
@@ -352,9 +352,10 @@ li {
   width:1.5rem;
 	outline: none;
 	height:.25rem;
-	border: 1px solid #2e6eb4;
+	/* border: 1px solid #2e6eb4; */
+  border: 1px solid #e4e4e4;
 	border-radius: 5px;
-	box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1);
+	/* box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1); */
   margin:.02rem 0.1rem;
   /* padding-left: .1rem; */
 }
@@ -367,6 +368,12 @@ li {
   height:.2rem;
   color:#fff;
 }
+.smallInput{
+  width:.2rem
+}
+.middleInput{
+   width:2.5rem;
+}
 .bigInput{
   border-radius: 3px;
   width:3rem;
@@ -377,7 +384,7 @@ li {
 .pc-textarea{
 	outline: none;
 	height:1.2rem;
-	border: 1px solid #d9d9d9;
+	border: 1px solid #e4e4e4;
 	border-radius: 5px;
   margin:.02rem 0.1rem;
   width:3.5rem;
@@ -385,7 +392,7 @@ li {
 
 .textareaOne{
   height:.6rem;
-  border: 1px solid #2e6eb4;
+ /* border: 1px solid #2e6eb4; */
   border-radius: 5px;
 }
 

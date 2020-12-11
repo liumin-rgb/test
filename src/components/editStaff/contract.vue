@@ -78,7 +78,7 @@
         loading: false,
         pageIndex: 1,
         pageSize: 10,
-        maxPage: 10,
+        maxPage: 1,
         totalCount: 0,
         type: 1 ,//1添加 2修改
         ids:[]

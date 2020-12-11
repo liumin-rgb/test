@@ -20,13 +20,13 @@
            <tr>
              <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="staffInfo.workingStatus==1?'在职':'离职'" readonly="readonly" /></div></td>
              <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input class='pc-input' v-model="staffInfo.employeeNo"/></div></td>
-             <td  rowspan="4">
+             <td  rowspan="4" class="center">
                  <a-upload
                      name="avatar"
                      list-type="picture-card"
                      class="avatar-uploader"
                      :show-upload-list="false"
-                     action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      :customRequest="upload"
                      :before-upload="beforeUpload"
                      @change="handleChange"
                    >
@@ -73,11 +73,11 @@
                <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input'  v-model="staffInfo.shortMobile"/></div></td>
              </tr>
          </table>
-       <div class="list-head" @click="toggle11=toggle11==true?false:true">
+       <div class="list-head marginL2VW" @click="toggle11=toggle11==true?false:true">
          <div><i class="iconfont icon-jiantou themeColor" v-show="toggle11==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle11==false"></i>更多信息</div>
          </div>
          <transition name="t1">
-             <table class="table" v-show="toggle11==true">
+             <table class="table " v-show="toggle11==true">
                <tr>
                  <td><div class=" textInput"><span class="label font12 weight600">身份证号</span><input class='pc-input' readonly="true"  v-model="staffInfo.idCard"/></div></td>
                  <td><div class=" textInput"><span class="label font12 weight600">学历</span><select class="pc-input" v-model="staffInfo.education" @change="getSelectInfo('education')" id="education"><option v-for="obj in educationList" :value="obj.code" >{{obj.text}}</option></select></div></td>
@@ -305,13 +305,40 @@
           beforeUpload(file) {
             const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
             if (!isJpgOrPng) {
-              this.$message.error('You can only upload JPG file!');
+              this.$message.error('只能上传图片');
             }
             const isLt2M = file.size / 1024 / 1024 < 2;
-            if (!isLt2M) {
-              this.$message.error('Image must smaller than 2MB!');
-            }
+          /*  if (!isLt2M) {
+              this.$message.error('图片需小于2MB');
+            } */
             return isJpgOrPng && isLt2M;
+          },
+          upload(item){
+           	 		let url = "";
+           			 const form = new FormData();
+           			   // 文件对象
+           			  form.append("file", item.file);
+           			  // 本例子主要要在请求时添加特定属性，所以要用自己方法覆盖默认的action
+           			// form.append("clientType", 'xxx');
+           	 		utils.request.post(url,form,{headers: {"content-type": "multipart/form-data"}}).then((res) => {
+           	 			this.loading=false;
+                  if(res){
+           	 			if (res.success == true) {
+                    // getBase64(info.file.originFileObj, imageUrl => {
+                    //   this.imageUrl = imageUrl;
+                    //   this.loading = false;
+                    // });
+                    // this.tableData=res.result||[];
+                    // item.onSuccess(res, item.file);
+           	 			} else {
+                   //  item.onSuccess(res, item.file);
+           	 				utils.box.toast("上传失败");
+           	 			}
+           	 			 }else{
+                    //  item.onSuccess(res, item.file);
+                     utils.box.toast("上传失败");
+                   }
+           	 		});
           },
           goBack(){
             this.$router.go(-1);
@@ -373,8 +400,8 @@
 }
  /*时间控件*/
   /deep/.el-table th>.cell{padding-left:5px;padding-right:0;}
-  /deep/.el-input__inner{height:.25rem;border: 1px solid #2e6eb4;}
+  /deep/.el-input__inner{height:.25rem;border: 1px solid #e4e4e4;}
   /deep/.el-input__icon{line-height: .25rem;}
-  /deep/.el-date-editor.el-input, .el-date-editor.el-input__inner{width:1.5rem;margin: .02rem 0.1rem;box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1)}
+  /deep/.el-date-editor.el-input, .el-date-editor.el-input__inner{width:1.5rem;margin: .02rem 0.1rem;/* box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1) */}
   /deep/.el-input--suffix .el-input__inner{padding-right:0}
 </style>

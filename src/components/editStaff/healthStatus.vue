@@ -49,7 +49,7 @@
      loading:false,
      pageIndex: 1,
      pageSize:10,
-     maxPage: 10,
+     maxPage: 1,
      totalCount:0,
       }
     },

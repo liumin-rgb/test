@@ -18,8 +18,8 @@
         <span v-show="!isOrdinarySearch"><span class="label">部门：</span><select class="pc-input" @change="getSelectInfo('department')" id="department"><option v-for="obj in departmentList" :value="obj.code" >{{obj.text}}</option></select></span>
       </div>
       <div>
-        <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
-            class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span>
+        <!-- <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
+            class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span> -->
         <span v-show="!isOrdinarySearch" class="positionR"><span class="label">入职时间：</span><el-date-picker  v-model="searchInfo.workingDateStart" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>
             -
             <el-date-picker  v-model="searchInfo.workingDateEnd" value-format="yyyy-MM-dd"  type="date" placeholder=" 请选择"></el-date-picker>
@@ -27,30 +27,38 @@
       </div>
       <div class="list-search-three">
         <span class="pc-button buttonNoback" @click=""><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
-        <span class="pc-button buttonNoback" @click="openImport"><i class="iconfont icon-shangchuan1 "></i>批量导入</span>
+        <span class="pc-button buttonNoback" @click="openImport"><i class="iconfont icon-shangchuan "></i>批量导入</span>
         <span class="pc-button buttonNoback" @click="toStaffInfo('add')"><i class="iconfont icon-jiahao"></i>添加</span>
         <span class="pc-button buttonNoback" @click="changeCategory">修改详情页类目名称</span>
       </div>
     </div>
     <div class="list-table">
       <a-spin :spinning="spinning"  tip="Loading...">
-      <el-table :data="tableData" border height="360"  :header-cell-class-name="'table-header'">
-        <el-table-column prop="employeeNo" label="工号" sortable width="70"></el-table-column>
-        <el-table-column prop="name" label="姓名" sortable width="70"></el-table-column>
+      <el-table :data="tableData" border height="380"  :header-cell-class-name="'table-header'">
+        <el-table-column prop="employeeNo" label="工号" width="70">
+          <template slot="header" slot-scope="scope">
+                 <span class="pointer"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
+                </template>
+        </el-table-column>
+        <el-table-column prop="name" label="姓名"  width="70">
+          <template slot="header" slot-scope="scope">
+                 <span class="pointer"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
+                </template>
+        </el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
-          <template slot-scope="scope"> <span>{{scope.row.sex==1?'男':'女'}}</span></template>
+          <template slot-scope="scope"> <span>{{scope.row.sex==0?'':scope.row.sex==1?'男':'女'}}</span></template>
         </el-table-column>
-        <el-table-column prop="birthday" label="出生日期"></el-table-column>
+       <!-- <el-table-column prop="birthday" label="出生日期"></el-table-column> -->
         <el-table-column prop="age" label="年龄" width="50"></el-table-column>
-        <el-table-column prop="marriage" label="婚姻" width="50">
+<!--        <el-table-column prop="marriage" label="婚姻" width="50">
           <template slot-scope="scope"> <span>{{scope.row.marriage==0?'未知':scope.row.marriage==1?'已婚':'未婚'}}</span></template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="political" label="政治面貌">
           <template slot-scope="scope"> <span>{{scope.row.political | filter1(politicalList)}}</span></template>
         </el-table-column>
         <el-table-column prop="workingDate" label="入职时间"></el-table-column>
         <el-table-column prop="mobile" label="手机长号"></el-table-column>
-        <el-table-column prop="seniority" label="工作年限" width="70"></el-table-column>
+      <!--  <el-table-column prop="seniority" label="工作年限" width="70"></el-table-column> -->
         <el-table-column prop="department" label="部门" width="60"></el-table-column>
         <el-table-column prop="education" label="学历" width="50">
           <template slot-scope="scope"> <span>{{scope.row.education| filter1(educationList)}}</span></template>
@@ -106,7 +114,7 @@
         visible3: false,
         pageIndex: 1,
         pageSize:10,
-        maxPage: 10,
+        maxPage: 1,
         totalCount:0,
         isOrdinarySearch: true, //true 普通 false:高级
         searchInfo:{

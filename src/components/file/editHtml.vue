@@ -3,8 +3,8 @@
   <div class="list-main-top">
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
     <div>
-      <span class="pc-button">保存草稿</span>
-       <span class="pc-button" @click="visible=true">提交审核</span>
+      <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span>
+       <span class="pc-button" @click="visible=true"><i class="iconfont icon-tijiao"></i>提交审核</span>
       </div>
   </div>
   <div class="list-main-body">
@@ -18,13 +18,14 @@
      <!-- <transition-group name="t1"> -->
       <div v-show="toggle1==true">
     <div class="flex paddingLR2rem gray">
-      <div class="width50 textInput"><span class="label">文件名称</span><input class='pc-input'/></div>
-      <div class="width50 textInput"><span class="label">文档编号</span><input  class='pc-input'/></div>
+      <div class=" textInput"><span class="label">文件名称</span><input class='pc-input middleInput'/></div>
+      <div class=" textInput"><span class="label">文档编号</span><input  class='pc-input middleInput'/></div>
+      <div class=" textInput"><span class="label">版本号</span><input  class='pc-input'/></div>
     </div>
     <div class="flex paddingLR2rem gray">
-      <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input'/></div>
-      <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input'/></div>
-    </div>
+<!--      <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input'/></div>
+ --><!--      <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input'/></div>
+ -->    </div>
     </div>
    <!-- </transition-group> -->
     <div class="list-head" @click="toggle2=!toggle2">

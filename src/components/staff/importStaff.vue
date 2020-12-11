@@ -25,6 +25,12 @@
              height="300"
          		     :header-cell-class-name="'table-header'">
              <el-table-column
+               type=""
+               label=""
+              >
+              <template slot-scope="scope"><i class="iconfont icon-shanchu themeColor"></i></template>
+             </el-table-column>
+             <el-table-column
                type="index"
                label="序号"
               >

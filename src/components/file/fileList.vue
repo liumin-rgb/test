@@ -5,7 +5,7 @@
         <div class="font12 weight600">文件夹目录</div>
         <div class="textAlignR">
           <!-- <span class="pc-button buttonNoback font10 ">新建文件夹</span> -->
-          <span class="pc-button buttonNoback font10" @click="openTagManage('all')">标签管理</span>
+          <span class="pc-button buttonNoback" @click="openTagManage('all')">标签管理</span>
         </div>
       </div>
        <a-tree
@@ -44,10 +44,10 @@
        <div class="list-search-two"></div>
        <div class="list-search-three">
        <span class="positionR">
-        <span class="pc-button buttonNoback" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao iconMargin"></i>新建<i class="iconfont icon-jiantou iconMargin"></i></span>
+        <span class="pc-button buttonNoback" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao "></i>新建<i class="iconfont icon-jiantou "></i></span>
        <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
-       	<div @click="toUrl('editHtml')">新建HTML文件</div>
-        <div @click="toUrl('fileManage')">批量上传文件</div>
+       	<div @click="toUrl('editHtml')">新建HTML</div>
+        <div @click="toUrl('fileManage')">批量上传</div>
        </div>
        </span>
        <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan1 "></i>下载</span>
@@ -59,46 +59,57 @@
         <el-table
             :data="tableData"
             border
-            height="250"
+            height="380"
             style="width: 100%"
             stripe
              @selection-change="handleSelectionChange"
             :header-cell-class-name="'table-header'"
             >
-            <el-table-column
-              type="selection"
-            >
+            <el-table-column type="selection"></el-table-column>
+            <el-table-column prop="fileName"label="文件名称" width="200">
+              <template slot="header" slot-scope="scope">
+                 <span class="pointer"><span class="gray ">文件名称</span><i class="iconfont icon-paixu themeColor"></i></span>
+               </template>
             </el-table-column>
-            <el-table-column
-              prop="date"
-              label="文件名称"
-             >
+            <el-table-column prop="number"label="编号" width="120">
+              <template slot="header" slot-scope="scope">
+                 <span class="pointer"><span class="gray ">编号</span><i class="iconfont icon-paixu themeColor"></i></span>
+               </template>
             </el-table-column>
-            <el-table-column
-              prop="name"
-              label="编号"
-            >
+            <el-table-column prop="version" label="版本号">
             </el-table-column>
-            <el-table-column
-              prop="address"
-              label="版本号">
+            <el-table-column prop="status"label="状态" align="center">
+            <template  slot-scope="scope" >
+                <span :style="{color:(scope.row.status=='流转中'?'#ea9900':scope.row.status=='已生效'?'#2e6eb4':'')}">{{scope.row.status}}</span>
+                  </template>
             </el-table-column>
-            <el-table-column
-              prop="address"
-              label="状态">
+            <el-table-column prop="creator"label="创建人" align="center">
             </el-table-column>
-            <el-table-column
-              prop="address"
-              label="创建人">
+            <el-table-column prop="tags" label="标签" align="center">
+              <template slot-scope="scope">
+                      <el-popover trigger="hover" placement="bottom">
+                        <div class="pointer themeColor flex flexWrap" style="width:120px">
+                        <span class="pc-button buttonNoback1 font10 " v-for="obj in scope.row.tags">{{obj}}</span>
+                        </div>
+                        <div slot="reference" class="name-wrapper">
+                         <i class="iconfont icon-icontag themeColor"></i>
+                        </div>
+                      </el-popover>
+                    </template>
             </el-table-column>
-            <el-table-column
-              prop="address"
-              label="标签">
-            </el-table-column>
-            <el-table-column
-              prop="address"
-              label="">
+            <el-table-column prop="" label="操作" align="center">
        <template slot-scope="scope">
+               <el-popover trigger="hover" placement="bottom">
+                 <div class="pointer themeColor weight600 font12">
+                 <p ><i class="iconfont icon-xiangqing"></i>文件详情</p>
+                 <p ><i class="iconfont icon-bianji"></i>编辑</p>
+                 <p ><i class="iconfont icon-xiangqing"></i>传阅</p>
+                 <p ><i class="iconfont icon-biaoqian"></i>标签管理</p>
+                 </div>
+                 <div slot="reference" class="name-wrapper">
+                  <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
+                 </div>
+               </el-popover>
              </template>
             </el-table-column>
           </el-table>
@@ -130,6 +141,7 @@
     key: '0-0',
     scopedSlots: { title: 'custom' },
     showBtn:false,
+    multipleSelection:'',
     children: [
       {
         title: '0-0-1',
@@ -156,30 +168,33 @@
     ]
   },
 ],
-        multipleSelection:'',
-        tableData: [/* {
-          date: '2016-05-02',
-          name: '--',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '一一',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '一一',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '一一',
-          address: '上海市普陀区金沙江路 1516 弄'
-        } */]
+        tableData: [
+          {
+            fileName:'文件1',
+            number:'123',
+            version:'1.2',
+            status:'草稿',
+            creator:'lisa',
+            tags:['组织管理','质量体系','外部服务和供应'],
+          },
+          {
+            fileName:'文件2',
+            number:'123',
+            version:'1.2',
+            status:'流转中',
+            creator:'lisa',
+            tags:['组织管理','质量体系','外部服务和供应'],
+          }
+        ]
       }
     },
     created(){
       console.log(this.gData);
     },
     methods: {
+      handleSelectionChange(val) {
+         this.multipleSelection = val;
+          },
  onSelect(keys, event) {
       console.log('Trigger Select', keys, event);
     },
@@ -200,9 +215,6 @@
         closeTagManage(){
           this.visible=false;
         },
-          handleSelectionChange(val) {
-                this.multipleSelection = val;
-              },
          onDragEnter(info) {
               console.log(info);
               // expandedKeys 需要受控时设置

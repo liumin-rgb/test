@@ -65,7 +65,7 @@
      loading:false,
      pageIndex: 1,
      pageSize:10,
-     maxPage: 10,
+     maxPage: 1,
      totalCount:0,
      levelList:[{code:'0',text:'请选择'},{code:'1',text:'国家级'},{code:'2',text:'省级'},{code:'3',text:'地方级'},],
      classList:[{code:'0',text:'请选择'},{code:'1',text:'Ⅰ类'},{code:'2',text:'Ⅱ类'},{code:'3',text:'Ⅲ类'},],

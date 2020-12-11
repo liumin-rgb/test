@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" >
-    <a-layout-sider :trigger="null" theme="light" class="container" :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+    <a-layout-sider :trigger="null" theme="light" class="container" v-model="collapsed" collapsible :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
      <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  class="leftMenu">
         <a-menu-item  @click="toUrl('myTask')" >
@@ -20,10 +20,10 @@
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
           <div class="pc-header-one"></div>
-          <div class="pc-header-two">
-            <span class="color999 font16 verTop">系统管理员</span>
-            <i class="iconfont icon-tuichu2 font30 themeColor pointer" @click="logout"></i>
-             <i class="iconfont icon-mima font30 themeColor pointer" @click="set"></i>
+          <div class="pc-header-two flex">
+            <div class="color999  flexCol"><span>系统管理员</span><span>Liza</span></div>
+              <i class="iconfont icon-mima font20 themeColor pointer" @click="set"></i>
+            <i class="iconfont icon-tuichu2 font20 themeColor pointer" @click="logout"></i>
             </div>
         </div>
       </a-layout-header>
@@ -41,6 +41,7 @@
 export default {
   data() {
     return {
+   collapsed: false,
    transitionName:'',
    menuList: [{name:'文件管理',icon:'icon-wenjian',url:'',subMenuList:[{name:'文档中心',url:'fileList'}]},
              {name:'培训管理',icon:'icon-kejipeixun',url:'',subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},

@@ -29,12 +29,16 @@
 
 
 /*表格*/
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: #2e6eb4 !important;
+      border-color: #2e6eb4 !important;;
+}
+
 .el-table td, .el-table th{
 	padding:5px 0 !important;
 }
-.el-table thead{color:#333 !important;font-weight:500 !important;}
-
-.el-table .table-header{background:#f4f7fc;color:#333;font-weight:600;}
+.el-table thead{color:#333 !important;}
+.el-table .table-header{background:#f4f7fc;color:#333;}
 .el-table .cell{padding-left:5px}
 
 /*开关*/
@@ -81,3 +85,15 @@
 
 /*tooltip*/
 .el-popover{min-width:80px !important;}
+
+
+/*头部*/
+.ant-layout-header{
+	height:50px !important;
+	line-height: 50px !important;
+	box-shadow: 0 3px 3px 0 #ccc;
+}
+
+/*上传图片*/
+.ant-upload-picture-card-wrapper{
+  width:unset !important;}
