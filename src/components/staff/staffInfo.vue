@@ -127,7 +127,7 @@
         departmentList:[{code:'0',text:'全部'}],
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
         tableData: [
-          {
+          /* {
                 "id": 22,
                 "employeeNo": 1223,
                 "name": "liza",
@@ -137,12 +137,12 @@
                 "marriage": 1,
                 "political": 1,
                 "workingDate": "2019-10-20",
-                "mobile": 18621290873,
+                "mobile": '18621290873',
                 "seniority": "1", //工作年限
                 "department": "Lab",
                 "education": 0,
                 "workingStatus": 1
-              }
+              } */
         ]
       }
     },
