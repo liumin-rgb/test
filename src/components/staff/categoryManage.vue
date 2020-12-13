@@ -34,7 +34,7 @@ export default {
     visible:{
       default:false,
       type:Boolean,
-      spinning:false
+
     },
   },
   data() {
@@ -42,6 +42,7 @@ export default {
       tagList:[],
       loading1:false,
       loading:false,
+	    spinning:false
     }
   },
   watch:{

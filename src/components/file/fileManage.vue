@@ -24,11 +24,11 @@
     :headers="headers"
     @change="handleChange"
   >
-    <a-button> <a-icon type="upload" /> 点击上传</a-button>
+    <a-button> <span>点击上传 </span><i class="iconfont icon-shangchuan themeColor " style="margin-left:2vw"></i> </a-button>
   </a-upload></div>
        <div>
          <span class="themeColor marginR1VW">当前文件导入格式：文件名称_文件编号_版本号</span>
-         <span class="pc-button" @click="visible=true">格式自定义</span>
+         <span class="pc-button" @click="visible=true"><i class="iconfont icon-zidingyi"></i>格式自定义</span>
        </div>
      </div>
     <div class="marginT1VH">
@@ -36,6 +36,7 @@
           :data="tableData"
           border
           style="width: 100%"
+          height="350"
 		     :header-cell-class-name="'table-header'">
           <el-table-column
             prop=""
@@ -81,23 +82,9 @@
          title:'提交审核',
          label:'审批人',
         },
-        tableData: [/* {
-          date: '2016-05-02',
-          name: '--',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '一一',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '一一',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '一一',
-          address: '上海市普陀区金沙江路 1516 弄'
-        } */]
+        tableData: [
+         
+        ]
       }
     },
     methods:{

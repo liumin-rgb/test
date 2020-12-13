@@ -73,7 +73,7 @@
                <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input'  v-model="staffInfo.shortMobile"/></div></td>
              </tr>
          </table>
-       <div class="list-head marginL2VW" @click="toggle11=toggle11==true?false:true">
+       <div class="list-head" style="margin-left:2vw" @click="toggle11=toggle11==true?false:true">
          <div><i class="iconfont icon-jiantou themeColor" v-show="toggle11==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle11==false"></i>更多信息</div>
          </div>
          <transition name="t1">

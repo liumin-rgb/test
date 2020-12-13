@@ -6,7 +6,7 @@
        <a-upload
           name="file"
           :multiple="true"
-          :headers="headers"
+
            :customRequest="upload"
           @change="handleChange"
 
@@ -18,6 +18,7 @@
          <div @click="downloadTemplate"><span class="pc-button">下载模板</span></div>
          </div>
          <div class="tab">
+           <a-spin :spinning="spining">
          <el-table
              :data="tableData"
              border
@@ -28,7 +29,7 @@
                type=""
                label=""
               >
-              <template slot-scope="scope"><i class="iconfont icon-shanchu themeColor"></i></template>
+              <template slot-scope="scope"><i class="iconfont icon-shanchu themeColor pointer" @click="deleteErrorInfo(scope.row.id)"></i></template>
              </el-table-column>
              <el-table-column
                type="index"
@@ -44,16 +45,20 @@
              <el-table-column
                prop="employeeNo"
                label="工号">
+               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.employeeNo=$event.target.innerHTML" contenteditable>{{scope.row.employeeNo}}</span></template>
              </el-table-column>
              <el-table-column
-               prop=""
+               prop="name"
                label="姓名">
+               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.name=$event.target.innerHTML" contenteditable>{{scope.row.name}}</span></template>
              </el-table-column>
              <el-table-column
                prop="department"
                label="部门">
+               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.department=$event.target.innerHTML" contenteditable>{{scope.row.department}}</span></template>
              </el-table-column>
            </el-table>
+           </a-spin>
            </div>
       </div>
         <template slot="footer">
@@ -77,7 +82,9 @@ export default {
   },
   data() {
     return {
-  tableData:[]
+      spining:false,
+      loading:false,
+      tableData:[]
     }
   },
   created(){
@@ -89,6 +96,72 @@ export default {
       let url='/api/Employee/template';
       utils.download(url,'模板');
     },
+    checkInfo(status){
+      let url = "/api/Employee/template/infos/checking";
+       this.spining=true;
+      	utils.request.get(url).then((res) => {
+          this.spining=false;
+         if(res){
+           if(res.success==true){
+             this.tableData=res.result||[];
+             if(status=='update'){
+               if(this.tableData.length==0){
+                 this.handleCancel();
+                   this.$emit("openModel2");
+               }
+             }
+           }
+         }
+       })
+    },
+    deleteErrorInfo(id){
+      utils.box.confirm("是否确认删除？").then(()=>{
+      			 this.confirmDeleteErrorInfo(id);
+      			 });
+    },
+    confirmDeleteErrorInfo(id){
+        let url = "/api/Employee/template/infos/"+id;
+         this.spinning=true;
+        	utils.request.delete(url,true).then((res) => {
+           if(res){
+             if(res.success==true){
+               utils.box.toast('删除成功','success');
+               this.checkInfo();
+              }else{
+                utils.box.toast('删除失败');
+              }
+           }
+         })
+    },
+    handleOk(){  //更新
+      let url = "/api/Employee/template/infos";
+      let inputs=this.tableData.map((item)=>{
+        return {
+              "id":item.id ,
+              "name": item.name,
+              "employeeNo": item.employeeNo,
+              "department": item.department
+            }
+
+      });
+      let params={
+        inputs:inputs
+      };
+      this.loading=true;
+      	utils.request.put(url,params).then((res) => {
+          this.loading=false;
+         if(res){
+           if(res.success==true){
+             //utils.box.toast('删除成功','success');
+             this.checkInfo('update');
+            /* this.handleCancel();
+              this.$emit("openModel2"); */
+            }else{
+              utils.box.toast('更新失败');
+            }
+         }
+       })
+    },
     upload(item){
      	 		let url = "/api/Employee/template";
      			 const form = new FormData();
@@ -99,7 +172,8 @@ export default {
      	 		utils.request.post(url,form,{headers: {"content-type": "multipart/form-data"}}).then((res) => {
      	 			if(res){
      	 			if (res.success == true) {
-               this.tableData=res.result||[];
+               //this.tableData=res.result||[];
+               this.checkInfo();
                item.onSuccess(res, item.file);
      	 			} else {
                item.onSuccess(res, item.file);
@@ -124,10 +198,6 @@ export default {
     handleCancel(){
       this.$emit("closeModel");
     },
-    handleOk(){
-    this.handleCancel();
-     this.$emit("openModel2");
-    }
 
 
   }

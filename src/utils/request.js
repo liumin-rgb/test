@@ -37,8 +37,8 @@ export default {
     console.log("%c 请求数据>>>>>>>", 'color:pink', JSON.parse(JSON.stringify(params)));
     return instance.post(Global.baseUrl + service, params,{isLoad:isLoad})
   },
-  delete(service,params,isLoad=false) {
-	  return instance.delete(Global.baseUrl + service,params,{isLoad:isLoad})
+  delete(service,isLoad=false) {
+	  return instance.delete(Global.baseUrl + service,{isLoad:isLoad})
 	},
   put(service,params,isLoad=false) {
 	  return instance.put(Global.baseUrl + service,params,{isLoad:isLoad})

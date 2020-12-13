@@ -8,10 +8,10 @@
 	    <div class="tab-inner-login">
 	    <div class="tab-text-login">账号密码登录</div>
 	    <div class="tab-con-login">
-	    <div class="context"><span><img src="../assets/img/icon-user.png"/></span><input class="login-input" placeholder="请输入账号"/>
+	    <div class="context"><span><img src="../assets/img/icon-user.png"/></span><input class="login-input" placeholder="请输入账号" @keyup.enter="skipInput"/>
       <span></span>
       </div>
-	    <div class="context positionR"><span><img src="../assets/img/icon-passward.png"/></span><input class="login-input" placeholder="请输入密码" type="password"/>
+	    <div class="context positionR"><span><img src="../assets/img/icon-passward.png"/></span><input class="login-input" placeholder="请输入密码" type="password" @keyup.enter="skipInput"/>
       <span class="eye"><img src="../assets/img/icon-eye.png"/></span>
       <div class="errInfo"><img src="../assets/img/icon-warning.png"/><span>密码错误请重新输入</span></div>
       </div>
@@ -72,6 +72,23 @@
 					  this.$router.push({path:'surveyManage',query:{}});
 		 });
 	  },
+    skipInput(thisInput){
+     var inputs = document.getElementsByTagName("input");//获取登录页面的input标签
+        for(var i = 0;i<inputs.length;i++){//循环input标签的数量
+        // 如果是最后一个，则焦点回到第一个。（这个你可以选择去掉）
+                if(i==(inputs.length-1)){
+                  /* inputs[0].focus();
+                  break; */
+                  this.login();
+                  break;
+                }else if(thisInput.currentTarget == inputs[i]){
+            inputs[i+1].focus();//当(event.keyCode==13)按Enter键触发window事件时聚焦下一个input标签
+            //这是在skipInput函数中调用另一个login(登录按钮点击跳转的方法)函数
+            break;
+          }
+        }
+    }
+
     }
 
   }

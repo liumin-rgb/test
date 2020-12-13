@@ -212,5 +212,9 @@ const common = {
   	 let time=year+''+month+day+hour+minute+seconds+seconds;
   	 return name+'-'+time;
   },
+  /**
+   * 将数组分成三组
+   */
+  
 }
 export default common

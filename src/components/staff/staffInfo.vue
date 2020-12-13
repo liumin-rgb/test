@@ -236,7 +236,8 @@
 
       },
       openImport() {
-        this.visible1 = true;
+       // this.visible1 = true;
+       this.openModel2();
       },
       closeModel() {
         this.visible1 = false;

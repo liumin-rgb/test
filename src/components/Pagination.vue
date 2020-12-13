@@ -8,7 +8,7 @@
 		<div @click="num !== threeDot ? (pageNo = num) : ''"
 		:class="{'page-picker-num-pageNo-on':num==pageNo,'page-picker-num-pageNo':num!=threeDot,'page-picker-num-noBorder':num===threeDot}"
 		 v-for="(num,i) in pages" :key="i">{{num}}</div>
-		<div class="page-picker-num-btn" @click="nextPage"><i class="el-icon-arrow-right"></i>下页</div>
+		<div class="page-picker-num-btn" @click="nextPage">下页<i class="el-icon-arrow-right"></i></div>
 		</div>
 		<div class="page-picker-to">跳转<input   v-model="tempPageNo" :max="maxPage" :min="1" @keyup.enter="goPage">页</div>
 		<div class="page-picker-go" @click="goPage">GO</div>

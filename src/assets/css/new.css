@@ -81,8 +81,16 @@
 .ant-menu-dark .ant-menu-item, .ant-menu-dark .ant-menu-item-group-title, .ant-menu-dark .ant-menu-item > a{
   color:#fff !important;
 }
+.ant-layout-sider-light .ant-layout-sider-trigger{
+  color:#fff !important;
+	background: rgba(255,255,255,0.2) !important;
+}
 
-
+.ant-layout-sider-collapsed{
+    /*  max-width: .6rem !important;
+      min-width: .6rem !important;
+      width: .6rem !important; */
+}
 /*tooltip*/
 .el-popover{min-width:80px !important;}
 

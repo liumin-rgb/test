@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "609893",
+      "name": "列表",
+      "font_class": "liebiaolist46",
+      "unicode": "e773",
+      "unicode_decimal": 59251
+    },
+    {
+      "icon_id": "6536712",
+      "name": "列表",
+      "font_class": "liebiao",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "18791278",
+      "name": "传阅icon",
+      "font_class": "chuanyueicon",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "11391487",
+      "name": "标签",
+      "font_class": "biaoqian1",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "14936436",
+      "name": "我的审批",
+      "font_class": "ziyuan202",
+      "unicode": "e71d",
+      "unicode_decimal": 59165
+    },
+    {
+      "icon_id": "16372352",
+      "name": "自定义",
+      "font_class": "zidingyi",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
       "icon_id": "18669307",
       "name": "打开状态文件夹",
       "font_class": "dakaizhuangtaiwenjianjia",

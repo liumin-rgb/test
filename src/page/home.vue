@@ -1,14 +1,14 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger" >
-    <a-layout-sider :trigger="null" theme="light" class="container" v-model="collapsed" collapsible :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
+  <a-layout id="components-layout-demo-custom-trigger" style="min-height:100vh">
+    <a-layout-sider  theme="light" class="container" v-model="collapsed" collapsible collapsedWidth="80px" :trigger="null" :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"> <!-- :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }" -->
      <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
-      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  class="leftMenu">
-        <a-menu-item  @click="toUrl('myTask')" >
+      <a-menu theme="dark" mode="inline"   class="leftMenu" >
+        <a-menu-item  @click="toUrl('myTask')">
          <i class="iconfont icon-renwu font16"></i>
-        <span>我的任务</span>
+        <span v-show="collapsed==false">我的任务</span>
         </a-menu-item>
         <a-sub-menu :key="'menu'+index" v-for="(obj,index) in menuList" style="background:none;" >
-                   <span slot="title"><i :class="['iconfont','font16',obj.icon]"></i><span> {{obj.name}}</span></span>
+                   <span slot="title"><i :class="['iconfont','font16',obj.icon]"></i><span v-show="collapsed==false"> {{obj.name}}</span></span>
                    <a-menu-item :key="'subMenu'+index+index1" v-for="(obj1,index1) in obj.subMenuList" @click="toUrl(obj1.url)" style="background:none;">
                      {{obj1.name}}
                    </a-menu-item>
@@ -16,10 +16,16 @@
 
       </a-menu>
     </a-layout-sider>
-    <a-layout :style="{ marginLeft: '200px' }">
+    <a-layout :style="{ marginLeft: collapsed?'.8rem':'2rem' }">
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
-          <div class="pc-header-one"></div>
+          <div class="pc-header-one">
+             <a-icon
+                      class="trigger"
+                      :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+                      @click="() => (collapsed = !collapsed)"
+                    />
+          </div>
           <div class="pc-header-two flex">
             <div class="color999  flexCol"><span>系统管理员</span><span>Liza</span></div>
               <i class="iconfont icon-mima font20 themeColor pointer" @click="set"></i>
@@ -50,6 +56,7 @@ export default {
     };
   },
 
+
   methods:{
     toUrl(url){
       this.$router.push({path:url,query:{}})
@@ -72,9 +79,8 @@ export default {
      height: 100%;
       }
 #components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
+  font-size: 24px;
   line-height: 64px;
-  padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
 }

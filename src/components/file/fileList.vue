@@ -31,6 +31,19 @@
           <i class="iconfont icon-dakaizhuangtaiwenjianjia" :selected="selected"></i>
         </template> -->
          </a-tree>
+         <div class="marginB2VH"></div>
+        <a-tree
+            class="draggable-tree"
+            draggable
+            show-icon
+            blockNode="true"
+            :tree-data="gData1"
+            @select="onSelect"
+            :icon='getIcon1'
+            defaultExpandParent
+          >
+          </a-tree>
+
 
     </div>
     <div class="list-main-two">
@@ -52,7 +65,7 @@
        </span>
        <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan1 "></i>下载</span>
        <span class="pc-button buttonNoback"><i class="iconfont icon-feichu "></i>废除</span>
-       <span class="pc-button buttonNoback"><i class="iconfont icon-jiahao "></i>审核</span>
+       <span class="pc-button buttonNoback"><i class="iconfont icon-ziyuan202 "></i>审核</span>
        </div>
       </div>
       <div class="list-table">
@@ -103,8 +116,8 @@
                  <div class="pointer themeColor weight600 font12">
                  <p ><i class="iconfont icon-xiangqing"></i>文件详情</p>
                  <p ><i class="iconfont icon-bianji"></i>编辑</p>
-                 <p ><i class="iconfont icon-xiangqing"></i>传阅</p>
-                 <p ><i class="iconfont icon-biaoqian"></i>标签管理</p>
+                 <p ><i class="iconfont icon-chuanyueicon"></i>传阅</p>
+                 <p @click="openTagManage('single')"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                  </div>
                  <div slot="reference" class="name-wrapper">
                   <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
@@ -131,7 +144,7 @@
     data() {
       return {
         pageIndex:1,
-        maxPage:10,
+        maxPage:1,
         showSelect:false,
         visible:false,
         operation:'all',
@@ -185,6 +198,26 @@
             creator:'lisa',
             tags:['组织管理','质量体系','外部服务和供应'],
           }
+        ],
+        gData1:[{
+            title: '0-0',
+            key: '0-0',
+            scopedSlots: { title: 'custom' },
+            multipleSelection:'',
+            children: [
+              { isLeaf:true,
+                title: '0-0-1',
+                key: '0-0-1',
+                scopedSlots: { title: 'custom' },
+              },
+              { isLeaf:true,
+                title: '0-0-2',
+                key: '0-0-2',
+                scopedSlots: { title: 'custom' },
+              },
+            ],
+            }
+
         ]
       }
     },
@@ -324,6 +357,14 @@
                       } */
                     /*  return <a-icon type={expanded ? "folder-open" : "folder"} />; */
                     return <i class={expanded?"iconfont icon-dakaizhuangtaiwenjianjia themeColor":"iconfont icon-wenjianjia themeColor"}></i>;
+            },
+            getIcon1(props){
+               const { isLeaf, expanded } = props;
+               if(isLeaf){
+                 return <i class="iconfont icon-biaoqian1 themeColor"></i>;
+               }else{
+                 return <i class="iconfont icon-biaoqian themeColor"></i>
+               }
             },
 
 
