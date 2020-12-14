@@ -40,7 +40,23 @@
 .el-table thead{color:#333 !important;}
 .el-table .table-header{background:#f4f7fc;color:#333;}
 .el-table .cell{padding-left:5px}
+/**去掉边框*/
+.el-table--border, .el-table--group{
+  border: none !important;
+}
+.el-table--border::after, .el-table--group::after, .el-table::before{
+  background-color: #fff !important;
+}
+/* .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
+  border-right: none !important;
+} */
 
+ .el-table td:nth-last-of-type(1), .el-table th:nth-last-of-type(1){
+    border-right:none !important;
+}
+/* .el-table td, .el-table th.is-leaf {
+    border-bottom: 1px solid #EBEEF5;
+} */
 /*开关*/
 .ant-switch-checked{background:#2e6eb4 !important;}
 
@@ -105,3 +121,11 @@
 /*上传图片*/
 .ant-upload-picture-card-wrapper{
   width:unset !important;}
+
+/**
+ * transition动画
+ */
+
+.t1-enter-active {transition: all .5s ease;}
+.t1-leave-active {transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);}
+.t1-enter, .t1-leave-to{transform: translateX(5px);opacity: 0;}

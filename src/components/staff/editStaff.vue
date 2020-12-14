@@ -45,7 +45,7 @@
              <td><div class=" textInput"><span class="label font12 weight600" ref="birthday">出生日期</span><el-date-picker  v-model="staffInfo.birthday" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getAge"></el-date-picker></div></td>
              <td></td></tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="age">年龄</span><input class='pc-input'  v-model="staffInfo.age" readonly="true"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600" ref="age">年龄</span><input class='pc-input smallInput backGray'  v-model="staffInfo.age" readonly="true"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600" ref="sex"><span class="icon-xing">*</span>性别</span>
                <a-radio-group name="radioGroup" :default-value="staffInfo.sex" @change="getRadioValue($event,'sex')"><a-radio :value="1"> 男</a-radio><a-radio :value="2"> 女</a-radio></a-radio-group>
                </div>
@@ -53,7 +53,19 @@
                <td></td>
              </tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="department"><span class="icon-xing">*</span>部门</span><input class='pc-input'  v-model="staffInfo.department"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600" ref="department"><span class="icon-xing">*</span>部门</span><a-tree-select
+                 allow-clear
+                 multiple
+                 size="small"
+                 style="width:1.5rem;height:.25rem;margin: .02rem 0.1rem;"
+                 @change="onChange"
+                 :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                 :tree-data="departmentList"
+                 tree-default-expand-all
+               >
+               </a-tree-select>
+              <!-- <input class='pc-input'  v-model="staffInfo.department"/> -->
+               </div></td>
                <td><div class=" textInput"><span class="label font12 weight600">职称</span><input class='pc-input'  v-model="staffInfo.position"/></div></td>
                <td></td>
              </tr>
@@ -65,12 +77,12 @@
              <tr>
                <td><div class=" textInput"><span class="label font12 weight600" ref="workingDate">参加工作时间</span><el-date-picker  v-model="staffInfo.workingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getworkAge"></el-date-picker></div></td>
                <td><div class=" textInput"><span class="label font12 weight600" ref="officeWorkingDate">科室工作时间</span><el-date-picker  v-model="staffInfo.officeWorkingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">工作年限</span><input class='pc-input'  v-model="staffInfo.seniority"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">工作年限</span><input class='pc-input smallInput backGray'  v-model="staffInfo.seniority"/></div></td>
              </tr>
              <tr>
                <td><div class=" textInput"><span class="label font12 weight600">微信号</span><input class='pc-input'  v-model="staffInfo.wechart"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600">手机长号</span><input class='pc-input'  v-model="staffInfo.mobile"/></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input'  v-model="staffInfo.shortMobile"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input smallInput '  v-model="staffInfo.shortMobile"/></div></td>
              </tr>
          </table>
        <div class="list-head" style="margin-left:2vw" @click="toggle11=toggle11==true?false:true">
@@ -104,7 +116,7 @@
              </transition>
        </div>
        </transition>
-       <a-spin :spinning="spinning"  tip="Loading...">
+       <a-spin :spinning="spinning"  >
       <div v-for="(obj,index) in tagList">
      <div class="list-head" @click="obj.toggle=!obj.toggle">
       <div><i class="iconfont icon-jiantou themeColor" v-show="obj.toggle==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="obj.toggle==false"></i>{{obj.name}}</div>
@@ -157,6 +169,7 @@
         imageUrl: '',
         basicInfo:'基本信息',
         tagList:[],
+        departmentList:[],
         workStatusList:[{code:'0',text:'请选择'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
         politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
@@ -203,6 +216,7 @@
         this.queryBasicInfo();
         this.queryCategory();
       }
+      this.queryDepartment();
     },
     methods:{
       queryBasicInfo(){  //查询基本信息
@@ -217,12 +231,31 @@
           }
           })
       },
+      queryDepartment(){
+        let url="/api/Organization/department/list";
+        utils.request.get(url,true).then((res) => {
+        	if(res){
+            if(res.success==true){
+              let departmentList=res.result;
+              this.departmentList=departmentList.map((item)=>{
+                return {
+                      title: item,
+                      value: item,
+                      key: item,
+                }
+              })
+            }else{
+
+            }
+          }
+          });
+      },
       saveInfo(){  //添加/修改
         let staffInfo=this.staffInfo;
         for(var key in  staffInfo){
           if(this.$refs[key]){
             if(this.$refs[key].firstChild.className=='icon-xing'){
-              if(staffInfo[key]==''){
+              if(staffInfo[key]==''||staffInfo[key]==[]){
                 let text=this.$refs[key].innerText.substr(1);
                 utils.box.toast("请填写"+text);
                 return;
@@ -276,6 +309,9 @@
           }
         })
       },
+      onChange(value){
+        this.staffInfo.department= value;
+      },
       getSelectInfo(id){
           this.staffInfo[id]=utils.common.getSelectValue(id);
           console.log(this.staffInfo);
@@ -311,7 +347,7 @@
           /*  if (!isLt2M) {
               this.$message.error('图片需小于2MB');
             } */
-            return isJpgOrPng && isLt2M;
+            return isJpgOrPng;
           },
           upload(item){
            	 		let url = "";

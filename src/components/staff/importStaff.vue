@@ -1,13 +1,12 @@
 <template>
-  <a-modal v-model="visible" title="批量导入" :afterClose="handleCancel">
+  <a-modal v-model="visible" title="批量导入" :afterClose="handleCancel" width="60%">
       <div class="format ">
       <div class="format-title">
       <div class=" textInput displayLB"><span class="weight600">上传</span>
        <a-upload
           name="file"
-          :multiple="true"
-
-           :customRequest="upload"
+          :customRequest="upload"
+          :before-upload="beforeUpload"
           @change="handleChange"
 
         >
@@ -15,6 +14,7 @@
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
         </a-upload>
         </div>
+        <div><span class="weight600">所属分院</span><select class="pc-input" @change="getSelectInfo()" id="orgize"><option v-for="obj in orgnizeList" :value="obj.id" >{{obj.name}}</option></select></div>
          <div @click="downloadTemplate"><span class="pc-button">下载模板</span></div>
          </div>
          <div class="tab">
@@ -84,14 +84,36 @@ export default {
     return {
       spining:false,
       loading:false,
+      orgnize:'',
+      orgnizeList:[],
       tableData:[]
+    }
+  },
+  watch:{
+    visible:function(val){
+      if(val==true){
+        this.queryOrgnize();
+      }
     }
   },
   created(){
 
   },
   methods:{
-
+    getSelectInfo(){
+      this.orgnize=utils.common.getSelectedValue("orgize");
+    },
+      queryOrgnize(){
+          let url = "/api/Organization/branch/list";
+          	utils.request.get(url,true).then((res) => {
+             if(res){
+               if(res.success==true){
+                 this.orgnizeList=res.result;
+                 //this.orgnizeList=orgnizeList.unshift('全部');
+               }
+             }
+           })
+      },
     downloadTemplate(){
       let url='/api/Employee/template';
       utils.download(url,'模板');
@@ -144,9 +166,7 @@ export default {
             }
 
       });
-      let params={
-        inputs:inputs
-      };
+      let params=inputs;
       this.loading=true;
       	utils.request.put(url,params).then((res) => {
           this.loading=false;
@@ -161,6 +181,14 @@ export default {
             }
          }
        })
+    },
+    beforeUpload(file) {
+    //  .csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      const isExcel =file.type==='.csv'||file.type==='application/vnd.ms-excel'||file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      if (!isExcel) {
+        this.$message.error('只能上传excel表格');
+      }
+      return isExcel ;
     },
     upload(item){
      	 		let url = "/api/Employee/template";
@@ -213,13 +241,19 @@ export default {
     display: flex;
     display: -webkit-flex;
     justify-content: space-between;
-    &>div:nth-child(1){
+   /* &>div:nth-child(1){
       flex:1
     }
+    &>div:nth-child(2){
+      flex:1
+    }
+    &>div:nth-child(3){
+      flex:1
+    } */
   }
   }
 
-.uploadS{width:3rem;font-size: .1rem; padding-left:.1rem;line-height: .25rem;}
+.uploadS{font-size: .1rem; padding-left:.1rem;line-height: .25rem;}
 .tab/deep/.el-table{font-size: .12rem}
 
 </style>

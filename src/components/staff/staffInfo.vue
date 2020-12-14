@@ -15,15 +15,30 @@
       <div>
         <span v-show="!isOrdinarySearch"><span class="label">政治面貌：</span><select class="pc-input" @change="getSelectInfo('political')" id="political"><option v-for="obj in politicalList" :value="obj.code" >{{obj.text}}</option></select></span>
         <span v-show="!isOrdinarySearch"><span class="label">学历：</span><select class="pc-input" @change="getSelectInfo('education')" id="education"><option v-for="obj in educationList" :value="obj.code" >{{obj.text}}</option></select></span>
-        <span v-show="!isOrdinarySearch"><span class="label">部门：</span><select class="pc-input" @change="getSelectInfo('department')" id="department"><option v-for="obj in departmentList" :value="obj.code" >{{obj.text}}</option></select></span>
+       <span v-show="!isOrdinarySearch" class="positionR"><span class="label">入职时间：</span><el-date-picker  v-model="searchInfo.workingDateStart" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>
+                   -
+                   <el-date-picker  v-model="searchInfo.workingDateEnd" value-format="yyyy-MM-dd"  type="date" placeholder=" 请选择"></el-date-picker>
+       </span>
+
       </div>
       <div>
+        <span v-show="!isOrdinarySearch"><span class="label">隶属组织：</span><select class="pc-input" @change="getSelectInfo('orgnize')" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.code" >{{obj.text}}</option></select></span>
+        <span v-show="!isOrdinarySearch"><span class="label">部门：</span><span>
+          <a-tree-select
+           allow-clear
+           multiple
+           size="small"
+           style="width:1.5rem;height:.25rem;margin: .02rem 0.1rem;"
+           @change="onChange"
+           :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+           :tree-data="departmentList"
+           tree-default-expand-all
+         >
+         </a-tree-select>
+        </span>
+        </span>
         <!-- <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
             class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span> -->
-        <span v-show="!isOrdinarySearch" class="positionR"><span class="label">入职时间：</span><el-date-picker  v-model="searchInfo.workingDateStart" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>
-            -
-            <el-date-picker  v-model="searchInfo.workingDateEnd" value-format="yyyy-MM-dd"  type="date" placeholder=" 请选择"></el-date-picker>
-</span>
       </div>
       <div class="list-search-three">
         <span class="pc-button buttonNoback" @click=""><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
@@ -33,16 +48,16 @@
       </div>
     </div>
     <div class="list-table">
-      <a-spin :spinning="spinning"  tip="Loading...">
-      <el-table :data="tableData" border height="380"  :header-cell-class-name="'table-header'">
+      <a-spin :spinning="spinning"  >
+      <el-table :data="tableData" border height="50vh"  :header-cell-class-name="'table-header'">
         <el-table-column prop="employeeNo" label="工号" width="70">
           <template slot="header" slot-scope="scope">
-                 <span class="pointer"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
+                 <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
         </el-table-column>
         <el-table-column prop="name" label="姓名"  width="70">
           <template slot="header" slot-scope="scope">
-                 <span class="pointer"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
+                 <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
@@ -117,22 +132,27 @@
         maxPage: 1,
         totalCount:0,
         isOrdinarySearch: true, //true 普通 false:高级
+        sortField:true,
+        order1:false,
+        order2:false,
+        isDescending:false,
         searchInfo:{
           name:'',
           employeeNo:'',
           workingStatus:0,
           political:0,
           education:0,
-          department:"",
-          seniorityStart:0,
-          seniorityEnd:0,
+          departments:[],
+         /* seniorityStart:0,
+          seniorityEnd:0, */
           workingDateStart:'',
           workingDateEnd:''
         },
         workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
         politicalList:[{code:'0',text:'全部'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'全部'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
-        departmentList:[{code:'0',text:'全部'}],
+        orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'分院'},{code:'2',text:'部门'},{code:'3',text:'岗位'}],
+        departmentList:[],
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
         tableData: [
           /* {
@@ -168,8 +188,21 @@
     },
     created(){
       this.queryInfo();
+      this.queryDepartment()
     },
     methods: {
+      takeOrder(sortField){
+        this.sortField=sortField;
+        if(sortField==true){
+          this.isDescending=this.order1==true?false:true;
+        }else{
+           this.isDescending=this.order2==true?false:true;
+        }
+        this.queryInfo()
+      },
+      onChange(value){
+        this.searchInfo.departments= value;
+      },
       getSelectInfo(id){
         this.searchInfo[id]=this.getSelectValue(id);
         console.log(this.searchInfo);
@@ -193,7 +226,7 @@
             console.log(date, dateString);
           },
       queryInfo(){
-        let url = "/api/Employee/pagedlist";
+        let url = "/api/Employee/pagedlist?sortField="+this.sortField+"&isDescending="+this.isDescending;
         let params={
           pageIndex:this.pageIndex,
           pageSize:this.pageSize,
@@ -216,6 +249,27 @@
 
             }
             });
+      },
+      queryDepartment(){
+        let url="/api/Organization/department/list";
+        utils.request.get(url).then((res) => {
+        	if(res){
+            if(res.success==true){
+              let departmentList=res.result;
+              this.departmentList=departmentList.map((item)=>{
+                return {
+                      title: item,
+                      value: item,
+                      key: item,
+                }
+              })
+              //this.departmentList=departmentList.unshift("全部");
+            }else{
+
+            }
+
+          }
+          });
       },
       offWork(id){
         		  utils.box.confirm("是否确认离职？").then(()=>{
@@ -249,8 +303,11 @@
         this.visible1 = false;
 
       },
-      closeModel2() {
+      closeModel2(val) {
         this.visible2 = false;
+        if(val==true){
+          this.queryInfo();
+        }
       },
       closeModel3() {
         this.visible3 = false;
@@ -265,7 +322,7 @@
         });
       },
 
-      
+
 
     }
   };
@@ -284,11 +341,11 @@
     border: 1px dashed #cccccc;
     border-radius: 5px;
     margin-bottom: .1rem;
-    padding: .1rem .05rem;
+    padding: .05rem;
 
     &-three {
       text-align: right;
-      margin-top: 0.1rem;
+
     }
   }
   /*列表*/

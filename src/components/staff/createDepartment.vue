@@ -1,21 +1,16 @@
 <template>
-  <a-modal v-model="visible" title="添加下属组织机构" :afterClose="handleCancel">
+  <a-modal v-model="visible" title="添加下属组织机构" :afterClose="handleCancel" width="70%">
       <div class="format ">
      <div> <span><span class="label1"><span class="icon-xing">*</span>名称：</span><input class="pc-input bigInput" v-model.trim="name"/></span></div>
      <div class="marginT2VH"> <span><span class="label1">
 	 <span class="icon-xing">*</span>类型：</span>
-	 <a-radio-group name="radioGroup" :default-value="2" @change="getRadioValue($event,'type')"><a-radio :value="2"> 组织架构</a-radio><a-radio :value="3"> 岗位</a-radio></a-radio-group>
+	 <a-radio-group name="radioGroup" :default-value="2" @change="getRadioValue($event,'type')"><a-radio :value="2"> 部门</a-radio><a-radio :value="3"> 岗位</a-radio></a-radio-group>
      </span></div>
-     <div class="marginT2VH flex ">
+     <div class="marginT2VH flex " v-show="type==3">
        <span class="label1">权限：</span>
        <span class="marginL1Rem"><a-checkbox-group @change="onChange">
            <a-row>
-             <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-             <a-col :span="6"><a-checkbox value="B">A</a-checkbox></a-col>
-             <a-col :span="6"><a-checkbox value="C">A</a-checkbox></a-col>
-            <a-col  :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-            <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-            <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
+             <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
            </a-row>
          </a-checkbox-group>
          </span>
@@ -51,12 +46,15 @@ export default {
       name:'',
       type:'2',
       remark:'',
+      permissionList:[],
+      permissions:[],
+
     }
   },
   watch:{
     visible:function(val){
       if(val==true){
-      //  this.queryPermission();
+        this.queryPermission();
       }
     }
   },
@@ -64,26 +62,20 @@ export default {
 
   },
   methods:{
+    onChange(e){
+     this.permissions=e;
+    },
    getRadioValue(e,id){
      this.type=e.target.value;
    },
     queryPermission(){
-           let url="GET /api/Organization/organization/"+this.parentId+"/permission";
+           let url="/api/Organization/organization/0/permission";
            utils.request.get(url,true).then((res) => {
              if(res){
               if(res.success==true){
-               let data=res.result;
-               this.treeData=data.map((item)=>{
-                 return{
-                   title: item.name,
-                   key: item.id,
-                   parentId:item.parentId, //0代表分院
-                   isLeaf: !item.haveChildren,
-                   type:item.type
-                 }
-               });
+              this.permissionList=res.result;
               }else{
-                utils.box.toast(res.error.message);
+
               }
              }
              })
@@ -98,7 +90,7 @@ export default {
       utils.box.toast("名称不能为空！");
       return;
     }
-    this.$emit("closeModel",{parentId:this.parentId,name:this.name,type:this.type,remark:this.remark});
+    this.$emit("closeModel",{parentId:this.parentId,name:this.name,type:this.type,permissions:this.permissions,remark:this.remark});
     }
   }
 }

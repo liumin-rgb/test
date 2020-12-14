@@ -130,12 +130,13 @@ export default {
       		if(res){
          if(res.success==true){
            utils.box.toast("导入成功","success");
-           this.handleCancel();
+           //this.handleCancel();
+           this.$emit("closeModel",true);
+           this.$router.push({path:'managePower',query:{}});
          }else{
            utils.box.toast("导入失败");
          }
           }
-          
           }
           );
     }

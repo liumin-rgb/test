@@ -360,7 +360,7 @@ li {
 	border-radius: 5px;
 	/* box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1); */
   margin:.02rem 0.1rem;
-  /* padding-left: .1rem; */
+  padding-left: .1rem;
 }
 
 
@@ -372,7 +372,7 @@ li {
   color:#fff;
 }
 .smallInput{
-  width:.2rem
+  width:.6rem
 }
 .middleInput{
    width:2.5rem;

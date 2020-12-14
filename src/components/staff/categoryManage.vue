@@ -1,6 +1,6 @@
 <template>
   <a-modal v-model="visible" title="修改详情页类目名称" :afterClose="handleCancel">
-     <a-spin :spinning="spinning" tip="Loading...">
+     <a-spin :spinning="spinning" >
       <div class="tag-one" >
  <div class="tag-one-drag">
          <draggable v-model="tagList"  :options="{animation: 300}"  filter=".forbid"   :move="onMove">

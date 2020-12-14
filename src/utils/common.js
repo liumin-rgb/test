@@ -212,6 +212,14 @@ const common = {
   	 let time=year+''+month+day+hour+minute+seconds+seconds;
   	 return name+'-'+time;
   },
+  getSelectedValue(id){   
+      let Sel=document.getElementById(id);
+      let index=Sel.selectedIndex;
+      let text=Sel.options[index].text;
+      let value=Sel.options[index].value;
+      return value
+    
+  },
   /**
    * 将数组分成三组
    */

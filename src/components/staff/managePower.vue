@@ -31,47 +31,51 @@
 
     </div>
     <div class="list-main-two">
-    <div class="flexBtw border-bottom-line paddingTB1rem">
-      <span class="themeColor weight600">详情</span>
+    <div class="textAlignR border-bottom-line paddingTB1rem">
        <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
-       <span class="pc-button" @click="status=2" v-show="status==0">编辑</span>
+       <span class="pc-button" @click="startEdit()" v-show="status==0&&orgDetail.name!=''">编辑</span>
     </div>
-    <div class="textAlignL">
+    <div class="list-head" @click="toggle1=!toggle1">
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>详情</div>
+    </div>
+     <transition name="t1">
+    <div class="textAlignL" v-show="toggle1==true">
        <div class="margin05rem">
          <span><span class="label1">名称：</span><input :class="['pc-input','bigInput',status==0?'backGray':'']" v-model="orgDetail.name" :readonly="status==0?true:false"/></span>
 <!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
- -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input bigInput backGray" readonly="true" v-model="orgDetail.type==3?'岗位':'组织架构'"/></span>
+ -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input bigInput backGray" readonly="true" v-model="orgDetail.type==3?'岗位':orgDetail.type==2?'部门':orgDetail.type==1?'分院':''"/></span>
        </div>
      <div class="flex">
        <span class="label1 verTop">描述：</span>
      <textarea :class="['pc-textarea', 'textareaOne', 'flex1',status==0?'backGray':'']" v-model="orgDetail.remark" :readonly="status==0?true:false"/>
      </div>
     </div>
-    <div class="paddingTB1rem" v-show="currentNodeType==3">
-      <div class="border-bottom-line paddingTB1rem">
+    </transition>
+    <div class="list-head" @click="toggle2=!toggle2" v-show="currentNodeType==3">
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle2==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle2==false"></i>权限分配</div>
+    </div>
+    <transition name="t1">
+    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" >
+      <!-- <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">权限分配</span>
-      </div>
+      </div> -->
       <div class="paddingTB1rem">
-       <a-checkbox-group @change="onChange" :disabled="status==0?true:false">
+       <a-checkbox-group @change="onChange" >
            <a-row>
-              <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
-
-         <!--    <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-             <a-col :span="6"><a-checkbox value="B">A</a-checkbox></a-col>
-             <a-col :span="6"><a-checkbox value="C">A</a-checkbox></a-col>
-            <a-col  :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-            <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-            <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
- -->
+              <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" :default-checked="obj.selected" :disabled="status==0?true:false">{{obj.title}}</a-checkbox></a-col>
            </a-row>
          </a-checkbox-group>
       </div>
     </div>
-
-    <div class="paddingTB1rem" v-show="currentNodeType==3">
-      <div class="border-bottom-line paddingTB1rem">
+    </transition>
+    <div class="list-head" @click="toggle3=!toggle3" v-show="currentNodeType==3">
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle3==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle3==false"></i>人员列表</div>
+    </div>
+    <transition name="t1">
+    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle3==true">
+      <!-- <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">人员列表</span>
-      </div>
+      </div> -->
       <div class="margin05rem">
       <span class="pc-button" @click="visible=true">添加</span>
        <span class="pc-button" @click="removeStaff()">删除</span>
@@ -91,6 +95,7 @@
  -->  </el-table>
       </div>
     </div>
+    </transition>
     </div>
     <AddStaff :visible="visible" @closeModel="closeModel"/>
      <CreateOrgnization :visible="visible1" @closeModel="closeModel1"/>
@@ -112,6 +117,9 @@
     radioValue:1,
     tableData:[],
     multipleSelection:'',
+    toggle1:true,
+    toggle2:false,
+    toggle3:false,
     visible:false,
     visible1:false,
     visible2:false,
@@ -120,6 +128,7 @@
     currentNodeType:'',
     treeData:[],
     permissionList:[],
+    permissions:[],
     orgDetail:{
           "id": "",
           "name": "",
@@ -216,7 +225,7 @@
       console.log(e);
     },
     onChange(e){
-     console.log(e);
+     this.permissions=e;
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;
@@ -236,7 +245,7 @@
            this.addBranchOrgize(val)
          }
     },
-    addParentOrgnize(val){
+    addParentOrgnize(val){  //添加分院
        let url="/api/Organization/branch";
        let params={
          name:val.name,
@@ -253,19 +262,34 @@
          }
          })
     },
-    addBranchOrgize(val){
+    startEdit(){
+      this.status=2;
+    },
+    saveDetail(){
+      let params=JSON.parse(JSON.stringify(this.orgDetail));
+      params.permissions=this.permissions;
+       this.editBranchOrgize(params,'2');
+    },
+    editBranchOrgize(val,status){  //添加或修改组织机构
        let url="/api/Organization/organization";
        let params={
+         "organizationId": val.id||'',
+         "permissions": val.permissions,
           "name": val.name,
           "parentId": val.parentId,
           "type": val.type,
           "remark": val.remark
        }
-       utils.request.post(url,params,true).then((res) => {
+       utils.request.put(url,params,true).then((res) => {
          if(res){
           if(res.success==true){
-            utils.box.toast("添加成功","success");
-            this.queryParent();
+            if(status==2){
+              utils.box.toast("修改成功","success");
+              this.status=0;
+            }else{
+              utils.box.toast("添加成功","success");
+              this.queryParent();
+            }
           }else{
             utils.box.toast(res.error.message);
           }
@@ -292,9 +316,7 @@
           }
       })
     },
-    saveDetail(){
-      this.status=0;
-    },
+
     onDragEnter(info) {
          console.log(info);
          // expandedKeys 需要受控时设置
