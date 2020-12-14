@@ -11,7 +11,7 @@
           @change="handleChange"
 
         >
-        <span class="pc-input uploadS displayLB">请选择<i class="iconfont icon-jurassic_upload-content floatR"></i></span>
+        <span class="pc-input uploadS displayLB">点击上传<i class="iconfont icon-shangchuan floatR themeColor"></i></span>
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
         </a-upload>
         </div>

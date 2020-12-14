@@ -1,10 +1,9 @@
 <template>
-  <a-modal v-model="visible" title="人员添加" :afterClose="handleCancel" width="70%">
+  <a-modal v-model="visible" title="添加分院" :afterClose="handleCancel">
       <div class="format ">
-        <span class="label font12 width1rem">人员姓名/工号：</span><input class="pc-input">
-        <span class="label font12 ">部门：</span><input class="pc-input">
-        <span class="pc-button">搜索</span>
-       <span class="floatR"><a-switch checked-children="过滤" un-checked-children=""   @change="onChange"/></span>
+     <div> <span><span class="label1"><span class="icon-xing">*</span>名称：</span><input class="pc-input bigInput" v-model.trim="name"/></span></div>
+     <div class="marginT2VH"> <span><span class="label1 verTop">描述：</span><textarea class='pc-textarea textareaOne flex1' v-model.trim="remark"/></span></div>
+
       </div>
         <template slot="footer">
                <a-button key="back" @click="handleCancel">
@@ -18,34 +17,35 @@
 </template>
 <script>
 export default {
-  name: '',
+  name: 'createOrgnization',
   props:{
     visible:{
       default:false,
-      type:Boolean,
-      ifHave:false
+      type:Boolean
     }
   },
   data() {
     return {
-
+      loading:false,
+      name:'',
+      remark:'',
     }
   },
   created(){
 
   },
   methods:{
-    onChange(checked) {
-       this.ifHave=checked;
-       },
     handleCancel(){
       this.$emit("closeModel");
     },
     handleOk(){
-    this.handleCancel()
+    //this.handleCancel()
+    if(this.name==''){
+      utils.box.toast("名称不能为空！");
+      return;
     }
-
-
+    this.$emit("closeModel",{name:this.name,remark:this.remark});
+    }
   }
 }
 </script>

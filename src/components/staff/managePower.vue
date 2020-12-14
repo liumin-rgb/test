@@ -4,7 +4,7 @@
       <div>
         <div class="font12 weight600">组织架构</div>
         <div class="textAlignR">
-          <!-- <span class="pc-button buttonNoback font10">添加分院</span> -->
+           <span class="pc-button buttonNoback font10" @click="addParent()">添加分院</span>
           <span class="pc-button buttonNoback font10" @click="addBranch()" v-show="showButton">添加下属组织机构</span>
         </div>
       </div>
@@ -15,7 +15,7 @@
        @drop="onDrop"
       :tree-data="treeData"
       show-icon
-      blockNode="true"
+      :blockNode="'true'"
       defaultExpandParent
       :default-selected-keys="['0-0-0']"
       @select="onSelect"
@@ -89,14 +89,16 @@
     </div>
     </div>
     <AddStaff :visible="visible" @closeModel="closeModel"/>
+     <CreateOrgnization :visible="visible1" @closeModel="closeModel1"/>
   </div>
 </template>
 
 <script>
   import AddStaff from "../staff/addStaff"
+  import CreateOrgnization from "../staff/createOrgnization"
   export default {
     name: 'managePower',
-    components:{AddStaff},
+    components:{AddStaff,CreateOrgnization},
     data() {
       return {
     showButton:false, //是否显示添加下属机构
@@ -106,6 +108,7 @@
     tableData:[],
     multipleSelection:'',
     visible:false,
+    visible1:false,
     treeData:[
   {
     title: 'parent 1',
@@ -146,6 +149,9 @@
     addBranch(){
      this.status=1;
     },
+    addParent(){  //添加分院
+      this.visible1=true;
+    },
     onCheck(checkedKeys, info) {
       console.log('onCheck', checkedKeys, info);
     },
@@ -161,6 +167,29 @@
         },
     closeModel(){
          this.visible = false;
+    },
+    closeModel1(val){
+         this.visible1 = false;
+         if(val!=null&&val!=undefined){
+           this.addParentOrgnize(val)
+         }
+    },
+    addParentOrgnize(val){
+       let url="/api/Organization/branch";
+       let params={
+         name:val.name,
+         remark:val.remark
+       }
+       utils.request.post(url,params,true).then((res) => {
+         if(res){
+          if(res.success==true){
+            utils.box.toast("添加成功","success");
+          }else{
+            utils.box.toast(res.error.message);
+          }
+         }
+         })
+
     },
     onDragEnter(info) {
          console.log(info);

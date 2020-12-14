@@ -114,9 +114,9 @@
        <template slot-scope="scope">
                <el-popover trigger="hover" placement="bottom">
                  <div class="pointer themeColor weight600 font12">
-                 <p ><i class="iconfont icon-xiangqing"></i>文件详情</p>
-                 <p ><i class="iconfont icon-bianji"></i>编辑</p>
-                 <p ><i class="iconfont icon-chuanyueicon"></i>传阅</p>
+                 <p @click="toDetail()"><i class="iconfont icon-xiangqing"></i>文件详情</p>
+                 <p @click="editHtml()"><i class="iconfont icon-bianji"></i>编辑</p>
+                 <p @click="readFile()"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                  <p @click="openTagManage('single')"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                  </div>
                  <div slot="reference" class="name-wrapper">
@@ -132,21 +132,28 @@
       </div>
     </div>
     <TagManage :visible="visible" :operation="operation" @closeTagManage="closeTagManage"/>
+   <CheckFile :visible="visible1" :config="config" @closeModel="closeCheckFile"/>
   </div>
 </template>
 
 <script>
   import Pagination from '../Pagination'
   import TagManage from './tagManage'
+  import CheckFile from './checkFile'
   export default {
     name: 'fileList',
-    components:{Pagination,TagManage},
+    components:{Pagination,TagManage,CheckFile},
     data() {
       return {
         pageIndex:1,
         maxPage:1,
         showSelect:false,
         visible:false,
+        visible1:false,
+        config:{
+          title:'提交传阅',
+          label:'传阅人',
+        },
         operation:'all',
         gData:[
   {
@@ -225,6 +232,15 @@
       console.log(this.gData);
     },
     methods: {
+      toDetail(){
+        this.$router.push({path:'fileDetail',query:{}});
+      },
+      editHtml(){
+        this.$router.push({path:'editHtml',query:{}});
+      },
+      readFile(){
+        this.visible1=true;
+      },
       handleSelectionChange(val) {
          this.multipleSelection = val;
           },
@@ -247,6 +263,9 @@
         },
         closeTagManage(){
           this.visible=false;
+        },
+        closeCheckFile(){
+          this.visible1=false;
         },
          onDragEnter(info) {
               console.log(info);
