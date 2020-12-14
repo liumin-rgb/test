@@ -13,6 +13,7 @@
        draggable
        @dragenter="onDragEnter"
        @drop="onDrop"
+       :load-data="onLoadData"
       :tree-data="treeData"
       show-icon
       :blockNode="'true'"
@@ -32,46 +33,49 @@
     <div class="list-main-two">
     <div class="flexBtw border-bottom-line paddingTB1rem">
       <span class="themeColor weight600">详情</span>
-       <span class="pc-button" @click="save()" v-show="status!=0">保存</span>
+       <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
        <span class="pc-button" @click="status=2" v-show="status==0">编辑</span>
     </div>
     <div class="textAlignL">
        <div class="margin05rem">
-         <span><span class="label1">名称：</span><input class="pc-input bigInput" /></span>
-         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
-        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input bigInput" readonly="true"/></span>
+         <span><span class="label1">名称：</span><input :class="['pc-input','bigInput',status==0?'backGray':'']" v-model="orgDetail.name" :readonly="status==0?true:false"/></span>
+<!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
+ -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input bigInput backGray" readonly="true" v-model="orgDetail.type==3?'岗位':'组织架构'"/></span>
        </div>
      <div class="flex">
        <span class="label1 verTop">描述：</span>
-     <textarea class='pc-textarea textareaOne flex1'/>
+     <textarea :class="['pc-textarea', 'textareaOne', 'flex1',status==0?'backGray':'']" v-model="orgDetail.remark" :readonly="status==0?true:false"/>
      </div>
     </div>
-    <div class="paddingTB1rem" v-show="chooseJob==true||radioValue==2">
+    <div class="paddingTB1rem" v-show="currentNodeType==3">
       <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">权限分配</span>
       </div>
       <div class="paddingTB1rem">
-       <a-checkbox-group @change="onChange">
+       <a-checkbox-group @change="onChange" :disabled="status==0?true:false">
            <a-row>
-             <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
+              <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
+
+         <!--    <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
              <a-col :span="6"><a-checkbox value="B">A</a-checkbox></a-col>
              <a-col :span="6"><a-checkbox value="C">A</a-checkbox></a-col>
             <a-col  :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
             <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
             <a-col :span="6"><a-checkbox value="A">A</a-checkbox></a-col>
-
+ -->
            </a-row>
          </a-checkbox-group>
       </div>
     </div>
-    <div class="paddingTB1rem" v-show="chooseJob==true">
+
+    <div class="paddingTB1rem" v-show="currentNodeType==3">
       <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">人员列表</span>
       </div>
       <div class="margin05rem">
       <span class="pc-button" @click="visible=true">添加</span>
        <span class="pc-button" @click="removeStaff()">删除</span>
-  <el-table :data="tableData" border height="50" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+  <el-table :data="tableData" border height="150" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -83,74 +87,126 @@
                 <span class="pointer"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                </template>
         </el-table-column>
-        <el-table-column prop="" label="部门"></el-table-column>
-  </el-table>
+<!--        <el-table-column prop="" label="部门"></el-table-column>
+ -->  </el-table>
       </div>
     </div>
     </div>
     <AddStaff :visible="visible" @closeModel="closeModel"/>
      <CreateOrgnization :visible="visible1" @closeModel="closeModel1"/>
+     <CreateDepartment :visible="visible2" :parentId="parentId" @closeModel="closeModel2" />
   </div>
 </template>
 
 <script>
   import AddStaff from "../staff/addStaff"
   import CreateOrgnization from "../staff/createOrgnization"
+  import CreateDepartment from "../staff/createDepartment"
   export default {
     name: 'managePower',
-    components:{AddStaff,CreateOrgnization},
+    components:{AddStaff,CreateOrgnization,CreateDepartment},
     data() {
       return {
     showButton:false, //是否显示添加下属机构
-    chooseJob:false,//是否选择岗位
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
     tableData:[],
     multipleSelection:'',
     visible:false,
     visible1:false,
-    treeData:[
-  {
-    title: 'parent 1',
-    key: '0-0',
-    children: [
-      { title: 'leaf', key: '0-0-0',  },
-      { title: 'leaf', key: '0-0-1',  },
-    ],
-  },
-  {
-    title: 'parent 2',
-    key: '0-1',
-    children: [
-      { title: 'leaf', key: '0-1-0',
-      children: [
-      { title: 'leaf', key: '0-1-0-0',  },
-      { title: 'leaf', key: '0-1-1-0',  },
-    ],
+    visible2:false,
+    parentId:'',
+    currentNodeId:'',
+    currentNodeType:'',
+    treeData:[],
+    permissionList:[],
+    orgDetail:{
+          "id": "",
+          "name": "",
+          "parentId": "",
+          "type": "",
+          "remark": ""
     },
-      { title: 'leaf', key: '0-1-1',  },
-    ],
-  },
-]
       }
+    },
+    filters:{
+
+    },
+    created(){
+      this.queryParent();
     },
     methods: {
+      queryParent(){
+           let url="/api/Organization/organization/0/children";
+           utils.request.get(url,true).then((res) => {
+             if(res){
+              if(res.success==true){
+               let data=res.result;
+               this.treeData=data.map((item)=>{
+                 return{
+                   title: item.name,
+                   key: item.id,
+                   parentId:item.parentId, //0代表分院
+                   isLeaf: !item.haveChildren,
+                   type:item.type
+                 }
+               });
+              }else{
+                utils.box.toast(res.error.message);
+              }
+             }
+             })
+      },
+      onLoadData(treeNode){
+        return new Promise(resolve=>{
+          if (treeNode.dataRef.children) {
+            resolve();
+            return;
+          }
+             let url="/api/Organization/organization/"+treeNode.dataRef.key+"/children";
+             utils.request.get(url,false).then((res) => {
+               if(res){
+                if(res.success==true){
+                 let data=res.result;
+                 treeNode.dataRef.children =data.map((item)=>{
+                   return{
+                     title: item.name,
+                     key: item.id,
+                     parentId:item.parentId, //0代表分院
+                     isLeaf: !item.haveChildren,
+                     type:item.type
+                   }
+                 });
+                 this.treeData= [...this.treeData];
+                 resolve();
+                }
+               }
+               })
+              });
+      },
    onSelect(selectedKeys, info) {
-     // console.log('selected', selectedKeys, info);
-      if(info.node.$children.length!=0){
+      this.parentId=info.node.dataRef.key;//用作添加
+      this.currentNodeId=info.node.dataRef.key;//用作查询和修改
+      this.currentNodeType=info.node.dataRef.type;//
+      if(info.node.dataRef.type==1||info.node.dataRef.type==2){
         this.showButton=true;
-        this.chooseJob=false;
+       // this.chooseJob=false;
       }else{
         this.showButton=false;
-        this.chooseJob=true;
+        //this.chooseJob=true;
       }
-       this.status=0;
-    },
-    addBranch(){
-     this.status=1;
+      this.status=0;
+      if(this.currentNodeType==3){
+        this.queryPermission(this.currentNodeId);
+      }
+      this.queryOrgDetail(this.currentNodeId);
     },
     addParent(){  //添加分院
       this.visible1=true;
+    },
+    addBranch(){ //添加下属组织机构
+     //this.status=1;
+     this.visible2=true;
     },
     onCheck(checkedKeys, info) {
       console.log('onCheck', checkedKeys, info);
@@ -174,6 +230,12 @@
            this.addParentOrgnize(val)
          }
     },
+    closeModel2(val){
+         this.visible2= false;
+         if(val!=null&&val!=undefined){
+           this.addBranchOrgize(val)
+         }
+    },
     addParentOrgnize(val){
        let url="/api/Organization/branch";
        let params={
@@ -184,12 +246,54 @@
          if(res){
           if(res.success==true){
             utils.box.toast("添加成功","success");
+            this.queryParent();
           }else{
             utils.box.toast(res.error.message);
           }
          }
          })
-
+    },
+    addBranchOrgize(val){
+       let url="/api/Organization/organization";
+       let params={
+          "name": val.name,
+          "parentId": val.parentId,
+          "type": val.type,
+          "remark": val.remark
+       }
+       utils.request.post(url,params,true).then((res) => {
+         if(res){
+          if(res.success==true){
+            utils.box.toast("添加成功","success");
+            this.queryParent();
+          }else{
+            utils.box.toast(res.error.message);
+          }
+         }
+         })
+    },
+    queryOrgDetail(id){ //查询组织机构详情
+      let url="/api/Organization/organization/"+id;
+      utils.request.get(url,true).then((res) => {
+         if(res){
+          if(res.success==true){
+            this.orgDetail=res.result;
+          }
+          }
+      })
+    },
+    queryPermission(id){ //查询组织机构详情
+      let url="/api/Organization/organization/"+id+"/permission";
+      utils.request.get(url,true).then((res) => {
+         if(res){
+          if(res.success==true){
+           this.permissionList=res.result;
+          }
+          }
+      })
+    },
+    saveDetail(){
+      this.status=0;
     },
     onDragEnter(info) {
          console.log(info);
