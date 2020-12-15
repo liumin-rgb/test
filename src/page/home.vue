@@ -34,12 +34,18 @@
     <a-layout :style="{ marginLeft: collapsed?'.6rem':'1.5rem' }">
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
-          <div class="pc-header-one" :tips="collapsed?'点击展开':'点击收起'">
-             <a-icon
-                      class="trigger"
-                      :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-                      @click="() => (collapsed = !collapsed)"
-                    />
+          <div class="pc-header-one" >
+             <el-popover trigger="hover" placement="bottom">
+               <div class="pointer themeColor">{{collapsed?'点击展开':'点击收起'}}</div>
+               <div slot="reference" class="name-wrapper">
+               <a-icon
+                        class="trigger"
+                        :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+                        @click="() => (collapsed = !collapsed)"
+                      />
+               </div>
+             </el-popover>
+
           </div>
           <div class="pc-header-two flex">
             <span><img src="../assets/img/background_easy.png" class="headerImg"/></span>
