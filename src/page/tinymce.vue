@@ -34,9 +34,12 @@ export default {
         // skin_url: '/static/tinymce/skins/lightgray',   // vue-cli 2.x 使用这个
         skin_url: '/static/tinymce/skins/lightgray',  // vue-cli 3.x 创建的 typescript 项目，将 url 中的 static 去掉，即 skin_url: '/tinymce/skins/lightgray'
         height: 300,
-        plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu',
-        toolbar:'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat',
-        branding: false
+        plugins: 'link lists image code table colorpicker textcolor wordcount contextmenu  table image',
+        toolbar:'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat | table image',
+        fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+        font_formats: '宋体=simsun,serif;;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;',
+       
+        branding: false,
       }
     }
   },

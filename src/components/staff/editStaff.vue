@@ -13,7 +13,7 @@
       </div>
       <transition name="t1">
      <div v-show="toggle==true">
-       <div>
+       <div class="textAlignR">
           <span class="pc-button" v-show="flag=='add'||flag=='edit'" @click="saveInfo"><i class="iconfont icon-baocun"></i>保存</span>
        </div>
          <table class="table">
