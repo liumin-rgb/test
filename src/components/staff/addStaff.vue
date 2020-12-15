@@ -42,8 +42,10 @@
      </a-modal>
 </template>
 <script>
+import Pagination from '../Pagination'
 export default {
   name: '',
+  components:{Pagination},
   props:{
     visible:{
       default:false,
@@ -69,7 +71,9 @@ export default {
        tableData2:[],
        tableData3:[],
        multipleSelection:[],
+       employeeIds:[],
        sping:false,
+       loading:false,
     }
   },
   watch:{
@@ -84,8 +88,9 @@ export default {
   },
   methods:{
     handleSelectionChange(val) {
-       this.multipleSelection = val;
-        },
+       this.multipleSelection = val.map(item=>{return item.id});
+
+       },
     changePage(val){
       this.pageIndex=val.pageIndex;
       this.pageSize=val.pageSize;
@@ -108,6 +113,7 @@ export default {
                 if(res.success==true){
                   let data=res.result;
                  this.totalCount=data.totalCount||0;
+                 this.maxPage=Math.ceil(this.totalCount/(this.pageSize*3));
                  this.tableData=data.items;
                  let newArr=utils.common.group(this.tableData,10);
                  this.tableData1=newArr[0]||[];
@@ -125,17 +131,15 @@ export default {
       this.$emit("closeModel");
     },
     handleOk(){
-      this.sping=true;
-                  let url="/api/Organization/searchEmployeeList";
-                  let params={
-        "orgId": this.orgId,
-         "employeeIds":this.employeeIds
-      }
+      this.loading=true;
+                  let url="/api/Organization/addEmployeeToOrg?orgId="+this.orgId;
+                  let params=this.multipleSelection;
                   utils.request.post(url,params).then((res) => {
-                    this.sping=false;
+                    this.loading=false;
                      if(res){
                       if(res.success==true){
                         utils.box.toast("添加成功","success");
+                        this.handleCancel()
                       }else{
                         utils.box.toast("添加失败");
                       }
@@ -143,7 +147,6 @@ export default {
                   })
 
 
-    this.handleCancel()
     }
 
 

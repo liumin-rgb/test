@@ -81,12 +81,12 @@
        <span class="pc-button" @click="removeStaff()">删除</span>
   <el-table :data="tableData" border height="150" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="" label="姓名" >
+        <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
                  <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
         </el-table-column>
-        <el-table-column prop="" label="工号" >
+        <el-table-column prop="employeeNo" label="工号" >
          <template slot="header" slot-scope="scope">
                 <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                </template>
@@ -220,7 +220,7 @@
       this.status=0;
       if(this.currentNodeType==3){
         this.queryPermission(this.currentNodeId);
-        this.queryStaff(this.currentNodeId);
+        this.queryStaff();
       }
       this.queryOrgDetail(this.currentNodeId);
     },
@@ -330,10 +330,10 @@
           }
       })
     },
-    queryStaff(id){ //查询员工列表
+    queryStaff(){ //查询员工列表
       let url="/api/Organization/getEmployeeByOrg";
       let params={
-  "orgId": id,
+  "orgId": this.currentNodeId,
   "sortField": this.sortField,
   "isDescending": this.isDescending,
   "pageIndex": this.pageIndex,
@@ -342,8 +342,10 @@
       utils.request.post(url,params,true).then((res) => {
          if(res){
           if(res.success==true){
-           this.totalCount=res.totalCount;
-           this.tableData=res.items;
+            let data=res.result;
+           this.totalCount=data.totalCount;
+           this.maxPage=Math.ceil(this.totalCount/(this.pageSize*3));
+           this.tableData=data.items;
           }
           }
       })
