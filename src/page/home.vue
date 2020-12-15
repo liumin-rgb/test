@@ -1,6 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" style="min-height:100vh">
-    <a-layout-sider  theme="light" class="container" v-model="collapsed" collapsible collapsedWidth="80px" :trigger="null" :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }"> <!-- :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }" -->
+   <!-- <a-layout-sider  theme="light" class="container" v-model="collapsed" collapsible collapsedWidth="80px" :trigger="null" :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
      <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
       <a-menu theme="dark" mode="inline"   class="leftMenu" >
         <a-menu-item  @click="toUrl('myTask')">
@@ -15,8 +15,23 @@
         </a-sub-menu>
 
       </a-menu>
-    </a-layout-sider>
-    <a-layout :style="{ marginLeft: collapsed?'.8rem':'2rem' }">
+    </a-layout-sider> -->
+    <div class="sider pointer" :style="{width:collapsed?'.6rem':'1.5rem'}">
+    <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
+      <div class="menuLarge" v-show="!collapsed">
+        <div class="menu" v-for="obj in menuList">
+          <div :class="['menuitem',choosen==obj.name?'choosen':'']" @click="toggleMenu(obj)"><i :class="['iconfont', obj.icon]"></i><span :class="['title',choosen==obj.name?'weight600':'']">{{obj.name}}</span><i :class="['iconfont', obj.subMenuList.length==0?'':'icon-jiantouarrow483',obj.toggle?'rotate':'','angle']"></i></div>
+          <div class="subMenuitem flexCol" v-show="obj.toggle==true">
+            <span :class="['subTitle',choosen==obj1.name?'choosen':'']" v-for="obj1 in obj.subMenuList" @click="toUrl(obj1)">{{obj1.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="menuSmall textAlignC" v-show="collapsed">
+        <div v-for="obj in menuList" class="iconMneu" ><i :class="['iconfont',choosen==obj.name||obj.subMenuList.find(item=>item.name==choosen)?'font30':'font18',obj.icon]" ></i></div>
+      </div>
+    </div>
+
+    <a-layout :style="{ marginLeft: collapsed?'.6rem':'1.5rem' }">
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
           <div class="pc-header-one">
@@ -27,7 +42,8 @@
                     />
           </div>
           <div class="pc-header-two flex">
-            <div class="color999  flexCol"><span>系统管理员</span><span>Liza</span></div>
+            <span><img src="../assets/img/background_easy.png" class="headerImg"/></span>
+            <div class="color999  flexCol headerUser"><span>Liza<br>系统管理员</span></div>
               <i class="iconfont icon-mima font20 themeColor pointer" @click="set"></i>
             <i class="iconfont icon-tuichu2 font20 themeColor pointer" @click="logout"></i>
             </div>
@@ -49,17 +65,30 @@ export default {
     return {
    collapsed: false,
    transitionName:'',
-   menuList: [{name:'文件管理',icon:'icon-wenjian',url:'',subMenuList:[{name:'文档中心',url:'fileList'}]},
-             {name:'培训管理',icon:'icon-kejipeixun',url:'',subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
-             {name:'人员管理',icon:'icon-renyuan',url:'',subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
+   choosen:'',
+   menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',toggle:false,subMenuList:[]},
+             {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
+             {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
+             {name:'人员管理',icon:'icon-renyuan',url:'',toggle:false,subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
              ]
     };
   },
 
-
+ created(){
+   this.choosen=utils.cache.getSession("choosen");
+ },
   methods:{
-    toUrl(url){
-      this.$router.push({path:url,query:{}})
+    toggleMenu(obj){
+      if(obj.subMenuList.length==0){
+        this.toUrl(obj);
+        return;
+      }
+      obj.toggle=!obj.toggle;
+    },
+    toUrl(obj){
+      this.choosen=obj.name;
+      utils.cache.setSession("choosen",this.choosen);
+      this.$router.push({path:obj.url,query:{}})
     },
     logout(){
       utils.cache.removeItem('TOKEN');
@@ -78,6 +107,18 @@ export default {
   .ant-layout{
      height: 100%;
       }
+  .headerImg{
+    width:.3rem;
+    height:.3rem;
+    border-radius: .3rem;
+    margin-right:.1rem;
+      }
+   .headerUser{
+     text-align: center;
+     font-size: .1rem;
+     line-height: .15rem;
+     margin-top:.1rem;
+   }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 24px;
   line-height: 64px;
@@ -97,7 +138,7 @@ export default {
 .menuLogo{
       text-align: center;
       margin: 0.1rem 0 0.3rem 0;
-    img{width:.6rem}
+    img{width:.5rem}
 }
 
 .pc-header{
@@ -123,5 +164,75 @@ export default {
 .container{background: url(../assets/img/leftBackground.png) !important;}
 .leftMenu{background: none !important;color:#fff !important;}
 
+/*
+侧边栏菜单
+*/
+.sider{
+  height:100vh;
+  position: fixed;
+  left:0;
+  overflow: auto;
+  width:0.6rem;
+  background: url(../assets/img/leftBackground.png) no-repeat;
+  color:#fff;
+}
 
+.menuLarge{
+  .menu{
+   // padding:.1rem;
+    .menuitem{
+      padding:.1rem 0.1rem;
+      .title{margin:0 0.2rem 0 0.05rem;}
+    }
+    .subMenuitem{
+    .subTitle{
+      padding:.1rem 0 0.1rem 0.4rem;
+    }
+    }
+  }
+
+}
+.choosen{
+  background:#fff !important;
+  color:#2e6eb4 !important;
+  font-weight: 600 !important;
+}
+.menuSmall{
+  .iconMneu{
+     padding:.1rem 0.1rem;
+  }
+}
+.angle{
+   transition:all 2s;
+}
+
+.rotate:before{
+ transform:rotateX(180deg);
+  transition: 0.8s;
+  /* animation: ani 0.5s infinite;
+  -moz-animation: ani 0.5 infinite;
+  -webkit-animation: ani 0.5 infinite;
+  -o-animation: ani 0.5 infinite; */
+  display: inline-block;
+
+}
+
+
+@keyframes ani{
+  from {transform:rotateX(0deg);}
+  to {transform:rotateX(180deg);}
+}
+@-moz-keyframes ani{
+  from {transform:rotateX(0deg);}
+  to {transform:rotateX(180deg);}
+}
+@-webkit-keyframes ani{
+  from {transform:rotateX(0deg);}
+  to {transform:rotateX(180deg);}
+}
+
+@-o-keyframes ani{
+  from {transform:rotateX(0deg);}
+  to {transform:rotateX(180deg);}
+}
 </style>

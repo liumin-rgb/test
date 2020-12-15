@@ -83,21 +83,25 @@
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="" label="姓名" >
           <template slot="header" slot-scope="scope">
-                 <span class="pointer"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
+                 <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
         </el-table-column>
         <el-table-column prop="" label="工号" >
          <template slot="header" slot-scope="scope">
-                <span class="pointer"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
+                <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                </template>
         </el-table-column>
 <!--        <el-table-column prop="" label="部门"></el-table-column>
  -->  </el-table>
       </div>
+      <div class="list-bottom">
+        <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+      </div>
     </div>
     </transition>
+
     </div>
-    <AddStaff :visible="visible" @closeModel="closeModel"/>
+    <AddStaff :visible="visible" @closeModel="closeModel" :orgId="currentNodeId"/>
      <CreateOrgnization :visible="visible1" @closeModel="closeModel1"/>
      <CreateDepartment :visible="visible2" :parentId="parentId" @closeModel="closeModel2" />
   </div>
@@ -107,9 +111,10 @@
   import AddStaff from "../staff/addStaff"
   import CreateOrgnization from "../staff/createOrgnization"
   import CreateDepartment from "../staff/createDepartment"
+  import Pagination from '../Pagination'
   export default {
     name: 'managePower',
-    components:{AddStaff,CreateOrgnization,CreateDepartment},
+    components:{AddStaff,CreateOrgnization,CreateDepartment,Pagination},
     data() {
       return {
     showButton:false, //是否显示添加下属机构
@@ -136,6 +141,14 @@
           "type": "",
           "remark": ""
     },
+     totalCount:0,
+     pageIndex: 1,
+     pageSize:10,
+     maxPage: 1,
+     sortField:true,
+     order1:false,
+     order2:false,
+     isDescending:false,
       }
     },
     filters:{
@@ -207,6 +220,7 @@
       this.status=0;
       if(this.currentNodeType==3){
         this.queryPermission(this.currentNodeId);
+        this.queryStaff(this.currentNodeId);
       }
       this.queryOrgDetail(this.currentNodeId);
     },
@@ -316,7 +330,38 @@
           }
       })
     },
-
+    queryStaff(id){ //查询员工列表
+      let url="/api/Organization/getEmployeeByOrg";
+      let params={
+  "orgId": id,
+  "sortField": this.sortField,
+  "isDescending": this.isDescending,
+  "pageIndex": this.pageIndex,
+  "pageSize": this.pageSize
+}
+      utils.request.post(url,params,true).then((res) => {
+         if(res){
+          if(res.success==true){
+           this.totalCount=res.totalCount;
+           this.tableData=res.items;
+          }
+          }
+      })
+    },
+    takeOrder(sortField){
+      this.sortField=sortField;
+      if(sortField==true){
+        this.isDescending=this.order1==true?false:true;
+      }else{
+         this.isDescending=this.order2==true?false:true;
+      }
+      this.queryStaff()
+    },
+    changePage(val){
+      this.pageIndex=val.pageIndex;
+      this.pageSize=val.pageSize;
+      this.queryStaff();
+    },
     onDragEnter(info) {
          console.log(info);
          // expandedKeys 需要受控时设置
