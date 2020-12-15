@@ -144,7 +144,7 @@ export default {
     confirmDeleteErrorInfo(id){
         let url = "/api/Employee/template/infos/"+id;
          this.spinning=true;
-        	utils.request.delete(url,true).then((res) => {
+        	utils.request.delete(url,{},true).then((res) => {
            if(res){
              if(res.success==true){
                utils.box.toast('删除成功','success');

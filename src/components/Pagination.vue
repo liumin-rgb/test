@@ -2,7 +2,7 @@
 	<div class="page">
 	<div class="page-totalNum">{{totalCount}}条</div>
 	<div class="page-picker">
-    <div class="page-picker-show"><span>展示数据</span><select class="pc-input inputOne" v-model="pageSizeCode" style="padding-left:0"><option v-for="(obj,index) in pageSizeList" :value="index">{{obj}}</option></select></div>
+    <div class="page-picker-show"><span>展示数据</span><select class="pc-input inputOne" v-model="pageSizeCode" style="padding-left:0px"><option v-for="(obj,index) in pageSizeList" :value="index">{{obj}}</option></select></div>
 		<div class="page-picker-num">
 		<div class="page-picker-num-btn" @click="prePage"><i class="el-icon-arrow-left"></i>上页</div>
 		<div @click="num !== threeDot ? (pageNo = num) : ''"

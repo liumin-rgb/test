@@ -43,7 +43,7 @@
        <div class="margin05rem">
          <span><span class="label1">名称：</span><input :class="['pc-input','bigInput',status==0?'backGray':'']" v-model="orgDetail.name" :readonly="status==0?true:false"/></span>
 <!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
- -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input bigInput backGray" readonly="true" v-model="orgDetail.type==3?'岗位':orgDetail.type==2?'部门':orgDetail.type==1?'分院':''"/></span>
+ -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input backGray" readonly="true" v-model="orgDetail.type==3?'岗位':orgDetail.type==2?'部门':orgDetail.type==1?'分院':''"/></span>
        </div>
      <div class="flex">
        <span class="label1 verTop">描述：</span>
@@ -84,12 +84,12 @@
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
                  <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
-                </template>
+          </template>
         </el-table-column>
         <el-table-column prop="employeeNo" label="工号" >
          <template slot="header" slot-scope="scope">
                 <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
-               </template>
+         </template>
         </el-table-column>
 <!--        <el-table-column prop="" label="部门"></el-table-column>
  -->  </el-table>
@@ -121,7 +121,7 @@
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
     tableData:[],
-    multipleSelection:'',
+    multipleSelection:[],
     toggle1:true,
     toggle2:false,
     toggle3:false,
@@ -242,7 +242,7 @@
      this.permissions=e;
     },
     handleSelectionChange(val) {
-       this.multipleSelection = val;
+       this.multipleSelection = val.map((item)=>{return item.id});
         },
     closeModel(){
          this.visible = false;
@@ -256,7 +256,7 @@
     closeModel2(val){
          this.visible2= false;
          if(val!=null&&val!=undefined){
-           this.addBranchOrgize(val)
+           this.editBranchOrgize(val)
          }
     },
     addParentOrgnize(val){  //添加分院
@@ -300,6 +300,7 @@
             if(status==2){
               utils.box.toast("修改成功","success");
               this.status=0;
+              this.queryParent();
             }else{
               utils.box.toast("添加成功","success");
               this.queryParent();
@@ -358,6 +359,28 @@
          this.isDescending=this.order2==true?false:true;
       }
       this.queryStaff()
+    },
+    removeStaff(){
+      if(this.multipleSelection==[]){
+        utils.box.toast("请先勾选员工！");
+        return
+      }
+       utils.box.confirm("是否确认删除?").then(()=>{
+         this.insureRemoveStaff();
+       });
+    },
+    insureRemoveStaff(){
+      let url="/api/Organization/removeEmployeeFromOrg";
+        let params=this.multipleSelection;
+            utils.request.delete(url,params,true).then((res) => {
+               if(res){
+                if(res.success==true){
+                  utils.box.toast("删除成功","success");
+                }else{
+                   utils.box.toast("删除失败");
+                }
+                }
+            })
     },
     changePage(val){
       this.pageIndex=val.pageIndex;

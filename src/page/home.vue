@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="menuSmall textAlignC" v-show="collapsed">
-        <div v-for="obj in menuList" class="iconMneu" ><i :class="['iconfont',choosen==obj.name||obj.subMenuList.find(item=>item.name==choosen)?'font30':'font18',obj.icon]" ></i></div>
+        <div v-for="obj in menuList" class="iconMneu" @click="toUrl1(obj)"><i :class="['iconfont',choosen==obj.name||obj.subMenuList.find(item=>item.name==choosen)?'font30':'font18',obj.icon]" ></i></div>
       </div>
     </div>
 
@@ -78,6 +78,11 @@ export default {
    this.choosen=utils.cache.getSession("choosen");
  },
   methods:{
+    toUrl1(obj){
+      this.choosen=obj.name;
+      utils.cache.setSession("choosen",this.choosen);
+      this.$router.push({path:obj.url,query:{}})
+    },
     toggleMenu(obj){
       if(obj.subMenuList.length==0){
         this.toUrl(obj);
