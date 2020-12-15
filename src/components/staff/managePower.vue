@@ -2,10 +2,10 @@
   <div class="list-main">
     <div class="list-main-one">
       <div>
-        <div class="font12 weight600">组织架构</div>
+        <div class="weight600">组织架构</div>
         <div class="textAlignR">
-           <span class="pc-button buttonNoback font10" @click="addParent()">添加分院</span>
-          <span class="pc-button buttonNoback font10" @click="addBranch()" v-show="showButton">添加下属组织机构</span>
+           <span class="pc-button buttonNoback" @click="addParent()">添加分院</span>
+          <span class="pc-button buttonNoback" @click="addBranch()" v-show="showButton">添加下属组织机构</span>
         </div>
       </div>
       <a-tree

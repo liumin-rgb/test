@@ -1,14 +1,14 @@
 <template>
 	<div class="page">
-	<div class="page-totalNum">{{totalCount}}条</div>
+	<div class="page-totalNum">共{{totalCount}}条</div>
 	<div class="page-picker">
     <div class="page-picker-show"><span>展示数据</span><select class="pc-input inputOne" v-model="pageSizeCode" style="padding-left:0px"><option v-for="(obj,index) in pageSizeList" :value="index">{{obj}}</option></select></div>
 		<div class="page-picker-num">
-		<div class="page-picker-num-btn" @click="prePage"><i class="el-icon-arrow-left"></i>上页</div>
+		<div class="page-picker-num-btn" @click="prePage"><i class="el-icon-arrow-left"></i>上一页</div>
 		<div @click="num !== threeDot ? (pageNo = num) : ''"
 		:class="{'page-picker-num-pageNo-on':num==pageNo,'page-picker-num-pageNo':num!=threeDot,'page-picker-num-noBorder':num===threeDot}"
 		 v-for="(num,i) in pages" :key="i">{{num}}</div>
-		<div class="page-picker-num-btn" @click="nextPage">下页<i class="el-icon-arrow-right"></i></div>
+		<div class="page-picker-num-btn" @click="nextPage">下一页<i class="el-icon-arrow-right"></i></div>
 		</div>
 		<div class="page-picker-to">跳转<input   v-model="tempPageNo" :max="maxPage" :min="1" @keyup.enter="goPage">页</div>
 		<div class="page-picker-go" @click="goPage">GO</div>
@@ -119,7 +119,7 @@
 		justify-content: space-around;
 		align-items: center;
 	&-btn{
-		 margin-right:.5vw;
+		/* margin-right:.5vw; */
 		 cursor: pointer;
      border: 1px solid #ececec;
      border-radius: 3px;

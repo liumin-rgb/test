@@ -9,7 +9,7 @@
         <span class="floatR">
           <span class="backButton" @click="isOrdinarySearch=isOrdinarySearch==true?false:true"><i class="iconfont icon-zhuanhuan1"></i><span
               class="weight600">{{isOrdinarySearch==false?'普通搜索':'高级搜索'}}</span></span>
-          <span class="pc-button" @click="queryInfo">搜索</span>
+          <span class="pc-button" @click="queryInfo"><i class="iconfont icon-sousuo"></i>搜索</span>
         </span>
       </div>
       <div>
@@ -44,12 +44,12 @@
         <span class="pc-button buttonNoback" @click=""><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
         <span class="pc-button buttonNoback" @click="openImport"><i class="iconfont icon-shangchuan "></i>批量导入</span>
         <span class="pc-button buttonNoback" @click="toStaffInfo('add')"><i class="iconfont icon-jiahao"></i>添加</span>
-        <span class="pc-button buttonNoback" @click="changeCategory">修改详情页类目名称</span>
+        <span class="pc-button buttonNoback" @click="changeCategory"><i class="iconfont icon-tubiao09"></i>修改详情页类目名称</span>
       </div>
     </div>
     <div class="list-table">
       <a-spin :spinning="spinning"  >
-      <el-table :data="tableData" border height="50vh"  :header-cell-class-name="'table-header'">
+      <el-table :data="tableData" border height="50vh"  stripe :header-cell-class-name="'table-header'">
         <el-table-column prop="employeeNo" label="工号" width="70">
           <template slot="header" slot-scope="scope">
                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>

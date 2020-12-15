@@ -34,7 +34,7 @@
     <a-layout :style="{ marginLeft: collapsed?'.6rem':'1.5rem' }">
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
-          <div class="pc-header-one">
+          <div class="pc-header-one" :tips="collapsed?'点击展开':'点击收起'">
              <a-icon
                       class="trigger"
                       :type="collapsed ? 'menu-unfold' : 'menu-fold'"
@@ -79,9 +79,18 @@ export default {
  },
   methods:{
     toUrl1(obj){
-      this.choosen=obj.name;
+      let name='';
+      let url='';
+      if(obj.subMenuList.length==0){
+        name=obj.name;
+        url=obj.url;
+      }else{
+        name=obj.subMenuList[0].name;
+        url=obj.subMenuList[0].url;
+      }
+      this.choosen=name;
       utils.cache.setSession("choosen",this.choosen);
-      this.$router.push({path:obj.url,query:{}})
+      this.$router.push({path:url,query:{}})
     },
     toggleMenu(obj){
       if(obj.subMenuList.length==0){
@@ -183,6 +192,7 @@ export default {
 }
 
 .menuLarge{
+  margin-top:.4rem;
   .menu{
    // padding:.1rem;
     .menuitem{

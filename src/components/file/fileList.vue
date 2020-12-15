@@ -2,11 +2,8 @@
   <div class="list-main">
     <div class="list-main-one">
       <div>
-        <div class="font12 weight600">文件夹目录</div>
-        <div class="textAlignR">
-          <!-- <span class="pc-button buttonNoback font10 ">新建文件夹</span> -->
-          <span class="pc-button buttonNoback" @click="openTagManage('all')">标签管理</span>
-        </div>
+        <div class=" weight600">文件夹目录</div>
+
       </div>
        <a-tree
            class="draggable-tree"
@@ -32,6 +29,10 @@
         </template> -->
          </a-tree>
          <div class="marginB2VH"></div>
+         <div class="textAlignR">
+           <!-- <span class="pc-button buttonNoback font10 ">新建文件夹</span> -->
+           <span class="pc-button buttonNoback" @click="openTagManage('all')">标签管理</span>
+         </div>
         <a-tree
             class="draggable-tree"
             draggable
@@ -49,9 +50,9 @@
     <div class="list-main-two">
       <div class="list-search">
        <div class="list-search-one">
-         <span><span>状态：</span><select class="pc-input"/></span>
-         <span><span>文件名称：</span><input class="pc-input"/></span>
-         <span class="pc-button">搜索</span>
+         <span><span>状态：</span><select class="pc-input"><option  value="草稿" >草稿</option><option  value="流转中" >流转中</option></select></span>
+         <span><span>文件名称：</span><input class="pc-input bigInput"/></span>
+         <span class="pc-button"><i class="iconfont icon-sousuo"></i>搜索</span>
 
        </div>
        <div class="list-search-two"></div>
@@ -131,7 +132,7 @@
        <Pagination :value="pageIndex" :maxPage="maxPage" />
       </div>
     </div>
-    <TagManage :visible="visible" :operation="operation" @closeTagManage="closeTagManage"/>
+    <TagManage :visible="visible2" :operation="operation" @closeTagManage="closeTagManage"/>
    <CheckFile :visible="visible1" :config="config" @closeModel="closeCheckFile"/>
   </div>
 </template>
@@ -148,7 +149,7 @@
         pageIndex:1,
         maxPage:1,
         showSelect:false,
-        visible:false,
+        visible2:false,
         visible1:false,
         config:{
           title:'提交传阅',
@@ -259,10 +260,10 @@
         },
         openTagManage(type){
           this.operation=type;
-          this.visible=true;
+          this.visible2=true;
         },
         closeTagManage(){
-          this.visible=false;
+          this.visible2=false;
         },
         closeCheckFile(){
           this.visible1=false;

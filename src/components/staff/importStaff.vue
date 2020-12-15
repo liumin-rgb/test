@@ -187,6 +187,7 @@ export default {
       const isExcel =file.type==='.csv'||file.type==='application/vnd.ms-excel'||file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       if (!isExcel) {
         this.$message.error('只能上传excel表格');
+        //this.fileList=[];
       }
       return isExcel ;
     },
