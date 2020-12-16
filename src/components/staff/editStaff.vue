@@ -57,7 +57,7 @@
                  allow-clear
                  multiple
                  size="small"
-                 style="width:1.5rem;height:.25rem;margin: .02rem 0.1rem;"
+                 style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
                  @change="onChange"
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                  :tree-data="departmentList"

@@ -26,6 +26,8 @@ instance.interceptors.response.use(response => {
 }, error => {
  loading.closeLoading();
   console.log('返回失败!!!-----'+error.message);
+/*  let res=response.data;
+  utils.box.toast(res.error.message); */
 })
 export default {
   axios: axios,

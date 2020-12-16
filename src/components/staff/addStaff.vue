@@ -139,7 +139,7 @@ export default {
                      if(res){
                       if(res.success==true){
                         utils.box.toast("添加成功","success");
-                        this.handleCancel()
+                        this.$emit("closeModel",true);
                       }else{
                         utils.box.toast("添加失败");
                       }

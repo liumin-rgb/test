@@ -121,7 +121,7 @@
                  <p @click="openTagManage('single')"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                  </div>
                  <div slot="reference" class="name-wrapper">
-                  <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
+                  <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
                  </div>
                </el-popover>
              </template>

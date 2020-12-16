@@ -37,21 +37,29 @@
           <div class="pc-header-one" >
              <el-popover trigger="hover" placement="bottom">
                <div class="pointer themeColor">{{collapsed?'点击展开':'点击收起'}}</div>
-               <div slot="reference" class="name-wrapper">
+               <span slot="reference">
                <a-icon
                         class="trigger"
                         :type="collapsed ? 'menu-unfold' : 'menu-fold'"
                         @click="() => (collapsed = !collapsed)"
                       />
-               </div>
+               </span>
              </el-popover>
 
           </div>
           <div class="pc-header-two flex">
             <span><img src="../assets/img/background_easy.png" class="headerImg"/></span>
             <div class="color999  flexCol headerUser"><span>Liza<br>系统管理员</span></div>
-              <i class="iconfont icon-mima font20 themeColor pointer" @click="set"></i>
-            <i class="iconfont icon-tuichu2 font20 themeColor pointer" @click="logout"></i>
+            <el-popover trigger="hover" placement="bottom">
+              <div class="pointer themeColor weight600 font12">
+              <p @click="setting"><i class="iconfont icon-mima"></i>修改密码</p>
+              <p @click="logout"><i class="iconfont icon-tuichu2"></i>退出</p>
+              </div>
+              <i class="iconfont icon-kaishi1 font16  pointer color999" slot="reference"></i>
+            </el-popover>
+        <!--   <i class="iconfont icon-mima font20 themeColor pointer" @click="setting"></i> -->
+           <!-- <i class="iconfont icon-mima font20 themeColor pointer" @click="setting"></i>
+            <i class="iconfont icon-tuichu2 font20 themeColor pointer" @click="logout"></i> -->
             </div>
         </div>
       </a-layout-header>
@@ -63,15 +71,19 @@
       </transition>
       </a-layout-content>
     </a-layout>
+    <ChangePassword  :visible="visible" @closeModel="closeModel"/>
   </a-layout>
 </template>
 <script>
+  import ChangePassword from '../components/changePassword'
 export default {
+  components:{ChangePassword},
   data() {
     return {
    collapsed: false,
    transitionName:'',
    choosen:'',
+   visible:false,
    menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',toggle:false,subMenuList:[]},
              {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
              {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
@@ -104,6 +116,7 @@ export default {
         return;
       }
       obj.toggle=!obj.toggle;
+      // utils.cache.setSession("toggle",this.obj.toggle);
     },
     toUrl(obj){
       this.choosen=obj.name;
@@ -114,9 +127,13 @@ export default {
       utils.cache.removeItem('TOKEN');
       this.$router.push({path: 'login'});
     },
-    set(){
-     this.$router.push({path: 'changePassword'});
+    setting(){
+      this.visible=true;
+     //this.$router.push({path: 'changePassword'});
     },
+    closeModel(){
+      this.visible=false;
+    }
   }
 }
 </script>
@@ -208,6 +225,7 @@ export default {
     .subMenuitem{
     .subTitle{
       padding:.1rem 0 0.1rem 0.4rem;
+
     }
     }
   }
@@ -217,6 +235,8 @@ export default {
   background:#fff !important;
   color:#2e6eb4 !important;
   font-weight: 600 !important;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
 }
 .menuSmall{
   .iconMneu{
@@ -256,4 +276,5 @@ export default {
   from {transform:rotateX(0deg);}
   to {transform:rotateX(180deg);}
 }
+
 </style>

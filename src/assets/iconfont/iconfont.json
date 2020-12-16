@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4320344",
+      "name": "开始",
+      "font_class": "kaishi1",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "10149429",
+      "name": "离职",
+      "font_class": "lizhi",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
       "icon_id": "993786",
       "name": "搜索",
       "font_class": "sousuo",

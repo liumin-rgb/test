@@ -244,8 +244,11 @@
     handleSelectionChange(val) {
        this.multipleSelection = val.map((item)=>{return item.id});
         },
-    closeModel(){
+    closeModel(val){
          this.visible = false;
+         if(val==true){
+           this.queryStaff();
+         }
     },
     closeModel1(val){
          this.visible1 = false;
@@ -371,11 +374,14 @@
     },
     insureRemoveStaff(){
       let url="/api/Organization/removeEmployeeFromOrg";
-        let params=this.multipleSelection;
+        let params={
+          ids:this.multipleSelection
+        }
             utils.request.delete(url,params,true).then((res) => {
                if(res){
                 if(res.success==true){
                   utils.box.toast("删除成功","success");
+                  this.queryStaff();
                 }else{
                    utils.box.toast("删除失败");
                 }

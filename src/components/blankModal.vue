@@ -27,6 +27,13 @@ export default {
 
     }
   },
+  watch:{
+    visible:function(newVal){
+      if(newVal==true){
+         this.searchStaff();
+      }
+    }
+  },
   created(){
 
   },

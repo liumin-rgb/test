@@ -1,6 +1,6 @@
 <template>
-  <div class="list-main">
-    <div class="list-search">
+  <div class="list-main" ref="main">
+    <div class="list-search" ref="search">
       <div>
         <span><span class="label">姓名：</span><input class="pc-input" v-model="searchInfo.name"/></span>
         <span><span class="label">工号：</span><input class="pc-input" v-model="searchInfo.employeeNo"/></span>
@@ -28,7 +28,7 @@
            allow-clear
            multiple
            size="small"
-           style="width:1.5rem;height:.25rem;margin: .02rem 0.1rem;"
+           style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
            @change="onChange"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            :tree-data="departmentList"
@@ -37,6 +37,7 @@
          </a-tree-select>
         </span>
         </span>
+        <span v-show="!isOrdinarySearch"><span class="label">岗位：</span><select class="pc-input" @change="getSelectInfo('orgnize')" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.code" >{{obj.text}}</option></select></span>
         <!-- <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
             class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span> -->
       </div>
@@ -49,7 +50,7 @@
     </div>
     <div class="list-table">
       <a-spin :spinning="spinning"  >
-      <el-table :data="tableData" border height="50vh"  stripe :header-cell-class-name="'table-header'">
+      <el-table :data="tableData" border  :height="tableHeight" stripe :header-cell-class-name="'table-header'">
         <el-table-column prop="employeeNo" label="工号" width="70">
           <template slot="header" slot-scope="scope">
                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
@@ -84,14 +85,14 @@
         <el-table-column prop="address" label="操作" align="center" width="50">
           <template slot-scope="scope">
                   <el-popover trigger="hover" placement="bottom">
-                    <div class="pointer themeColor ">
-                    <p @click="toStaffInfo('edit',scope.row.id)">编辑</p>
-                    <p @click="offWork(scope.row.id)">离职</p>
-                    <p @click="resetPassword(scope.row.id)">重置密码</p>
-                    <p @click="deleteStaff(scope.row.id)">删除</p>
+                    <div class="pointer themeColor weight600 font12">
+                    <p @click="toStaffInfo('edit',scope.row.id)"><i class="iconfont icon-bianji"></i>编辑</p>
+                    <p @click="offWork(scope.row.id)"><i class="iconfont icon-lizhi"></i>离职</p>
+                    <p @click="resetPassword(scope.row.id)"><i class="iconfont icon-suo"></i>重置密码</p>
+                    <p @click="deleteStaff(scope.row.id)"><i class="iconfont icon-shanchu"></i>删除</p>
                     </div>
                     <div slot="reference" class="name-wrapper">
-                     <img src="../../assets/img/threeDot.png" style="width:.03rem"/>
+                     <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
                     </div>
                   </el-popover>
                 </template>
@@ -123,6 +124,7 @@
     },
     data() {
       return {
+        tableHeight:'',
         spinning:false,
         visible1: false,
         visible2: false,
@@ -151,7 +153,7 @@
         workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
         politicalList:[{code:'0',text:'全部'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'全部'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
-        orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'分院'},{code:'2',text:'部门'},{code:'3',text:'岗位'}],
+        orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'总院'},{code:'2',text:'分院1'},{code:'3',text:'分院2'}],
         departmentList:[],
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
         tableData: [
@@ -189,6 +191,17 @@
     created(){
       this.queryInfo();
       this.queryDepartment()
+    },
+    watch:{
+      isOrdinarySearch:function(val){
+        this.$nextTick(()=>{
+          this.tableHeight=this.$refs.main.offsetHeight-this.$refs.search.offsetHeight-34-24
+          
+        })
+      }
+    },
+    mounted(){
+         this.tableHeight=this.$refs.main.offsetHeight-this.$refs.search.offsetHeight-34-24
     },
     methods: {
       takeOrder(sortField){
@@ -275,10 +288,19 @@
         		  utils.box.confirm("是否确认离职？").then(()=>{
         		  			 this.confirmOffWork(id);
         		  			 });
-
       },
       confirmOffWork(id){
-
+        let url="/api/Employee/IsOnwork?id="+id;
+        utils.request.get(url,true).then((res) => {
+        	if(res){
+            if(res.success==true){
+              utils.box.toast("成功离职");
+              this.queryInfo();
+            }else{
+             utils.box.toast(res.error.message);
+            }
+          }
+          });
       },
       resetPassword(id){
         		  utils.box.confirm("是否确认重置密码？").then(()=>{
@@ -287,7 +309,34 @@
 
       },
       confirmResetPassword(id){
-
+        let url="/api/Employee/ResetPassword?id="+id;
+        utils.request.get(url,true).then((res) => {
+        	if(res){
+            if(res.success==true){
+              utils.box.toast("密码重置成功");
+            }else{
+             utils.box.toast(res.error.message);
+            }
+          }
+          });
+      },
+      deleteStaff(id){
+        		  utils.box.confirm("是否确认删除该员工？").then(()=>{
+        		  			 this.confirmDeleteStaff(id);
+        		  			 });
+      },
+      confirmDeleteStaff(id){
+          let url="/api/Employee/deleteEmployee?id="+id;
+          utils.request.delete(url,true).then((res) => {
+          	if(res){
+              if(res.success==true){
+                utils.box.toast("删除成功");
+                this.queryInfo();
+              }else{
+               utils.box.toast(res.error.message);
+              }
+            }
+         });
       },
       openImport() {
        this.visible1 = true;
