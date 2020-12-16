@@ -4,14 +4,14 @@
      <div :class="[tab!=1?'title_light_blue':'']" @click="tab=1">待办任务</div><div @click="tab=2" :class="[tab!=2?'title_light_blue':'']">已完成/已过期</div>
    </div>
    <div class="list-table" v-show="tab==1">
-     <el-table :data="doingData" border height="250" style="width:unset" :header-cell-class-name="'table-header'">
-       <el-table-column prop="" label="事项简介" ></el-table-column>
-       <el-table-column prop="" label="截止日期" ></el-table-column>
+     <el-table :data="doingData" border stripe height="72vh" style="width:unset" :header-cell-class-name="'table-header'">
+       <el-table-column prop="task" label="事项简介" ></el-table-column>
+       <el-table-column prop="deadline" label="截止日期" ></el-table-column>
      </el-table>
    </div>
    <div class="list-table" v-show="tab==2">
-       <el-table :data="finishData" border height="250" style="width:unset" :header-cell-class-name="'table-header'">
-       <el-table-column prop="" label="事项简介" ></el-table-column>
+       <el-table :data="finishData" border height="72vh" style="width:unset" :header-cell-class-name="'table-header'">
+       <el-table-column prop="task" label="事项简介" ></el-table-column>
      </el-table>
    </div>
    <div class="list-bottom">
@@ -27,8 +27,17 @@ import Pagination from '../Pagination'
     components:{Pagination},
     data() {
       return{
-        doingData:[],
-        finishData:[],
+        doingData:[
+          {task:'审批文件',
+          deadline:'2020-12-23',
+          }
+        ],
+        finishData:[
+          {
+          task:'审批文件',
+          deadline:'2020-12-23',
+          }
+        ],
         tab:'1',
       }
     },
