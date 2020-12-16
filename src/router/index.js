@@ -73,6 +73,14 @@ const router = new Router({
            },
          },
          {
+           path: '/examineFile',
+           name:'examineFile',
+           component: resolve => require(['@/components/task/examineFile'], resolve),
+           meta : {
+               title : '审批文档'
+           },
+         },
+         {
            path: '/staffInfo',
            name:'staffInfo',
            component: resolve => require(['@/components/staff/staffInfo'], resolve),
@@ -156,7 +164,7 @@ router.beforeEach((to, from, next) => {
 		}
   } */
   next();
-}); 
+});
  router.afterEach((to,from)=>{
 	document.title=to.meta.title||'';
 })

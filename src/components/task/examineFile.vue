@@ -2,33 +2,33 @@
   <div class="list-main">
   <div class="list-main-top">
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
+    <div>
+      <span class="pc-button buttonNoback1 font12" v-show="ifPrivate==true" @click="visible=true"><i class="iconfont icon-yulan font12"></i>可见人员</span>
+      <a-switch checked-children="私密" un-checked-children="公开"   @change="onChange"/>
+      </div>
   </div>
   <div class="list-main-body">
-    <div class="list-head" @click="toggle1=!toggle1">
-      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>文档信息</div>
+    <div class="list-head">
+      <div><i class="iconfont icon-jiantou themeColor"></i>文档信息</div>
       <div>
         </div>
       </div>
-      <transition name="t1">
-     <div v-show="toggle1==true">
-       
+     <div>
      <div class="flex paddingLR2rem gray">
-       <div class="width50 textInput"><span class="label">文件名称</span><input class='pc-input middleInput' readonly="true"/></div>
-       <div class="width50 textInput"><span class="label">文档编号</span><input  class='pc-input middleInput' readonly="true"/></div>
+       <div class="width50 textInput"><span class="label">文件名称</span><input class='pc-input' readonly="true"/></div>
+       <div class="width50 textInput"><span class="label">文档编号</span><input  class='pc-input' readonly="true"/></div>
      </div>
      <div class="flex paddingLR2rem gray">
        <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input' readonly="true"/></div>
        <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input' readonly="true"/></div>
      </div>
      </div>
-     </transition>
-     <div class="list-head" @click="toggle2=!toggle2">
-       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle2==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle2==false"></i>流转情况</div>
+     <div class="list-head">
+       <div><i class="iconfont icon-jiantou themeColor"></i>流转情况</div>
        <div>
          </div>
        </div>
-      <transition name='t1'>
-    <div class="marginT1VH" v-show="toggle2==true">
+    <div class="marginT1VH">
       <el-table
           :data="tableData"
           border
@@ -62,57 +62,36 @@
           </el-table-column>
         </el-table>
     </div>
-    </transition>
-    <div class="list-head" @click="toggle3=!toggle3">
-       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle3==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle3==false"></i>历史版本</div>
-       <div>
-         </div>
-     </div>
-     <transition name="t1">
-    <div class="marginT1VH" v-show="toggle3==true">
-      <el-table
-          :data="tableData"
-          border
-          style="width: 100%"
-         :header-cell-class-name="'table-header'">
-          <el-table-column
-            prop=""
-            label="文件名"
-            width="500">
-          </el-table-column>
-          <el-table-column
-            prop=""
-            label="版本号">
-          </el-table-column>
-          <el-table-column
-            prop=""
-            label="状态">
-          </el-table-column>
-          <el-table-column
-            prop=""
-            label="废除时间">
-          </el-table-column>
-        </el-table>
-    </div>
-    </transition>
+    
   </div>
    <VisiblePeople  :visible="visible" @closeModel="closeModel"/>
   </div>
 </template>
 
 <script>
-  import VisiblePeople from './visiblePeople'
   export default {
-    name: 'fileDetail',
-    components:{VisiblePeople},
+    name: 'examineFile',
     data() {
       return{
         visible:false,
         ifPrivate:false,
-        toggle1:true,
-        toggle2:true,
-        toggle3:true,
-        tableData: []
+        tableData: [/* {
+          date: '2016-05-02',
+          name: '--',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '一一',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '一一',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '一一',
+          address: '上海市普陀区金沙江路 1516 弄'
+        } */]
       }
     },
     methods:{

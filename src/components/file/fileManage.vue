@@ -8,13 +8,15 @@
       </div>
   </div>
   <div class="list-main-body">
-    <div class="list-head">
-      <div><i class="iconfont icon-jiantou themeColor"></i>基本信息</div>
+    <div class="list-head" @click="toggle=!toggle">
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle==false"></i>基本信息</div>
       <div>
         <span class="marginR2VW">文件目录：问卷11</span>
         <span>申请人：1-R</span>
         </div>
       </div>
+      <transition name="t1">
+      <div v-show="toggle==true">
      <div class="flexBtw">
        <div><span>上传文件：</span>
        <a-upload
@@ -62,6 +64,8 @@
           </el-table-column>
         </el-table>
     </div>
+    </div>
+    </transition>
   </div>
    <formatFileName  :visible="visible" @closeModel="closeModel"/>
    <CheckFile :visible="visible1" :config="config" @closeModel="closeModel"/>
@@ -78,12 +82,13 @@
       return{
         visible:false,
         visible1:false,
+        toggle:true,
         config:{
          title:'提交审核',
          label:'审批人',
         },
         tableData: [
-         
+
         ]
       }
     },

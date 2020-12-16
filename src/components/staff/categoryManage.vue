@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="visible" title="修改详情页类目名称" :afterClose="handleCancel">
+  <a-modal v-model="visible" title="修改详情页类目名称" :afterClose="handleCancel" :dialogClass="'middleModel'">
      <a-spin :spinning="spinning" >
       <div class="tag-one" >
  <div class="tag-one-drag">
@@ -106,7 +106,7 @@ export default {
     padding:0 0.2rem;
     color:#333;
     overflow: auto;
-    height:50vh;
+    height:65vh;
     &-create{text-align: right;}
     &-drag{
      padding:.1rem 0;

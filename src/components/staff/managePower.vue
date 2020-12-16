@@ -30,16 +30,16 @@
         </a-tree>
 
     </div>
-    <div class="list-main-two">
-    <div class="textAlignR border-bottom-line paddingTB1rem">
+    <div class="list-main-two" ref="mainTwo">
+    <div class="textAlignR border-bottom-line paddingTB1rem" ref="search">
        <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
        <span class="pc-button" @click="startEdit()" v-show="status==0&&orgDetail.name!=''">编辑</span>
     </div>
-    <div class="list-head" @click="toggle1=!toggle1">
+    <div class="list-head" @click="toggle1=!toggle1" ref="head">
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>详情</div>
     </div>
      <transition name="t1">
-    <div class="textAlignL" v-show="toggle1==true">
+    <div class="textAlignL" v-show="toggle1==true" ref="body1">
        <div class="margin05rem">
          <span><span class="label1">名称：</span><input :class="['pc-input','bigInput',status==0?'backGray':'']" v-model="orgDetail.name" :readonly="status==0?true:false"/></span>
 <!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
@@ -51,11 +51,11 @@
      </div>
     </div>
     </transition>
-    <div class="list-head" @click="toggle2=!toggle2" v-show="currentNodeType==3">
+    <div class="list-head" @click="toggle2=!toggle2" v-show="currentNodeType==3" ref="head">
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle2==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle2==false"></i>权限分配</div>
     </div>
     <transition name="t1">
-    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" >
+    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" ref="body2">
       <!-- <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">权限分配</span>
       </div> -->
@@ -68,7 +68,7 @@
       </div>
     </div>
     </transition>
-    <div class="list-head" @click="toggle3=!toggle3" v-show="currentNodeType==3">
+    <div class="list-head" @click="toggle3=!toggle3" v-show="currentNodeType==3" ref="head">
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle3==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle3==false"></i>人员列表</div>
     </div>
     <transition name="t1">
@@ -79,7 +79,7 @@
       <div class="margin05rem">
       <span class="pc-button" @click="visible=true">添加</span>
        <span class="pc-button" @click="removeStaff()">删除</span>
-  <el-table :data="tableData" border height="150" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+  <el-table :data="tableData" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -117,6 +117,7 @@
     components:{AddStaff,CreateOrgnization,CreateDepartment,Pagination},
     data() {
       return {
+    tableHeight:0,
     showButton:false, //是否显示添加下属机构
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
@@ -151,11 +152,25 @@
      isDescending:false,
       }
     },
+    watch:{
+      toggle1:function(){
+       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
+      },
+      toggle2:function(){
+       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
+      },
+      toggle3:function(){
+       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
+      },
+    },
     filters:{
 
     },
     created(){
       this.queryParent();
+    },
+    mounted(){
+      this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
     },
     methods: {
       queryParent(){
