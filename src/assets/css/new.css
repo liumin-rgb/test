@@ -218,3 +218,16 @@ span.ant-radio+* {
 .el-button--primary{
   background: #2e6eb4 !important;
 }
+/**
+ * 树选择
+ */
+.ant-select-tree-checkbox-wrapper:hover .ant-select-tree-checkbox-inner, .ant-select-tree-checkbox:hover .ant-select-tree-checkbox-inner, .ant-select-tree-checkbox-input:focus + .ant-select-tree-checkbox-inner{
+  border-color:#2e6eb4;
+}
+.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner{
+      background-color: #2e6eb4 !important;
+      border-color: #2e6eb4 !important;
+}
+.ant-select-tree-checkbox-indeterminate .ant-select-tree-checkbox-inner::after{
+   background-color: #2e6eb4 !important;
+}

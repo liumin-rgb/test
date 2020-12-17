@@ -49,9 +49,10 @@
     </div>
     <div class="list-main-two">
       <div class="list-search">
-       <div class="list-search-one">
-         <span><span>状态：</span><select class="pc-input"><option  value="草稿" >草稿</option><option  value="流转中" >流转中</option></select></span>
+       <div class="list-search-one flexBtw">
+         <div><span><span>状态：</span><select class="pc-input"><option  value="草稿" >草稿</option><option  value="流转中" >流转中</option></select></span>
          <span><span>文件名称：</span><input class="pc-input bigInput"/></span>
+         </div>
          <span class="pc-button"><i class="iconfont icon-sousuo"></i>搜索</span>
 
        </div>
@@ -83,6 +84,9 @@
             <el-table-column prop="fileName"label="文件名称" width="200">
               <template slot="header" slot-scope="scope">
                  <span class="pointer"><span class="gray ">文件名称</span><i class="iconfont icon-paixu themeColor"></i></span>
+               </template>
+               <template slot-scope="scope">
+                      <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.fileName}}</span>
                </template>
             </el-table-column>
             <el-table-column prop="number"label="编号" width="120">
@@ -422,7 +426,7 @@
       padding:.1rem .05rem;
       &-one{
         color:#333;
-       &>span{margin-right:.2rem;}
+
       }
       &-two{
 

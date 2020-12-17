@@ -224,7 +224,7 @@ export default {
     }
     .subMenuitem{
     .subTitle{
-      padding:.1rem 0 0.1rem 0.4rem;
+      padding:.08rem 0 0.08rem 0.4rem;
 
     }
     }
@@ -237,6 +237,7 @@ export default {
   font-weight: 600 !important;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
+  margin-left:.1rem;
 }
 .menuSmall{
   .iconMneu{

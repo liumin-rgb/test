@@ -6,8 +6,8 @@
 	 <span class="icon-xing">*</span>类型：</span>
 	 <a-radio-group name="radioGroup" :default-value="2" @change="getRadioValue($event,'type')"><a-radio :value="2"> 部门</a-radio><a-radio :value="3"> 岗位</a-radio></a-radio-group>
      </span></div>
-     <div class="marginT2VH flex " v-show="type==3">
-       <span class="label1">权限：</span>
+     <div class="marginT2VH " v-show="type==3">
+       <span class="label1 verTop">权限：</span>
        <span class="marginL1Rem"><a-checkbox-group @change="onChange">
            <a-row>
              <a-col :span="6" v-for="obj in permissionList" :key="obj.id"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
@@ -102,6 +102,9 @@ export default {
     color:#333;
     font-size: .12rem;
 
+  }
+  /deep/.ant-checkbox-group {
+    width:90%;
   }
 
 </style>

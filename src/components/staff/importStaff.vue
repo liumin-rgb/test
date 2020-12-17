@@ -14,7 +14,7 @@
         </a-upload>
         </div>
         <div><span class="weight600">所属分院</span><select class="pc-input middleInput" @change="getSelectInfo()" id="orgize"><option v-for="obj in orgnizeList" :value="obj.id" >{{obj.name}}</option></select></div>
-         <div @click="downloadTemplate"><span class="pc-button">下载模板</span></div>
+         <div @click="downloadTemplate"><span class="pc-button"><i class="iconfont icon-shangchuan1 "></i>下载模板</span></div>
          </div>
          <div class="tab">
            <a-spin :spinning="spining">

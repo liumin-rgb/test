@@ -34,7 +34,7 @@
     <div class="list-main-two" ref="mainTwo">
     <div class="textAlignR border-bottom-line paddingTB1rem" ref="search">
        <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
-       <span class="pc-button" @click="startEdit()" v-show="status==0&&orgDetail.name!=''">编辑</span>
+       <span :class="['pc-button',status==0&&orgDetail.name!=''?'':'buttonGray']" @click="startEdit()" >编辑</span>
     </div>
     <div class="list-head" @click="toggle1=!toggle1" ref="head">
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>详情</div>
@@ -46,7 +46,7 @@
 <!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
  -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input backGray" readonly="true" v-model="orgDetail.type==3?'岗位':orgDetail.type==2?'部门':orgDetail.type==1?'分院':''"/></span>
        </div>
-     <div class="flex">
+     <div class="flex marginT1VH">
        <span class="label1 verTop">描述：</span>
      <textarea :class="['pc-textarea', 'textareaOne', 'flex1',status==0?'backGray':'']" v-model="orgDetail.remark" :readonly="status==0?true:false"/>
      </div>

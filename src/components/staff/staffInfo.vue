@@ -27,11 +27,13 @@
          <span v-show="!isOrdinarySearch"><span class="label">隶属组织：</span><span>
           <a-tree-select
            allow-clear
+           tree-checkable
            size="small"
-           style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
+           style="width:4rem;height:.25rem;margin: .02rem 0.1rem;"
            @change="onChange"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            :tree-data="treemap"
+           :show-checked-strategy="SHOW_PARENT"
            tree-default-expand-all
          >
          </a-tree-select>
@@ -55,11 +57,17 @@
           <template slot="header" slot-scope="scope">
                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
+                <template slot-scope="scope">
+                      <span class="gray ">{{scope.row.employeeNo}}</span>
+                </template>
         </el-table-column>
         <el-table-column prop="name" label="姓名"  width="70">
           <template slot="header" slot-scope="scope">
                  <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
-                </template>
+           </template>
+          <template slot-scope="scope">
+                 <span class="gray ">{{scope.row.name}}</span>
+          </template>
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
           <template slot-scope="scope"> <span>{{scope.row.sex==0?'':scope.row.sex==1?'男':'女'}}</span></template>
@@ -114,6 +122,8 @@
   import ImportStaff from './importStaff'
   import InsureImport from './insureImport'
   import CategoryManage from './categoryManage'
+  import { TreeSelect } from 'ant-design-vue';
+  const SHOW_PARENT = TreeSelect.SHOW_PARENT;
   export default {
     name: 'staffInfo',
     components: {
@@ -147,7 +157,7 @@
           departments:[],
          /* seniorityStart:0,
           seniorityEnd:0, */
-          workingDateStart:'',
+          workingDateStart:'1990-01-02',
           workingDateEnd:''
         },
         workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
@@ -156,6 +166,7 @@
         orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'总院'},{code:'2',text:'分院1'},{code:'3',text:'分院2'}],
         departmentList:[],
         treemap:[],
+        SHOW_PARENT,
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
         tableData: []
       }

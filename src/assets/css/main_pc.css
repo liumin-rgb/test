@@ -313,6 +313,7 @@ li {
 .buttonGray{
   border: 2px solid #999;
   color:#999;
+  background: #fff;
 }
 /*下拉框通用  */
 .pc-select{
