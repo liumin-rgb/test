@@ -5,12 +5,13 @@
         <div class="weight600">组织架构</div>
         <div class="textAlignR">
            <span class="pc-button buttonNoback" @click="addParent()">添加分院</span>
-          <span class="pc-button buttonNoback" @click="addBranch()" v-show="showButton">添加下属组织机构</span>
+          <span :class="['pc-button','buttonNoback',showButton==true?'':'buttonGray']" @click="addBranch()"  >添加下属组织机构</span>
         </div>
       </div>
       <a-tree
        class="draggable-tree"
        draggable
+       @dragstart="onDragStart"
        @dragenter="onDragEnter"
        @drop="onDrop"
        :load-data="onLoadData"
@@ -150,6 +151,8 @@
      order1:false,
      order2:false,
      isDescending:false,
+     drag1:{},
+     drag2:{}
       }
     },
     watch:{
@@ -244,6 +247,7 @@
     },
     addBranch(){ //添加下属组织机构
      //this.status=1;
+     if(this.showButton==false) return;
      this.visible2=true;
     },
     onCheck(checkedKeys, info) {
@@ -408,12 +412,25 @@
       this.pageSize=val.pageSize;
       this.queryStaff();
     },
+    onDragStart(info){
+      this.drag1=info.node.dataRef;
+       console.log(info);
+    },
     onDragEnter(info) {
          console.log(info);
          // expandedKeys 需要受控时设置
          // this.expandedKeys = info.expandedKeys
        },
+       //拖动完成触发
        onDrop(info) {
+         this.drag2=info.node.dataRef;
+         if(this.drag1.type==1){
+
+         }else if(this.drag1.type==2){
+
+         }else{
+
+         }
          console.log(info);
          const dropKey = info.node.eventKey;
          const dragKey = info.dragNode.eventKey;

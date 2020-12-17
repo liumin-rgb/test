@@ -8,13 +8,12 @@
           :customRequest="upload"
           :before-upload="beforeUpload"
           @change="handleChange"
-
         >
         <span class="pc-input uploadS displayLB">点击上传<i class="iconfont icon-shangchuan floatR themeColor"></i></span>
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
         </a-upload>
         </div>
-        <div><span class="weight600">所属分院</span><select class="pc-input" @change="getSelectInfo()" id="orgize"><option v-for="obj in orgnizeList" :value="obj.id" >{{obj.name}}</option></select></div>
+        <div><span class="weight600">所属分院</span><select class="pc-input middleInput" @change="getSelectInfo()" id="orgize"><option v-for="obj in orgnizeList" :value="obj.id" >{{obj.name}}</option></select></div>
          <div @click="downloadTemplate"><span class="pc-button">下载模板</span></div>
          </div>
          <div class="tab">
@@ -115,7 +114,7 @@ export default {
            })
       },
     downloadTemplate(){
-      let url='/api/Employee/template';
+      let url='/api/Employee/template?id='+this.orgnize;
       utils.download(url,'模板');
     },
     checkInfo(status){
@@ -227,8 +226,6 @@ export default {
     handleCancel(){
       this.$emit("closeModel");
     },
-
-
   }
 }
 </script>

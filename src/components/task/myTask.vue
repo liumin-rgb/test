@@ -4,7 +4,7 @@
      <div :class="[tab!=1?'title_light_blue':'']" @click="tab=1">待办任务</div><div @click="tab=2" :class="[tab!=2?'title_light_blue':'']">已完成/已过期</div>
    </div>
    <div class="list-table" v-show="tab==1">
-     <el-table :data="doingData" border stripe height="72vh" style="width:unset" :header-cell-class-name="'table-header'">
+     <el-table :data="doingData" border stripe height="72vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
        <el-table-column prop="task" label="事项简介" ></el-table-column>
        <el-table-column prop="deadline" label="截止日期" ></el-table-column>
      </el-table>
@@ -42,7 +42,9 @@ import Pagination from '../Pagination'
       }
     },
     methods:{
-
+        rowClick(){
+          this.$router.push({path:'examineFile'});
+        }
     }
   };
 

@@ -61,6 +61,11 @@
           <el-table-column
             prop=""
             label="操作">
+            <template slot-scope="scope">               
+                      <i class="iconfont icon-yulan themeColor" @click="reviewFile"></i>
+                       <i class="iconfont icon-tubiao09 themeColor" @click="editFile"></i>
+                        <i class="iconfont icon-shanchu themeColor" @click="deleteFile"></i>
+                  </template>
           </el-table-column>
         </el-table>
     </div>

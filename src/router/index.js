@@ -114,7 +114,6 @@ const router = new Router({
        component: resolve => require(['@/page/personalHome'], resolve),
        meta : {
            title : '主页',
- 		   noLogin:true
        },
        children:[
          {
@@ -123,7 +122,15 @@ const router = new Router({
                component: resolve => require(['@/page/changePassword'], resolve),
                meta : {
                    title : '修改密码',
-         		   noLogin:true
+               }
+         },
+         {
+               path: '/superADM',
+               name:'superADM',
+               component: resolve => require(['@/page/superADM'], resolve),
+               meta : {
+                   title : 'superADM',
+         		   
                }
          },
        ]

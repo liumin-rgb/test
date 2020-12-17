@@ -310,6 +310,10 @@ li {
   color:#2e6eb4;
   padding:0rem 0.05rem;
 }
+.buttonGray{
+  border: 2px solid #999;
+  color:#999;
+}
 /*下拉框通用  */
 .pc-select{
 	position: absolute;

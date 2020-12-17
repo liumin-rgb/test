@@ -22,23 +22,23 @@
 
       </div>
       <div>
-        <span v-show="!isOrdinarySearch"><span class="label">隶属组织：</span><select class="pc-input" @change="getSelectInfo('orgnize')" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.code" >{{obj.text}}</option></select></span>
-        <span v-show="!isOrdinarySearch"><span class="label">部门：</span><span>
+<!--        <span v-show="!isOrdinarySearch"><span class="label">隶属组织：</span><select class="pc-input" @change="getSelectInfo('orgnize')" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.code" >{{obj.text}}</option></select></span>
+ -->
+         <span v-show="!isOrdinarySearch"><span class="label">隶属组织：</span><span>
           <a-tree-select
            allow-clear
-           multiple
            size="small"
            style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
            @change="onChange"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-           :tree-data="departmentList"
+           :tree-data="treemap"
            tree-default-expand-all
          >
          </a-tree-select>
         </span>
         </span>
-        <span v-show="!isOrdinarySearch"><span class="label">岗位：</span><select class="pc-input" @change="getSelectInfo('orgnize')" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.code" >{{obj.text}}</option></select></span>
-        <!-- <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
+<!--        <span v-show="!isOrdinarySearch"><span class="label">岗位：</span><select class="pc-input" @change="getSelectInfo('orgnize')" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.code" >{{obj.text}}</option></select></span>
+ -->        <!-- <span v-show="!isOrdinarySearch"><span class="label">工作年限：</span><input class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityStart"/>--<input
             class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span> -->
       </div>
       <div class="list-search-three">
@@ -155,25 +155,9 @@
         educationList:[{code:'0',text:'全部'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
         orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'总院'},{code:'2',text:'分院1'},{code:'3',text:'分院2'}],
         departmentList:[],
+        treemap:[],
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
-        tableData: [
-          /* {
-                "id": 22,
-                "employeeNo": 1223,
-                "name": "liza",
-                "sex": 1,
-                "birthday": "1993-12-09",
-                "age": 28,
-                "marriage": 1,
-                "political": 1,
-                "workingDate": "2019-10-20",
-                "mobile": '18621290873',
-                "seniority": "1", //工作年限
-                "department": "Lab",
-                "education": 0,
-                "workingStatus": 1
-              } */
-        ]
+        tableData: []
       }
     },
     filters:{
@@ -190,13 +174,14 @@
     },
     created(){
       this.queryInfo();
-      this.queryDepartment()
+     // this.queryDepartment();
+      this.querytreemap();
     },
     watch:{
       isOrdinarySearch:function(val){
         this.$nextTick(()=>{
           this.tableHeight=this.$refs.main.offsetHeight-this.$refs.search.offsetHeight-34-24
-          
+
         })
       }
     },
@@ -283,6 +268,29 @@
 
           }
           });
+      },
+      querytreemap(){
+          let url="/api/Organization/treemap";
+          utils.request.get(url).then((res) => {
+          	if(res){
+              if(res.success==true){
+              let list=res.result;
+              this.treemap=JSON.parse(JSON.stringify(list).replace(/name/g,"title").replace(/id/g,"key"));
+               this.forTree(this.treemap);
+               console.log(this.treemap);
+              }else{
+
+              }
+            }
+            });
+      },
+      forTree(treeList){
+        for(var i in treeList){
+           treeList[i].value=treeList[i].key;
+          if(treeList[i].children){
+            this.forTree(treeList[i].children);
+          }
+        }
       },
       offWork(id){
         		  utils.box.confirm("是否确认离职？").then(()=>{

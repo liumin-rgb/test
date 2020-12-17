@@ -20,7 +20,7 @@
     <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
       <div class="menuLarge" v-show="!collapsed">
         <div class="menu" v-for="obj in menuList">
-          <div :class="['menuitem',choosen==obj.name?'choosen':'']" @click="toggleMenu(obj)"><i :class="['iconfont', obj.icon]"></i><span :class="['title',choosen==obj.name?'weight600':'']">{{obj.name}}</span><i :class="['iconfont', obj.subMenuList.length==0?'':'icon-jiantouarrow483',obj.toggle?'rotate':'','angle']"></i></div>
+          <div :class="['menuitem',choosen==obj.name?'choosen':'']" @click="toggleMenu(obj)"><i :class="['iconfont', obj.icon]"></i><span :class="['title',choosen==obj.name?'weight600':'']">{{obj.name}}</span><i class="announce" v-show="obj.announce&&obj.announce!=0">{{obj.announce}}</i><i :class="['iconfont', obj.subMenuList.length==0?'':'icon-jiantouarrow483',obj.toggle?'rotate':'','angle']"></i></div>
           <div class="subMenuitem flexCol" v-show="obj.toggle==true">
             <span :class="['subTitle',choosen==obj1.name?'choosen':'']" v-for="obj1 in obj.subMenuList" @click="toUrl(obj1)">{{obj1.name}}</span>
           </div>
@@ -84,7 +84,7 @@ export default {
    transitionName:'',
    choosen:'',
    visible:false,
-   menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',toggle:false,subMenuList:[]},
+   menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',announce:1,toggle:false,subMenuList:[]},
              {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
              {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:''},{name:'题库管理',url:''},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
              {name:'人员管理',icon:'icon-renyuan',url:'',toggle:false,subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
@@ -275,6 +275,18 @@ export default {
 @-o-keyframes ani{
   from {transform:rotateX(0deg);}
   to {transform:rotateX(180deg);}
+}
+
+.announce{
+  width:.15rem;
+  height:.15rem;
+  border-radius: 20px;
+  background: #af1e2b;
+  color:#fff;
+  font-size:.12rem;
+  display: inline-block;
+  text-align: center;
+  line-height: .15rem;
 }
 
 </style>

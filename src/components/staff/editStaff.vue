@@ -2,6 +2,7 @@
   <div class="list-main">
   <div class="list-main-top">
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
+   <span class="pc-button" v-show="flag=='add'||flag=='edit'" @click="saveInfo"><i class="iconfont icon-baocun"></i>保存</span>
    <!-- <div>
       <span class="pc-button" v-show="flag==1"><i class="iconfont icon-baocun"></i>保存</span>
       <span class="pc-button buttonNoback" v-show="flag==2"><i class="iconfont icon-tubiao09"></i>修改</span>
@@ -13,9 +14,9 @@
       </div>
       <transition name="t1">
      <div v-show="toggle==true">
-       <div class="textAlignR">
+      <!-- <div class="textAlignR">
           <span class="pc-button" v-show="flag=='add'||flag=='edit'" @click="saveInfo"><i class="iconfont icon-baocun"></i>保存</span>
-       </div>
+       </div> -->
          <table class="table">
            <tr>
              <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="staffInfo.workingStatus==1?'在职':'离职'" readonly="readonly" /></div></td>
@@ -350,7 +351,7 @@
             return isJpgOrPng;
           },
           upload(item){
-           	 		let url = "";
+           	 		let url = "/api/Employee/uploadAttachment?type=1";
            			 const form = new FormData();
            			   // 文件对象
            			  form.append("file", item.file);
@@ -360,12 +361,7 @@
            	 			this.loading=false;
                   if(res){
            	 			if (res.success == true) {
-                    // getBase64(info.file.originFileObj, imageUrl => {
-                    //   this.imageUrl = imageUrl;
-                    //   this.loading = false;
-                    // });
-                    // this.tableData=res.result||[];
-                    // item.onSuccess(res, item.file);
+
            	 			} else {
                    //  item.onSuccess(res, item.file);
            	 				utils.box.toast("上传失败");

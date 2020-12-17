@@ -2,11 +2,23 @@
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
         <div class="pc-header">
-          <div class="pc-header-one"><img src="../assets/img/logo_blue.png"></div>
-          <div class="pc-header-two">
-            <span class="color999 font16 verTop">系统管理员</span>
-            <i class="iconfont icon-tuichu2 font30 themeColor pointer" @click="logout"></i>
-             <i class="iconfont icon-mima font30 themeColor pointer" @click="set"></i>
+          <div class="pc-header-one" >
+           <img src="../assets/img/logo_blue.png"/>
+           <span class="font16 themeColor">{{title}}</span>
+          </div>
+          <div class="pc-header-two flex">
+            <span><img src="../assets/img/background_easy.png" class="headerImg"/></span>
+            <div class="color999  flexCol headerUser"><span>Liza<br>系统管理员</span></div>
+            <el-popover trigger="hover" placement="bottom">
+              <div class="pointer themeColor weight600 font12">
+              <p @click="setting"><i class="iconfont icon-mima"></i>修改密码</p>
+              <p @click="logout"><i class="iconfont icon-tuichu2"></i>退出</p>
+              </div>
+              <i class="iconfont icon-kaishi1 font16  pointer color999" slot="reference"></i>
+            </el-popover>
+        <!--   <i class="iconfont icon-mima font20 themeColor pointer" @click="setting"></i> -->
+           <!-- <i class="iconfont icon-mima font20 themeColor pointer" @click="setting"></i>
+            <i class="iconfont icon-tuichu2 font20 themeColor pointer" @click="logout"></i> -->
             </div>
         </div>
       </a-layout-header>
@@ -22,8 +34,11 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      title:'创建医院管理员'
+    };
   },
+   
   methods:{
     logout(){
       utils.cache.removeItem('TOKEN');
@@ -42,8 +57,18 @@ export default {
   .ant-layout{
      height: 100%;
       }
-
-
+  .headerImg{
+    width:.3rem;
+    height:.3rem;
+    border-radius: .3rem;
+    margin-right:.1rem;
+      }
+  .headerUser{
+     text-align: center;
+     font-size: .1rem;
+     line-height: .15rem;
+     margin-top:.1rem;
+   }
 .pc-header{
   display: flex;
   display: -webkit-flex;

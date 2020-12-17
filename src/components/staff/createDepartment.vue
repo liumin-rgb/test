@@ -10,7 +10,7 @@
        <span class="label1">权限：</span>
        <span class="marginL1Rem"><a-checkbox-group @change="onChange">
            <a-row>
-             <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
+             <a-col :span="6" v-for="obj in permissionList" :key="obj.id"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
            </a-row>
          </a-checkbox-group>
          </span>
