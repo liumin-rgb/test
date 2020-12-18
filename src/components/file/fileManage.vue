@@ -206,6 +206,10 @@
       margin-top:.2rem;
     }
   }
-
+.uploadS {
+    font-size: 0.1rem;
+    padding-left: 0.1rem;
+    line-height: 0.25rem;
+    }
 
 </style>

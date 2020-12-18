@@ -161,7 +161,7 @@
         order1:false,
         order2:false,
         isDescending:false,
-        chooseKey1:'',
+        chooseKey1:1,
         chooseKey2:[],
         editable:false,
         config:{
@@ -279,6 +279,8 @@
       queryInfo(){
         let url = "/api/Document/getList";
         let params={
+   "floderId": this.chooseKey1,
+   "tagIds": this.chooseKey2,
   "fileName": this.fileName,
   "status": this.status,
   "sortField": this.sortField,
@@ -331,12 +333,12 @@
             return true
           },
     onSelect(keys, event) {
-      this.chooseKey1=keys;
-      console.log('Trigger Select', keys, event);
+      this.chooseKey1=keys[0]; //keys[0]||
+      this.queryInfo();
     },
     onSelect1(keys, event) {  //点击标签过滤文件
     this.chooseKey2=keys;
-   console.log(keys, event);
+    this.queryInfo();
     },
     onExpand() {
       console.log('Trigger Expand');
