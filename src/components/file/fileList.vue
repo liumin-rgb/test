@@ -50,10 +50,10 @@
     <div class="list-main-two">
       <div class="list-search">
        <div class="list-search-one flexBtw">
-         <div><span><span>状态：</span><select class="pc-input"><option  value="草稿" >草稿</option><option  value="流转中" >流转中</option></select></span>
-         <span><span>文件名称：</span><input class="pc-input bigInput"/></span>
+         <div><span><span>状态：</span><select class="pc-input" @change="getSelectInfo('status')" id="status"><option  v-for="obj in statusList" :value="obj.code">{{obj.text}}</option></select></span>
+         <span><span>文件名称：</span><input class="pc-input bigInput" v-model="fileName"/></span>
          </div>
-         <span class="pc-button"><i class="iconfont icon-sousuo"></i>搜索</span>
+         <span class="pc-button" @click="queryInfo"><i class="iconfont icon-sousuo"></i>搜索</span>
 
        </div>
        <div class="list-search-two"></div>
@@ -65,9 +65,9 @@
         <div @click="toUrl('fileManage')">批量上传</div>
        </div>
        </span>
-       <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan1 "></i>下载</span>
-       <span class="pc-button buttonNoback"><i class="iconfont icon-feichu "></i>废除</span>
-       <span class="pc-button buttonNoback"><i class="iconfont icon-ziyuan202 "></i>审核</span>
+       <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>下载</span>
+       <span class="pc-button buttonNoback" @click="abolish"><i class="iconfont icon-feichu "></i>废除</span>
+       <span class="pc-button buttonNoback" @click="examine"><i class="iconfont icon-ziyuan202 "></i>审核</span>
        </div>
       </div>
       <div class="list-table">
@@ -81,24 +81,24 @@
             :header-cell-class-name="'table-header'"
             >
             <el-table-column type="selection"></el-table-column>
-            <el-table-column prop="fileName"label="文件名称" width="200">
+            <el-table-column prop="name"label="文件名称" width="200">
               <template slot="header" slot-scope="scope">
-                 <span class="pointer"><span class="gray ">文件名称</span><i class="iconfont icon-paixu themeColor"></i></span>
+                 <span class="pointer" @click="takeOrder(true)"><span class="gray ">文件名称</span><i class="iconfont icon-paixu themeColor"></i></span>
                </template>
                <template slot-scope="scope">
-                      <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.fileName}}</span>
+                      <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.name}}</span>
                </template>
             </el-table-column>
-            <el-table-column prop="number"label="编号" width="120">
+            <el-table-column prop="docNo"label="编号" width="120">
               <template slot="header" slot-scope="scope">
-                 <span class="pointer"><span class="gray ">编号</span><i class="iconfont icon-paixu themeColor"></i></span>
+                 <span class="pointer" @click="takeOrder(false)"><span class="gray ">编号</span><i class="iconfont icon-paixu themeColor"></i></span>
                </template>
             </el-table-column>
             <el-table-column prop="version" label="版本号">
             </el-table-column>
             <el-table-column prop="status"label="状态" align="center">
             <template  slot-scope="scope" >
-                <span :style="{color:(scope.row.status=='流转中'?'#ea9900':scope.row.status=='已生效'?'#2e6eb4':'')}">{{scope.row.status}}</span>
+                <span :style="{color:(scope.row.status==3?'#ea9900':scope.row.status==2?'#2e6eb4':'')}">{{scope.row.status |filter1(statusList)}}</span>
                   </template>
             </el-table-column>
             <el-table-column prop="creator"label="创建人" align="center">
@@ -109,7 +109,7 @@
                         <div class="pointer themeColor flex flexWrap" style="width:120px">
                         <span class="pc-button buttonNoback1 font10 " v-for="obj in scope.row.tags">{{obj}}</span>
                         </div>
-                        <div slot="reference" class="name-wrapper">
+                        <div slot="reference" class="name-wrapper" v-show="scope.row.tags!=null&&scope.row.tags.length>0">
                          <i class="iconfont icon-icontag themeColor"></i>
                         </div>
                       </el-popover>
@@ -119,10 +119,10 @@
        <template slot-scope="scope">
                <el-popover trigger="hover" placement="bottom">
                  <div class="pointer themeColor weight600 font12">
-                 <p @click="toDetail()"><i class="iconfont icon-xiangqing"></i>文件详情</p>
-                 <p @click="editHtml()"><i class="iconfont icon-bianji"></i>编辑</p>
-                 <p @click="readFile()"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
-                 <p @click="openTagManage('single')"><i class="iconfont icon-biaoqian"></i>标签管理</p>
+                 <p @click="toDetail(scope.row.id)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
+                 <p @click="editHtml(scope.row.id)"><i class="iconfont icon-bianji"></i>编辑</p>
+                 <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
+                 <p @click="openTagManage('single',scope.row.id,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                  </div>
                  <div slot="reference" class="name-wrapper">
                   <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
@@ -133,7 +133,7 @@
           </el-table>
       </div>
       <div class="list-bottom">
-       <Pagination :value="pageIndex" :maxPage="maxPage" />
+     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
       </div>
     </div>
     <TagManage :visible="visible2" :operation="operation" @closeTagManage="closeTagManage"/>
@@ -152,21 +152,33 @@
       return {
         pageIndex:1,
         maxPage:1,
+        pageSize:10,
+        totalCount:0,
         showSelect:false,
         visible2:false,
         visible1:false,
+        sortField:true,
+        order1:false,
+        order2:false,
+        isDescending:false,
         config:{
           title:'提交传阅',
           label:'传阅人',
         },
-        operation:'all',
+        status:0,
+        fileName:'',
+        statusList:[{code:'0',text:'全部'},{code:'1',text:'草稿'},{code:'2',text:'已生效'},{code:'3',text:'流转中'},{code:'4',text:'废除'}],
+        operation:{
+          type:'all',
+          singleTag:[],
+        },
         gData:[
   {
     title: '0-0',
     key: '0-0',
     scopedSlots: { title: 'custom' },
     showBtn:false,
-    multipleSelection:'',
+    multipleSelection:[],
     children: [
       {
         title: '0-0-1',
@@ -193,7 +205,7 @@
     ]
   },
 ],
-        tableData: [
+        tableData: [/*
           {
             fileName:'文件1',
             number:'123',
@@ -210,7 +222,7 @@
             creator:'lisa',
             tags:['组织管理','质量体系','外部服务和供应'],
           }
-        ],
+        */],
         gData1:[{
             title: '0-0',
             key: '0-0',
@@ -233,10 +245,89 @@
         ]
       }
     },
+    filters:{
+      filter1:function(val1,val2){
+         for(var i in val2){
+           if(val2[i].code==val1){
+             return val2[i].text;
+           }
+         }
+      }
+    },
     created(){
+     this.queryInfo();
       console.log(this.gData);
     },
     methods: {
+      takeOrder(sortField){
+        this.sortField=sortField;
+        if(sortField==true){
+          this.isDescending=this.order1==true?false:true;
+        }else{
+           this.isDescending=this.order2==true?false:true;
+        }
+        this.queryInfo()
+      },
+      changePage(val){
+        this.pageIndex=val.pageIndex;
+        this.pageSize=val.pageSize;
+        this.queryInfo();
+      },
+      abolish(){
+        if(this.checkSelection()){
+          this.config={
+            title:'提交废除',
+            label:'审批人',
+          },
+          this.visible1=true;
+        }
+
+      },
+      examine(){
+         if(this.checkSelection()){
+        this.config={
+          title:'提交审核',
+          label:'审批人',
+        },
+        this.visible1=true;
+        }
+      },
+      download(){
+        if(this.checkSelection()){
+
+        }
+      },
+      queryInfo(){
+        let url = "/api/Document/getList";
+        let params={
+  "fileName": this.fileName,
+  "status": this.status,
+  "sortField": this.sortField,
+  "isDescending": this.isDescending,
+  "pageIndex": this.pageIndex,
+  "pageSize": this.pageSize
+}
+         this.spinning=true;
+        	utils.request.post(url,params,false).then((res) => {
+            this.spinning=false;
+        		if(res){
+              if(res.success==true){
+                let totalCount=res.result.totalCount;
+                 this.totalCount=totalCount;
+                 this.maxPage=Math.ceil(totalCount/this.pageSize);
+                let items=res.result.items;
+                 this.tableData=items;
+              }else{
+
+              }
+
+            }
+            });
+
+      },
+      getSelectInfo(id){
+        this[id]=this.getSelectValue(id);
+      },
       toDetail(){
         this.$router.push({path:'fileDetail',query:{}});
       },
@@ -244,10 +335,21 @@
         this.$router.push({path:'editHtml',query:{}});
       },
       readFile(){
+        this.config={
+          title:'提交传阅',
+          label:'传阅人',
+        },
         this.visible1=true;
       },
       handleSelectionChange(val) {
          this.multipleSelection = val;
+          },
+         checkSelection(){
+            if(this.multipleSelection==[]||this.multipleSelection==undefined){
+              utils.box.toast("您未选择任何文件");
+              return false;
+            }
+            return true
           },
  onSelect(keys, event) {
       console.log('Trigger Select', keys, event);
@@ -262,8 +364,12 @@
           this.showSelect=false;
           this.$router.push({path:url,query:{}});
         },
-        openTagManage(type){
-          this.operation=type;
+        openTagManage(type,id,tags){
+          this.operation={
+            type:type,
+            id:id||'',
+            singleTag:tags||[]
+          }
           this.visible2=true;
         },
         closeTagManage(){
