@@ -41,30 +41,33 @@
           height="350"
 		     :header-cell-class-name="'table-header'">
           <el-table-column
-            prop=""
+            prop="name"
             label="文档名称"
             width="180">
           </el-table-column>
           <el-table-column
-            prop=""
+            prop="docNo"
             label="文档编号"
             width="180">
           </el-table-column>
           <el-table-column
-            prop=""
+            prop="version"
             label="版本号">
           </el-table-column>
           <el-table-column
-            prop=""
+            prop="type"
             label="文档类型">
+              <template slot-scope="scope">
+                <span>{{typeList[+scope.row.type-1]}}</span>
+                </template>
           </el-table-column>
           <el-table-column
             prop=""
             label="操作">
             <template slot-scope="scope">
-                      <i class="iconfont icon-yulan themeColor" @click="reviewFile"></i>
-                       <i class="iconfont icon-tubiao09 themeColor" @click="editFile"></i>
-                        <i class="iconfont icon-shanchu themeColor" @click="deleteFile"></i>
+                      <i class="iconfont icon-yulan themeColor font16"    @click="reviewFile(scope.row.id)" v-if="scope.row.type==3||scope.row.type==4"></i>
+                      <i class="iconfont icon-tubiao09 themeColor font16" @click="editFile(scope.row.id)" v-if="scope.row.type==1"></i>
+                      <i class="iconfont icon-shanchu themeColor font16" @click="deleteFile(scope.row.id)"></i>
                   </template>
           </el-table-column>
         </el-table>
@@ -98,11 +101,28 @@
          label:'审批人',
         },
         tableData: [
-
-        ]
+          {
+            id:'1',
+            name:'文件1',
+            docNo:'12',
+            version:'12.2',
+            type:'3',
+          },
+          {
+            id:'2',
+            name:'文件2',
+            docNo:'12',
+            version:'12.2',
+            type:'1',
+          }
+        ],
+        typeList:['HTML','视频','PDF','图片'],
       }
     },
     methods:{
+      editFile(id){
+        this.$router.push({path:'editHtml',query:{id:id}});
+      },
       handleChange(info) {
             if (info.file.status === 'uploading') {
               this.loading = true;

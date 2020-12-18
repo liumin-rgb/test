@@ -5,11 +5,11 @@
         <div class=" weight600">文件夹目录</div>
 
       </div>
+      <div class="inner">
        <a-tree
            class="draggable-tree"
            draggable
 		       show-icon
-           blockNode="true"
            :tree-data="gData"
            @dragenter="onDragEnter"
            @drop="onDrop"
@@ -18,10 +18,13 @@
            defaultExpandParent
          >
          <template slot="custom" slot-scope="item">
-                <span>{{item.title}}</span>
-                <i :class="['iconfont icon-jiahao themeColor',item.showBtn?'':'displayN']"  @click.stop="appendNode(item)"></i>
-                 <i :class="['iconfont icon-tubiao09 themeColor',item.showBtn?'':'displayN']" @click.stop="editNode(item)"></i>
-                 <i :class="['iconfont icon-shanchu themeColor',item.showBtn?'':'displayN']" @click.stop="deleteNode(item)"></i>
+                <span v-if="item.key==chooseKey1&&editable" contenteditable="true" @blur="insuerEdit($event,item)" @click.stop="">{{item.title}}</span>
+                <span v-else>{{item.title}}</span>
+                <span v-show="item.key==chooseKey1">
+                 <i  class='iconfont icon-jiahao themeColor'  @click.stop="appendNode(item)"></i>
+                 <i  class='iconfont icon-tubiao09 themeColor' @click.stop="editNode(item)"></i>
+                 <i  class='iconfont icon-shanchu themeColor' @click.stop="deleteNode(item)"></i>
+                </span>
          </template>
         <!-- <template slot='switcherIcon'>
          <i class="iconfont icon-wenjianjia" :selected="!selected"></i>
@@ -34,18 +37,15 @@
            <span class="pc-button buttonNoback" @click="openTagManage('all')">标签管理</span>
          </div>
         <a-tree
-            class="draggable-tree"
-            draggable
+            multiple
             show-icon
-            blockNode="true"
             :tree-data="gData1"
-            @select="onSelect"
+            @select="onSelect1"
             :icon='getIcon1'
             defaultExpandParent
           >
           </a-tree>
-
-
+      </div>
     </div>
     <div class="list-main-two">
       <div class="list-search">
@@ -107,7 +107,7 @@
               <template slot-scope="scope">
                       <el-popover trigger="hover" placement="bottom">
                         <div class="pointer themeColor flex flexWrap" style="width:120px">
-                        <span class="pc-button buttonNoback1 font10 " v-for="obj in scope.row.tags">{{obj}}</span>
+                        <span class="pc-button buttonNoback1 font10 " v-for="obj in scope.row.tags">{{obj.name}}</span>
                         </div>
                         <div slot="reference" class="name-wrapper" v-show="scope.row.tags!=null&&scope.row.tags.length>0">
                          <i class="iconfont icon-icontag themeColor"></i>
@@ -155,12 +155,15 @@
         pageSize:10,
         totalCount:0,
         showSelect:false,
-        visible2:false,
         visible1:false,
+        visible2:false,
         sortField:true,
         order1:false,
         order2:false,
         isDescending:false,
+        chooseKey1:'',
+        chooseKey2:[],
+        editable:false,
         config:{
           title:'提交传阅',
           label:'传阅人',
@@ -168,27 +171,22 @@
         status:0,
         fileName:'',
         statusList:[{code:'0',text:'全部'},{code:'1',text:'草稿'},{code:'2',text:'已生效'},{code:'3',text:'流转中'},{code:'4',text:'废除'}],
-        operation:{
-          type:'all',
-          singleTag:[],
-        },
+        operation:{type:'all',id:'',singleTag:[]},
         gData:[
   {
     title: '0-0',
     key: '0-0',
     scopedSlots: { title: 'custom' },
-    showBtn:false,
     multipleSelection:[],
     children: [
       {
         title: '0-0-1',
         key: '0-0-1',
         scopedSlots: { title: 'custom' },
-        showBtn:true,
         children: [
-          { title: '0-0-1-0', key: '0-0-1-0', showBtn:false,scopedSlots: { title: 'custom' } },
-          { title: '0-0-1-1', key: '0-0-1-1', showBtn:false,scopedSlots: { title: 'custom' } },
-          { title: '0-0-1-2', key: '0-0-1-2', showBtn:false,scopedSlots: { title: 'custom' } }
+          { title: '0-0-1-0', key: '0-0-1-0', scopedSlots: { title: 'custom' },children:[] },
+          { title: '0-0-1-1', key: '0-0-1-1', scopedSlots: { title: 'custom' },children:[] },
+          { title: '0-0-1-2', key: '0-0-1-2', scopedSlots: { title: 'custom' },children:[] }
         ]
       },
     ]
@@ -197,32 +195,14 @@
     title: '0-1',
     key: '0-1',
     scopedSlots: { title: 'custom' },
-    showBtn:false,
     children: [
-      { title: '0-1-0-0', key: '0-1-0-0', showBtn:false,scopedSlots: { title: 'custom' } },
-      { title: '0-1-0-1', key: '0-1-0-1',showBtn:false, scopedSlots: { title: 'custom' } },
-      { title: '0-1-0-2', key: '0-1-0-2', showBtn:false,scopedSlots: { title: 'custom' } }
+      { title: '0-1-0-0', key: '0-1-0-0', scopedSlots: { title: 'custom' },children:[] },
+      { title: '0-1-0-1', key: '0-1-0-1', scopedSlots: { title: 'custom' },children:[] },
+      { title: '0-1-0-2', key: '0-1-0-2', scopedSlots: { title: 'custom' },children:[] }
     ]
   },
 ],
-        tableData: [/*
-          {
-            fileName:'文件1',
-            number:'123',
-            version:'1.2',
-            status:'草稿',
-            creator:'lisa',
-            tags:['组织管理','质量体系','外部服务和供应'],
-          },
-          {
-            fileName:'文件2',
-            number:'123',
-            version:'1.2',
-            status:'流转中',
-            creator:'lisa',
-            tags:['组织管理','质量体系','外部服务和供应'],
-          }
-        */],
+        tableData: [],
         gData1:[{
             title: '0-0',
             key: '0-0',
@@ -241,7 +221,6 @@
               },
             ],
             }
-
         ]
       }
     },
@@ -326,7 +305,7 @@
 
       },
       getSelectInfo(id){
-        this[id]=this.getSelectValue(id);
+        this[id]=utils.common.getSelectValue(id);
       },
       toDetail(){
         this.$router.push({path:'fileDetail',query:{}});
@@ -344,26 +323,31 @@
       handleSelectionChange(val) {
          this.multipleSelection = val;
           },
-         checkSelection(){
-            if(this.multipleSelection==[]||this.multipleSelection==undefined){
+      checkSelection(){
+            if(!this.multipleSelection||this.multipleSelection.length==0){
               utils.box.toast("您未选择任何文件");
               return false;
             }
             return true
           },
- onSelect(keys, event) {
+    onSelect(keys, event) {
+      this.chooseKey1=keys;
       console.log('Trigger Select', keys, event);
+    },
+    onSelect1(keys, event) {  //点击标签过滤文件
+    this.chooseKey2=keys;
+   console.log(keys, event);
     },
     onExpand() {
       console.log('Trigger Expand');
     },
- handleMenuClick(e) {
+    handleMenuClick(e) {
       console.log('click', e);
     },
-        toUrl(url){
+    toUrl(url){
           this.showSelect=false;
           this.$router.push({path:url,query:{}});
-        },
+    },
         openTagManage(type,id,tags){
           this.operation={
             type:type,
@@ -441,23 +425,31 @@
             },
             appendNode(data){
                 //模拟添加
-                      const newChild = { title: '新建文件夹',
+                      const newChild = {
+                        title: '新建文件夹',
                         key: 'ceshi1',
                         scopedSlots: { title: 'custom' },
-                        children: [] }
+                        children: [] ,
+                        }
                       if (!data.children) {
                         this.$set(data, 'children', [])
                       }
                       data.children.push(newChild)
             },
             editNode(data){
-           this.searchOption(data, this.treeData, 'edit');
+              this.editable=true;
+
+            },
+            insuerEdit(e,data){
+              this.editable=false;
+              data.title=e.target.innerHTML;
+             this.searchOption(data, this.gData, 'edit',data.title);
             },
             deleteNode(data){
-            this.searchOption(data, this.treeData,'delete');
+            this.searchOption(data, this.gData,'delete');
             },
             //递归查找
-           searchOption (option, arr, type = 'delete') {
+           searchOption (option, arr, type = 'delete',title) {
                  console.log(option, arr)
                  for (let s = 0; s < arr.length; s++) {
                    console.log(arr[s].key, option.key)
@@ -466,15 +458,16 @@
                        arr.splice(s, 1)
                      } else {
                      //这是模拟数据编辑数据
-                       this.$set(arr, s, {
-                         title: '12121212',
+                       /* this.$set(arr, s, {
+                         title: title,
                          key: '12121212',
                          scopedSlots: { title: 'custom' }
-                       })
+                       }) */
+                       arr[s].title=title;
                      }
                      break
                    } else if (arr[s].children && arr[s].children.length > 0) { // 递归条件
-                     this.searchOption(option, arr[s].children,type)
+                     this.searchOption(option, arr[s].children,type,title)
                    } else {
                      continue
                    }
@@ -515,6 +508,12 @@
       margin-right: .1rem;
       border-radius: 5px;
       padding:.05rem;
+
+      .inner{
+        width:100%;
+        height:82vh;
+        overflow: auto;
+      }
     }
 
     &-two {
@@ -560,5 +559,6 @@
   }
   .btPadding{padding:0.04rem 0.05rem}
   .iconMargin{margin-left:.3rem}
+
 
 </style>

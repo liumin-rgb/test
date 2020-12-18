@@ -1,7 +1,8 @@
 <template>
   <a-modal v-model="visible" title="文件格式自定义" :afterClose="handleCancel" width="50%">
       <div class="format ">
-        <div class="flex paddingLR2rem gray">
+         <span class="themeColor marginR1VW">格式：文件名称_文件编号_版本号</span>
+        <div class="flex paddingLR2rem gray marginT2VH">
           <div class="flexCol textInput"><span class="marginL1Rem">第一项</span><select class='pc-input width1rem' id="format1"  @change="getSelectInfo('format1')"><option v-for="obj in format1List" :value="obj.code" :selected="obj.code==1?'selected':''">{{obj.text}}</option></select></div>
           <div class="flexCol textInput"><span class="marginL1Rem">分隔符</span><input  class='pc-input smallInput' v-model="symbol1"/></div>
           <div class="flexCol textInput"><span class="marginL1Rem">第二项</span><select  class='pc-input width1rem' id="format2" @change="getSelectInfo('format2')"><option v-for="obj in format2List" :value="obj.code" :selected="obj.code==2?'selected':''">{{obj.text}}</option></select></div>
@@ -55,7 +56,7 @@ export default {
   methods:{
     getSelectInfo(id){
       this[id]=utils.common.getSelectValue(id);
-      
+
     },
     handleCancel(){
       this.$emit("closeModel");

@@ -35,7 +35,7 @@ import Pagination from '../Pagination'
         finishData:[
           {
           task:'审批文件',
-          deadline:'2020-12-23',
+          deadline:'无',
           }
         ],
         tab:'1',

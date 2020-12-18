@@ -1,11 +1,11 @@
 <template>
   <a-modal v-model="visible" title="标签管理" @ok="handleOk">
-      <div class="tag-one" v-if="operation=='all'">
+      <div class="tag-one" v-if="operation.type=='all'">
        <div class="tag-one-create"><span class="pc-button buttonNoback font10"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
        <div class="tag-one-drag">
-         <draggable v-model="tagList"    :options="{animation: 300}" >
-         	<div  v-for="obj in tagList" class="pc-drag">
-            <span contenteditable="true" style="outline: none;" @blur="obj=$event.target.innerHTML">{{obj}}</span>
+         <draggable v-model="allTagsList"    :options="{animation: 300}" >
+         	<div  v-for="obj in allTagsList" class="pc-drag">
+            <span contenteditable="true" style="outline: none;" @blur="obj.name=$event.target.innerHTML">{{obj.name}}</span>
          <span>
           <i class="iconfont icon-shanchu themeColor weight600 font16 pointer"></i>
          	<i class="iconfont icon-tuodong themeColor weight600 font16 pointer"></i>
@@ -23,22 +23,14 @@
       </div>
       <div class="tag-two-now">
         <span>当前标签:</span>
-        <div>
-          <span class="pc-button buttonNoback">文件控制</span>
-          <span class="pc-button buttonNoback">组织管理</span>
-          <span class="pc-button buttonNoback">组织管理</span>
-          <span class="pc-button buttonNoback">组织管理</span>
-          <span class="pc-button buttonNoback">组织管理</span>
+        <div >
+          <span class="pc-button buttonNoback" v-for="obj in singleTagList">{{obj.name}}</span>
         </div>
       </div>
       <div class="tag-two-all">
         <div>所有标签</div>
         <div>
-        <span class="pc-button buttonNoback">文件控制</span>
-        <span class="pc-button buttonNoback">组织管理</span>
-        <span class="pc-button buttonNoback">组织管理</span>
-        <span class="pc-button buttonNoback">组织管理</span>
-        <span class="pc-button white">组织管理</span>
+        <span :class="['pc-button', obj.choosen?'white':'buttonNoback']" @click="chooseTag(obj)" v-for="obj in allTagsList">{{obj.name}}</span>
         </div>
       </div>
       </div>
@@ -46,7 +38,7 @@
                <a-button key="back" @click="handleCancel">
                  取消
                </a-button>
-               <a-button key="submit" type="primary"  @click="handleOk">
+               <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
                  提交
                </a-button>
         </template>
@@ -63,24 +55,77 @@ export default {
       type:Boolean
     },
     operation:{
-      default:'all', //all 所有标签  single:单个标签
-      type:String
+      default:()=>{}, //all 所有标签  single:单个标签
+      type:Object
     },
   },
   data() {
     return {
-      tagList:[]
+      loading:false,
+      allTagsList:[{id:1,name:'组织管理'},{id:2,name:'外部服务和供应'},{id:3,name:'组织管理2'},{id:4,name:'组织管理3'},],
+      singleTagList:[]
+    }
+  },
+  watch:{
+    visible:function(val){
+      if(val==true){
+        this.queryAllTags();
+      }
+      if(this.operation.type=="single"){
+        this.singleTagList=this.operation.singleTag;
+      }
     }
   },
   created(){
-    this.tagList=['标签1','标签2','标签3','标签4'];
+
   },
   methods:{
+    chooseTag(obj){
+      obj.choosen=!obj.choosen;
+       if(obj.choosen==true){
+         this.singleTagList.push(obj);
+       }else{
+         let index=this.singleTagList.findIndex((item)=>{item.id==obj.id});
+         this.singleTagList.splice(index,1);
+       }
+    },
+    queryAllTags(){
+        let url="";
+        utils.request.get(url).then((res) => {
+        	if(res){
+            if(res.success==true){
+              this.allTagsList=res.result;
+              if(this.operation.type=="single"){
+                for(var i in this.allTagsList){
+                  for(var j in this.singleTagList){
+                    if(this.allTagsList[i].id==this.singleTagList[j].id){
+                      this.allTagsList[i].choosen=true;
+                    }
+                  }
+                }
+              }
+            }else{
+            }
+          }
+          });
+    },
     handleCancel(){
       this.$emit("closeTagManage");
     },
     handleOk(){
-    this.handleCancel()
+          this.loading=true;
+          let url="";
+          utils.request.post(url,params,false).then((res) => {
+          	if(res){
+              this.loading=false;
+              if(res.success==true){
+                utils.box.toast("提交成功");
+                this.handleCancel()
+              }else{
+              }
+            }
+            });
+
     }
 
   }
