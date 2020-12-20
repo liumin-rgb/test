@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="visible" title="人员添加" :afterClose="handleCancel" :dialogClass="'bigModel'">
+  <a-modal v-model="visible" title="人员添加" :afterClose="handleCancel" :dialogClass="'bigModel'" >
       <div class="format ">
         <div>
         <span class="label font12 width1rem">人员姓名/工号：</span><input class="pc-input" v-model="key">
@@ -9,24 +9,30 @@
        </div>
        <a-spin :spinning="sping">
           <div class="tab flexBtw marginT1VH marginB1VH">
-       <el-table :data="tableData1" border height="365" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
-             <el-table-column type="selection"></el-table-column>
-             <el-table-column prop="name" label="姓名"  ></el-table-column>
-             <el-table-column prop="employeeNo" label="工号" ></el-table-column>
-             <el-table-column prop="department" label="部门"></el-table-column>
+      <div class=" width33">
+       <el-table :data="tableData1"  border height="60vh" style="width:100%" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+             <el-table-column type="selection" width="50%"></el-table-column>
+             <el-table-column prop="name" width="70%" label="姓名"  ></el-table-column>
+             <el-table-column prop="employeeNo" width="70%" label="工号" ></el-table-column>
+             <el-table-column prop="department" width="70%" label="部门"></el-table-column>
        </el-table>
-           <el-table :data="tableData2" border height="365" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
-                <el-table-column type="selection"></el-table-column>
-                <el-table-column prop="name" label="姓名"  ></el-table-column>
-                <el-table-column prop="employeeNo" label="工号" ></el-table-column>
-                <el-table-column prop="department" label="部门"></el-table-column>
+       </div>
+       <div  class="  width33">
+           <el-table :data="tableData2" border height="60vh"  style="width:100%" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="50%"></el-table-column>
+                <el-table-column prop="name" label="姓名"  width="70%"></el-table-column>
+                <el-table-column prop="employeeNo" label="工号" width="70%"></el-table-column>
+                <el-table-column prop="department" label="部门"width="70%"></el-table-column>
            </el-table>
-        <el-table :data="tableData3" border height="365" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
-                <el-table-column type="selection"></el-table-column>
-                <el-table-column prop="name" label="姓名"  ></el-table-column>
-                <el-table-column prop="employeeNo" label="工号" ></el-table-column>
-                <el-table-column prop="department" label="部门"></el-table-column>
+           </div>
+        <div class="width33">
+        <el-table :data="tableData3" border height="60vh" style="width:100%" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="50%"></el-table-column>
+                <el-table-column prop="name" label="姓名"  width="70%"></el-table-column>
+                <el-table-column prop="employeeNo" label="工号" width="70%"></el-table-column>
+                <el-table-column prop="department" label="部门"width="70%"></el-table-column>
         </el-table>
+        </div>
            </div>
            </a-spin>
             <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>

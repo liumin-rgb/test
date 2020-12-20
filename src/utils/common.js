@@ -212,17 +212,19 @@ const common = {
   	 let time=year+''+month+day+hour+minute+seconds+seconds;
   	 return name+'-'+time;
   },
-  getSelectedValue(id){   
+  getSelectedValue(id){
       let Sel=document.getElementById(id);
       let index=Sel.selectedIndex;
       let text=Sel.options[index].text;
       let value=Sel.options[index].value;
       return value
-    
+
   },
   /**
-   * 将数组分成三组
+   * 重置data中的数据
    */
-  
+  resetData(_this){
+    Object.assign(_this.$data, _this.$options.data());
+  },
 }
 export default common

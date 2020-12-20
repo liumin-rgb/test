@@ -8,6 +8,7 @@
           <span :class="['pc-button','buttonNoback',showButton==true?'':'buttonGray']" @click="addBranch()"  >添加下属组织机构</span>
         </div>
       </div>
+      <div class="inner">
       <a-tree
        class="draggable-tree"
        draggable
@@ -29,12 +30,12 @@
             <a-icon :type="selected ? 'frown' : 'frown-o'" />
           </template> -->
         </a-tree>
-
+     </div>
     </div>
     <div class="list-main-two" ref="mainTwo">
     <div class="textAlignR border-bottom-line paddingTB1rem" ref="search">
        <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
-       <span :class="['pc-button',status==0&&orgDetail.name!=''?'':'buttonGray']" @click="startEdit()" >编辑</span>
+       <span :class="['pc-button',status==0&&orgDetail.name!=''?'':'buttonGray']" @click="startEdit()" v-show="status==0">编辑</span>
     </div>
     <div class="list-head" @click="toggle1=!toggle1" ref="head">
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>详情</div>
@@ -61,11 +62,11 @@
         <span class="themeColor weight600">权限分配</span>
       </div> -->
       <div class="paddingTB1rem">
-       <a-checkbox-group @change="onChange" >
-           <a-row>
-              <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" :default-checked="obj.selected" :disabled="status==0?true:false">{{obj.title}}</a-checkbox></a-col>
-           </a-row>
-         </a-checkbox-group>
+        <a-checkbox-group :disabled="status==0?true:false" :value="permissions"  @change="onChange">
+      <a-row>
+        <a-col :span="6" v-for="obj in permissionList"><a-checkbox :value="obj.permission" >{{obj.title}}</a-checkbox></a-col>
+      </a-row>
+      </a-checkbox-group>
       </div>
     </div>
     </transition>
@@ -95,7 +96,7 @@
 <!--        <el-table-column prop="" label="部门"></el-table-column>
  -->  </el-table>
       </div>
-      <div class="list-bottom">
+      <div class="list-bottom" ref="bottom">
         <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
       </div>
     </div>
@@ -157,14 +158,20 @@
     },
     watch:{
       toggle1:function(){
-       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
+        this.$nextTick(()=>{
+          this.calcHeight();
+        });
       },
       toggle2:function(){
-       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
-      },
+          this.$nextTick(()=>{
+          this.calcHeight();
+        });
+        },
       toggle3:function(){
-       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
-      },
+         this.$nextTick(()=>{
+          this.calcHeight();
+        });
+        },
     },
     filters:{
 
@@ -173,9 +180,12 @@
       this.queryParent();
     },
     mounted(){
-      this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-34-24;
+      this.calcHeight();
     },
     methods: {
+      calcHeight(){
+       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-this.$refs.bottom.offsetHeight-22-24-60;
+      },
       queryParent(){
            let url="/api/Organization/organization/0/children";
            utils.request.get(url,true).then((res) => {
@@ -344,11 +354,17 @@
       })
     },
     queryPermission(id){ //查询组织机构详情
+    this.permissions=[];
       let url="/api/Organization/organization/"+id+"/permission";
       utils.request.get(url,true).then((res) => {
          if(res){
           if(res.success==true){
            this.permissionList=res.result;
+           for(var i in this.permissionList){
+             if(this.permissionList[i].selected==true){
+               this.permissions.push(this.permissionList[i].permission);
+             }
+           }
           }
           }
       })
@@ -393,9 +409,7 @@
     },
     insureRemoveStaff(){
       let url="/api/Organization/removeEmployeeFromOrg";
-        let params={
-          ids:this.multipleSelection
-        }
+        let params=this.multipleSelection;
             utils.request.delete(url,params,true).then((res) => {
                if(res){
                 if(res.success==true){
@@ -503,6 +517,10 @@
       margin-right: .1rem;
       border-radius: 5px;
       padding:.05rem;
+      .inner{
+        height:76vh;
+        overflow: auto;
+      }
     }
 
     &-two {
@@ -513,9 +531,7 @@
       position: relative;
     }
   }
-/deep/.ant-checkbox-group {
-  width:100%;
-}
+
 /deep/.ant-col-6{margin:0.03rem 0;}
 
 </style>

@@ -9,7 +9,7 @@
         <span class="floatR">
           <span class="backButton" @click="isOrdinarySearch=isOrdinarySearch==true?false:true"><i class="iconfont icon-zhuanhuan1"></i><span
               class="weight600">{{isOrdinarySearch==false?'普通搜索':'高级搜索'}}</span></span>
-          <span class="pc-button" @click="queryInfo"><i class="iconfont icon-sousuo"></i>搜索</span>
+          <span class="pc-button" @click="search"><i class="iconfont icon-sousuo"></i>搜索</span>
         </span>
       </div>
       <div>
@@ -29,7 +29,7 @@
            allow-clear
            tree-checkable
            size="small"
-           style="width:4rem;height:.25rem;margin: .02rem 0.1rem;"
+           style="width:4.05rem;height:.25rem;margin: .02rem 0.1rem;"
            @change="onChange"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            :tree-data="treemap"
@@ -157,7 +157,7 @@
           departments:[],
          /* seniorityStart:0,
           seniorityEnd:0, */
-          workingDateStart:'1990-01-02',
+          workingDateStart:'',
           workingDateEnd:''
         },
         workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
@@ -200,6 +200,10 @@
          this.tableHeight=this.$refs.main.offsetHeight-this.$refs.search.offsetHeight-34-24
     },
     methods: {
+      search(){
+        this.pageIndex=1;
+        this.queryInfo();
+      },
       takeOrder(sortField){
         this.sortField=sortField;
         if(sortField==true){

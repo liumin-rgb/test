@@ -40,7 +40,7 @@ export default {
     return instance.post(Global.baseUrl + service, params,{isLoad:isLoad})
   },
   delete(service,params,isLoad=false) {
-	  return instance.delete(Global.baseUrl + service,{isLoad:isLoad})
+	  return instance.delete(Global.baseUrl + service,{data:params},{isLoad:isLoad})
 	},
   put(service,params,isLoad=false) {
 	  return instance.put(Global.baseUrl + service,params,{isLoad:isLoad})

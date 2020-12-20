@@ -4,13 +4,13 @@
      <div> <span><span class="label1"><span class="icon-xing">*</span>名称：</span><input class="pc-input bigInput" v-model.trim="name"/></span></div>
      <div class="marginT2VH"> <span><span class="label1">
 	 <span class="icon-xing">*</span>类型：</span>
-	 <a-radio-group name="radioGroup" :default-value="2" @change="getRadioValue($event,'type')"><a-radio :value="2"> 部门</a-radio><a-radio :value="3"> 岗位</a-radio></a-radio-group>
+	 <a-radio-group name="radioGroup"   :value="type" @change="getRadioValue($event,'type')"><a-radio value="2"> 部门</a-radio><a-radio value="3"> 岗位</a-radio></a-radio-group>
      </span></div>
-     <div class="marginT2VH " v-show="type==3">
+     <div class="marginT2VH" v-show="type==3">
        <span class="label1 verTop">权限：</span>
-       <span class="marginL1Rem"><a-checkbox-group @change="onChange">
+       <span class="marginL1Rem"><a-checkbox-group @change="onChange" :value="permissions">
            <a-row>
-             <a-col :span="6" v-for="obj in permissionList" :key="obj.id"><a-checkbox :value="obj.permission" :checked="obj.selected?'checked':''">{{obj.title}}</a-checkbox></a-col>
+             <a-col :span="6" v-for="obj in permissionList" :key="obj.id"><a-checkbox :value="obj.permission" :checked="obj.selected">{{obj.title}}</a-checkbox></a-col>
            </a-row>
          </a-checkbox-group>
          </span>
@@ -82,6 +82,7 @@ export default {
 
     },
     handleCancel(){
+      utils.common.resetData(this);
       this.$emit("closeModel");
     },
     handleOk(){
@@ -90,13 +91,16 @@ export default {
       utils.box.toast("名称不能为空！");
       return;
     }
+    //Object.assign(this.$data, this.$options.data())
     this.$emit("closeModel",{parentId:this.parentId,name:this.name,type:this.type,permissions:this.permissions,remark:this.remark});
-    }
+    utils.common.resetData(this);
+    },
+
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .format{
     padding:0 0.2rem;
     color:#333;
@@ -104,7 +108,6 @@ export default {
 
   }
   /deep/.ant-checkbox-group {
-    width:90%;
+    width:90% !important;
   }
-
 </style>

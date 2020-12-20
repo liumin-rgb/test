@@ -53,7 +53,7 @@
          <div><span><span>状态：</span><select class="pc-input" @change="getSelectInfo('status')" id="status"><option  v-for="obj in statusList" :value="obj.code">{{obj.text}}</option></select></span>
          <span><span>文件名称：</span><input class="pc-input bigInput" v-model="fileName"/></span>
          </div>
-         <span class="pc-button" @click="queryInfo"><i class="iconfont icon-sousuo"></i>搜索</span>
+         <span class="pc-button" @click="search"><i class="iconfont icon-sousuo"></i>搜索</span>
 
        </div>
        <div class="list-search-two"></div>
@@ -238,6 +238,10 @@
       console.log(this.gData);
     },
     methods: {
+      search(){
+        this.pageIndex=1;
+        this.queryInfo();
+      },
       takeOrder(sortField){
         this.sortField=sortField;
         if(sortField==true){
