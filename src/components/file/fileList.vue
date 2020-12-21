@@ -86,7 +86,7 @@
                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">文件名称</span><i class="iconfont icon-paixu themeColor"></i></span>
                </template>
                <template slot-scope="scope">
-                      <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.name}}</span>
+                      <span class="themeColor text-line pointer" @click="toDetail(scope.row.id,scope.row.documentId)">{{scope.row.name}}</span>
                </template>
             </el-table-column>
             <el-table-column prop="docNo"label="编号" width="120">
@@ -99,7 +99,7 @@
             <el-table-column prop="status"label="状态" align="center">
             <template  slot-scope="scope" >
                 <span :style="{color:(scope.row.status==3?'#ea9900':scope.row.status==2?'#2e6eb4':'')}">{{scope.row.status |filter1(statusList)}}</span>
-                  </template>
+            </template>
             </el-table-column>
             <el-table-column prop="creator"label="创建人" align="center">
             </el-table-column>
@@ -119,7 +119,7 @@
        <template slot-scope="scope">
                <el-popover trigger="hover" placement="bottom">
                  <div class="pointer themeColor weight600 font12">
-                 <p @click="toDetail(scope.row.id)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
+                 <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
                  <p @click="editHtml(scope.row.id)"><i class="iconfont icon-bianji"></i>编辑</p>
                  <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                  <p @click="openTagManage('single',scope.row.id,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
@@ -313,8 +313,8 @@
       getSelectInfo(id){
         this[id]=utils.common.getSelectValue(id);
       },
-      toDetail(){
-        this.$router.push({path:'fileDetail',query:{}});
+      toDetail(id,documentId){
+        this.$router.push({path:'fileDetail',query:{id:id,documentId:documentId}});
       },
       editHtml(){
         this.$router.push({path:'editHtml',query:{}});

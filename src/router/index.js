@@ -105,7 +105,22 @@ const router = new Router({
            },
 
          },
-
+         {
+          path: '/trainIndex',
+          name:'trainIndex',
+          component: resolve => require(['@/components/trainAndCheck/trainIndex'], resolve),
+          meta : {
+              title : '培训考核首页'
+          },
+        },
+        {
+          path: '/newIndex',
+          name:'newIndex',
+          component: resolve => require(['@/components/trainAndCheck/newIndex'], resolve),
+          meta : {
+              title : '新建培训考核'
+          },
+        },
        ],
  },
  {
@@ -130,7 +145,7 @@ const router = new Router({
                component: resolve => require(['@/page/superADM'], resolve),
                meta : {
                    title : 'superADM',
-         		   
+
                }
          },
        ]
@@ -152,10 +167,6 @@ const router = new Router({
        title : '编辑1'
    },
  }
-
-
-
-
   ]
 })
 
