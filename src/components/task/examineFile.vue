@@ -97,7 +97,7 @@
   </div>
   <div class="list-bottom textAlignR">
   <span class="pc-button buttonNoback"><i class="iconfont icon-wj-thwj"></i>退回</span>
-  <span class="pc-button buttonNoback"><i class="iconfont icon-wancheng"></i>审核完成</span>
+  <span class="pc-button buttonNoback"><i class="iconfont icon-wancheng"></i>立刻生效</span>
   <span class="pc-button"><i class="iconfont icon-tongguo1"></i>通过</span>
 
    </div>

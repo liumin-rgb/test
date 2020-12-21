@@ -79,7 +79,12 @@ export default {
   "firstNode": this.format1,
   "secondNode": this.format2,
   "lastNode": this.format3,
-  "separator": ""
+  "separator_1": this.symbol1,
+  "separator_2":this.symbol2
+}
+if(params.separator_1==''||params.separator_2==''){
+utils.box.toast("请输入分隔符");
+return;
 }
         this.loading=true;
         utils.request.post(url,params).then((res) => {
@@ -87,6 +92,8 @@ export default {
         if(res){
             if(res.success==true){
              utils.box.toast("提交成功","success");
+             let format=this.format1+this.symbol1+this.format2+this.symbol2+this.format3;
+             this.$emit("closeModel",format);
             }else{
                utils.box.toast("提交失败");
             }
