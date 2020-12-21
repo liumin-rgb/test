@@ -35,19 +35,24 @@ export default {
   props:{
     visible:{
       default:false,
-      type:Boolean
-    }
+      type:Boolean,
+    },
+    id:{
+      default:0,
+      type:Number,
+    },
   },
   data() {
     return {
       format1List:[{code:'1',text:'文件名称'},{code:'2',text:'文件编号'},{code:'3',text:'版本号'}],
-      format2List:[{code:'1',text:'文件名称'},{code:'2',text:'文件编号'},{code:'3',text:'版本号'}],
-      format3List:[{code:'1',text:'文件名称'},{code:'2',text:'文件编号'},{code:'3',text:'版本号'}],
-      format1:'',
-      format2:'',
-      format3:'',
+      format2List:[{code:'2',text:'文件编号'},{code:'3',text:'版本号'}],
+      format3List:[{code:'3',text:'版本号'}],
+      format1:'1',
+      format2:'2',
+      format3:'3',
       symbol1:'',
       symbol2:'',
+      loading:false,
     }
   },
   created(){
@@ -56,13 +61,39 @@ export default {
   methods:{
     getSelectInfo(id){
       this[id]=utils.common.getSelectValue(id);
+         this.format2List=this.format1List.filter((item)=>{
+          return item.code!=this.format1;
+         })
+        this.format3List=this.format1List.filter((item,index)=>{
+          return item.code!=this.format1&&item.code!=this.format2;
+        })
 
     },
     handleCancel(){
       this.$emit("closeModel");
     },
     handleOk(){
-    this.handleCancel()
+        let url="/api/Document/updateFileFormat";
+        let params={
+  "id": this.id,
+  "firstNode": this.format1,
+  "secondNode": this.format2,
+  "lastNode": this.format3,
+  "separator": ""
+}
+        this.loading=true;
+        utils.request.post(url,params).then((res) => {
+        this.loading=false;
+        if(res){
+            if(res.success==true){
+             utils.box.toast("提交成功","success");
+            }else{
+               utils.box.toast("提交失败");
+            }
+          }
+          });
+
+    //this.handleCancel()
     }
 
 
