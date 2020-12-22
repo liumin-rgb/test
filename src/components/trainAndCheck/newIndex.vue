@@ -1,8 +1,8 @@
 <template>
   <div class="list-main">
-  <NewTrain v-show="type==1"/>
-  <NewCheck v-show="type==2"/>
-  <NewTrainCheck  v-show="type==3"/>
+  <NewTrain v-show="type==1" @changeType="changeType"/>
+  <NewCheck v-show="type==2" @changeType="changeType"/>
+  <NewTrainCheck  v-show="type==3" @changeType="changeType"/>
   </div>
 </template>
 
@@ -22,7 +22,9 @@
       this.type=this.$route.query.type;
     },
     methods:{
-
+      changeType(val){
+        this.type=val;
+      }
     }
   };
 

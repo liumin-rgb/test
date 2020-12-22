@@ -3,8 +3,10 @@
   <div class="list-main-top">
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
     <div>
-      <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span>
-       <span class="pc-button" @click="visible=true"><i class="iconfont icon-tijiao"></i>提交审核</span>
+      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>保存草稿</span>
+       <span class="pc-button" @click="submitCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
+       <span class="pc-button" @click="submit"><i class="iconfont icon-tongguo1"></i>生效</span>
+
       </div>
   </div>
   <div class="list-main-body">
@@ -18,9 +20,9 @@
      <!-- <transition-group name="t1"> -->
       <div v-show="toggle1==true">
     <div class="flex paddingLR2rem gray">
-      <div class=" textInput"><span class="label">文件名称</span><input class='pc-input middleInput'/></div>
-      <div class=" textInput"><span class="label">文档编号</span><input  class='pc-input middleInput'/></div>
-      <div class=" textInput"><span class="label">版本号</span><input  class='pc-input'/></div>
+      <div class=" textInput"><span class="label"><span class="icon-xing">*</span>文件名称</span><input class='pc-input middleInput' v-model="name"/></div>
+      <div class=" textInput"><span class="label"><span class="icon-xing">*</span>文档编号</span><input  class='pc-input middleInput' v-model="docNo"/></div>
+      <div class=" textInput"><span class="label">版本号</span><input  class='pc-input' v-model="version"/></div>
     </div>
     <div class="flex paddingLR2rem gray">
 <!--      <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input'/></div>
@@ -33,7 +35,7 @@
     </div>
   <!--  <transition-group name="t1"> -->
      <div v-show="toggle2==true">
-      <Editor id="tinymce"  :init="editorInit"></Editor>
+      <Editor id="tinymce"  :init="editorInit" v-model='tinymceHtml'></Editor>
      </div>
    <!--  </transition-group> -->
   </div>
@@ -61,19 +63,23 @@
         toggle1:true,
         toggle2:true,
         visible:false,
+        name:'',
+        docNo:'',
+        version:'',
         config:{
          title:'提交审核',
          label:'审批人',
         },
+        tinymceHtml:'',
        editorInit: {
-         language_url: '../../../static/tinymce/zh_CN.js',
+         language_url: './static/tinymce/zh_CN.js',
          language: 'zh_CN',
-         skin_url: '../../../static/tinymce/skins/ui/oxide',
+         skin_url: './static/tinymce/skins/ui/oxide',
          min_height: 280,
          max_height:500,
         toolbar:'forecolor backcolor bold italic underline   | alignleft aligncenter alignright alignjustify outdent indent | \
-                   fontselect fontsizeselect | bullist numlist | table image',
-        plugins:'table image'	,
+                   fontselect fontsizeselect | bullist numlist | table image | link',
+        plugins:'table image link'	,
         fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
         font_formats: '宋体=simsun,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;',
            link_list: [
@@ -93,7 +99,7 @@
                if (meta.filetype === 'image') {
                  callback('https://www.baidu.com/img/bd_logo1.png', { alt: 'My alt text' });
                }
-             
+
            },
             automatic_uploads: false,
             images_upload_url: '',
@@ -107,6 +113,36 @@
       tinymce.init({});
     },
     methods:{
+      check(){
+        if(this.name==''){
+          utils.box.toast("文件名称必填");
+          return false;
+        }
+        if(this.docNo==''){
+          utils.box.toast("文件编号必填");
+          return false;
+        }
+        if(this.tinymceHtml==''){
+         utils.box.toast("请输入文档内容");
+         return false;
+        }
+        return true;
+      },
+      saveDraft(){
+        if(this.check()){
+
+        }
+      },
+      submitCheck(){
+           if(this.check()){
+
+           }
+      },
+      submit(){
+         if(this.check()){
+
+         }
+      },
       goBack(){
         this.$router.go(-1);
       },

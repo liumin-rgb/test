@@ -47,6 +47,7 @@ export default {
       format1List:[{code:'1',text:'文件名称'},{code:'2',text:'文件编号'},{code:'3',text:'版本号'}],
       format2List:[{code:'2',text:'文件编号'},{code:'3',text:'版本号'}],
       format3List:[{code:'3',text:'版本号'}],
+      formatArr:['文件名称','文件编号','版本号'],
       format1:'1',
       format2:'2',
       format3:'3',
@@ -92,8 +93,9 @@ return;
         if(res){
             if(res.success==true){
              utils.box.toast("提交成功","success");
-             let format=this.format1+this.symbol1+this.format2+this.symbol2+this.format3;
-             this.$emit("closeModel",format);
+             let id=res.result;
+             let format=this.formatArr[+this.format1-1]+this.symbol1+this.formatArr[+this.format2-1]+this.symbol2+this.formatArr[+this.format3-1];
+             this.$emit("closeModel",{format:format,id:id});
             }else{
                utils.box.toast("提交失败");
             }

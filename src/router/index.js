@@ -121,6 +121,14 @@ const router = new Router({
               title : '新建培训考核'
           },
         },
+        {
+          path: '/questionBank',
+          name:'questionBank',
+          component: resolve => require(['@/components/trainAndCheck/questionBank'], resolve),
+          meta : {
+              title : '题库管理'
+          },
+        },
        ],
  },
  {

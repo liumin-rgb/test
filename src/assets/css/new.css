@@ -63,6 +63,9 @@
 .el-table th:nth-last-of-type(1) {
   border-right: none !important;
 }
+ .el-table__expanded-cell{
+  padding:5px 50px !important;
+  }
 
 /* .el-table td, .el-table th.is-leaf {
     border-bottom: 1px solid #EBEEF5;

@@ -1,4 +1,4 @@
-<template>
+ loading:false,<template>
   <a-modal v-model="visible" title="" :afterClose="handleCancel">
       <div class="format ">
 
@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-
+ loading:false,
     }
   },
   watch:{

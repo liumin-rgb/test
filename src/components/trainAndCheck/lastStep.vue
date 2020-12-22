@@ -1,11 +1,11 @@
 <template>
-<div v-show="step==2">
+<div v-show="step==3">
   <div class="flexBtw">
     <div >
 
     </div>
     <div>
- <span class="pc-button" @click="toPrevStep">返回上一步</span>
+ <span class="pc-button buttonNoback" @click="toPrevStep">返回上一步</span>
  <span class="pc-button buttonNoback">保存草稿</span>
  <span class="pc-button">发布</span>
     </div>

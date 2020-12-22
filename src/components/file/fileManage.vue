@@ -5,6 +5,8 @@
       <div>
         <!-- <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span> -->
         <span class="pc-button" @click="openCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
+        <span class="pc-button" @click="openCheck"><i class="iconfont icon-tongguo1"></i>生效</span>
+
       </div>
     </div>
     <div class="list-main-body">
@@ -18,9 +20,11 @@
       <div>
         <div class="flexBtw">
           <div><span>上传文件：</span>
-            <a-upload name="file" :multiple="true" :show-upload-list="false" :customRequest="upload" :before-upload="beforeUpload"
-              @change="handleChange">
-              <a-button> <span>点击上传 </span><i class="iconfont icon-shangchuan themeColor " style="margin-left:2vw"></i>
+            <a-upload name="file" :multiple="true" :show-upload-list="false" :before-upload="beforeUpload"
+               :customRequest="upload"
+               @change="handleChange">
+             <!--  :customRequest="upload" -->
+              <a-button > <span>点击上传 </span><i class="iconfont icon-shangchuan themeColor " style="margin-left:2vw"></i>
               </a-button>
             </a-upload>
           </div>
@@ -30,6 +34,7 @@
           </div>
         </div>
         <div class="marginT1VH">
+          <a-spin :spinning="spinning"  >
           <el-table :data="tableData" border style="width: 100%" height="350" :header-cell-class-name="'table-header'">
             <el-table-column prop="name" label="文档名称" width="180">
             </el-table-column>
@@ -44,12 +49,13 @@
             </el-table-column>
             <el-table-column prop="" label="操作">
               <template slot-scope="scope">
-                <i class="iconfont icon-yulan themeColor font16" @click="reviewFile(scope.row.id)" v-if="scope.row.type==3||scope.row.type==4"></i>
-                <i class="iconfont icon-tubiao09 themeColor font16" @click="editFile(scope.row.id)" v-if="scope.row.type==1"></i>
-                <i class="iconfont icon-shanchu themeColor font16" @click="deleteFile(scope.row.id)"></i>
+                <i class="iconfont icon-yulan themeColor font16 pointer" @click="reviewFile(scope.row.id)" v-if="scope.row.type==3||scope.row.type==4"></i>
+                <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editFile(scope.row.id)" v-if="scope.row.type==1"></i>
+                <i class="iconfont icon-shanchu themeColor font16 pointer" @click="deleteFile(scope.row.id)"></i>
               </template>
             </el-table-column>
           </el-table>
+          </a-spin>
           <Pagination :maxPage="maxPage" @changePage="changePage" :totalCount="totalCount" />
         </div>
       </div>
@@ -80,25 +86,16 @@
         maxPage: 1,
         totalCount: 0,
         format:'文件名称_文件编号_版本号',
+        floderId:1,
+        fileFormatId:0,
+        ids:[],
+        fileList:[],
+        spinning:false,
         config: {
           title: '提交审核',
           label: '审批人',
         },
-        tableData: [{
-            id: '1',
-            name: '文件1',
-            docNo: '12',
-            version: '12.2',
-            type: '3',
-          },
-          {
-            id: '2',
-            name: '文件2',
-            docNo: '12',
-            version: '12.2',
-            type: '1',
-          }
-        ],
+        tableData: [],
         typeList: ['HTML', '视频', 'PDF', '图片'],
       }
     },
@@ -124,19 +121,33 @@
           });
         }
       },
-      beforeUpload(file) {
-        const isPDF = file.type === 'application/pdf';
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        const isHTMl = file.type === 'text/html'
-        if (!isPDF && !isJpgOrPng && !isHTMl) {
-          this.$message.error('只能上传PDF、图片或html文件');
-        }
+      beforeUpload(file,fileList) {
+       // for(var i in fileList){
+       //   let file=fileList[i];
+          const isPDF = file.type === 'application/pdf';
+          const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+          const isHTMl = file.type === 'text/html'
+          if (!isPDF && !isJpgOrPng && !isHTMl) {
+            this.$message.error('只能上传PDF、图片或html文件');
+            return false;
+           // break;
+          }
+     //   }
+        this.fileList=fileList;
+       return true;
+      // this.upload(fileList);
       },
       upload(item) {
-        let url = "/api/Employee/uploadAttachment?type=1";
+        let fileList=this.fileList;
+        if(fileList.length==0) return;
+        let url = "/api/Document/batchUpload?floderId="+this.floderId+"&fileFormatId="+this.fileFormatId;
         const form = new FormData();
         // 文件对象
+        /* for(var item of fileList){
+           form.append("file", item);
+        } */
         form.append("file", item.file);
+        console.log(form);
         // 本例子主要要在请求时添加特定属性，所以要用自己方法覆盖默认的action
         // form.append("clientType", 'xxx');
         utils.request.post(url, form, {
@@ -147,7 +158,9 @@
           this.loading = false;
           if (res) {
             if (res.success == true) {
-
+           // utils.box.toast("上传成功","success");
+            this.ids=this.ids.concat(res.result);
+            this.queryInfo();
             } else {
               //  item.onSuccess(res, item.file);
               utils.box.toast("上传失败");
@@ -158,23 +171,63 @@
           }
         });
       },
-    /*  queryFormat() {
-        let url = "/api/Document/getFileFormat?id="+'';
-        utils.request.get(url).then((res) => {
+     queryInfo() {
+        let url = "/api/Document/searchBatchUpload";
+        let params={
+       "docVersionIds": this.ids,
+       "pageIndex": this.pageIndex,
+       "pageSize": this.pageSize
+        }
+        this.spinning=true;
+        utils.request.post(url,params).then((res) => {
+          this.spinning=false
           if (res) {
             if (res.success == true) {
+                let totalCount=res.result.totalCount;
+                 this.totalCount=totalCount;
+                 this.maxPage=Math.ceil(totalCount/this.pageSize);
+                let items=res.result.items;
+                 this.tableData=items;
 
             }
           }
         });
-      }, */
+      },
+      deleteFile(id){
+          		  utils.box.confirm("是否确认删除文件？").then(()=>{
+          		  	let url = "/api/Document/DeleteDocVersion?docVersionId="+id;
+          		  	utils.request.delete(url).then((res) => {
+          		  	  if (res) {
+          		  	    if (res.success == true) {
+                        utils.box.toast("删除成功",'success');
+                        let index1=this.tableData.findIndex((item)=>{return item.id==id});
+                        let index2=this.ids.findIndex((item)=>{return item==id});
+                        this.tableData.splice(index1,1);
+                        this.ids.splice(index2,1);
+                      }else{
+                         utils.box.toast("删除失败");
+                      }
+          		  	  }
+          		  	});
+          		  			 });
+      },
       openCheck() {
+        if(this.ids.length==0){
+          utils.box.toast("请上传文件");
+          return;
+        }
         this.visible1 = true;
+      },
+      changePage(val){
+        this.pageIndex=val.pageIndex;
+        this.pageSize=val.pageSize;
+        this.queryInfo();
       },
      closeModel(val) {
        this.visible = false;
        if(val){
-         this.format=val;
+         this.format=val.format;
+         this.fileFormatId=val.id
        }
      },
       closeModel1() {

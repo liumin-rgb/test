@@ -65,7 +65,7 @@
             prop="status"
             label="状态">
            <template slot-scope="scope">
-               <span>{{statusList[+scope.row.status-1]}}</span>
+               <span>{{flowStatusList[+scope.row.status-1]}}</span>
            </template>
           </el-table-column>
         </el-table>
@@ -95,6 +95,9 @@
           <el-table-column
             prop="status"
             label="状态">
+            <template slot-scope="scope">
+                <span>{{statusList[+scope.row.status-1]}}</span>
+            </template>
           </el-table-column>
           <el-table-column
             prop="abolitionTime"
@@ -128,8 +131,8 @@
         docNo:'',
         version:'',
         type:'',
-        statusList:['处理中','已完成','退回','已读'],
-
+        flowStatusList:['处理中','已完成','退回','已读'],
+        statusList:['全部','草稿','已生效','流转中','废除'],
       }
     },
     created(){

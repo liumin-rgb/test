@@ -65,9 +65,10 @@
         <div @click="toUrl('fileManage')">批量上传</div>
        </div>
        </span>
-       <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>下载</span>
-       <span class="pc-button buttonNoback" @click="abolish"><i class="iconfont icon-feichu "></i>废除</span>
-       <span class="pc-button buttonNoback" @click="examine"><i class="iconfont icon-ziyuan202 "></i>审核</span>
+       <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="addTags"><i class="iconfont icon-icontag"></i>标签</span>
+       <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="download"><i class="iconfont icon-shangchuan1"></i>下载</span>
+       <span :class="['pc-button',check2?'buttonNoback':'buttonGray']"  @click="abolish"><i class="iconfont icon-feichu"></i>废除</span>
+       <span :class="['pc-button',check3?'buttonNoback':'buttonGray']"  @click="examine"><i class="iconfont icon-ziyuan202"></i>审核</span>
        </div>
       </div>
       <div class="list-table">
@@ -164,6 +165,9 @@
         chooseKey1:1,
         chooseKey2:[],
         editable:false,
+        check1:false,
+        check2:false,
+        check3:false,
         config:{
           title:'提交传阅',
           label:'传阅人',
@@ -264,7 +268,6 @@
           },
           this.visible1=true;
         }
-
       },
       examine(){
          if(this.checkSelection()){
@@ -274,6 +277,9 @@
         },
         this.visible1=true;
         }
+      },
+      addTags(){
+
       },
       download(){
         if(this.checkSelection()){
@@ -328,7 +334,12 @@
       },
       handleSelectionChange(val) {
          this.multipleSelection = val;
-          },
+          this.check1=val.length==0?false:true;
+          let index1=val.length==0?0:val.findIndex((item)=>{return item.status!=2});
+          this.check2=index1==-1?true:false;
+          let index2=val.length==0?0:val.findIndex((item)=>{return item.status!=1});
+          this.check3=index2==-1?true:false;
+       },
       checkSelection(){
             if(!this.multipleSelection||this.multipleSelection.length==0){
               utils.box.toast("您未选择任何文件");
@@ -548,7 +559,6 @@
       }
     }
 
-  .list-table {}
 
   .resize-table-th {
     position: relative;

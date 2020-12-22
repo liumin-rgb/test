@@ -3,9 +3,9 @@
   <div v-show="step==1">
   <div class="flexBtw">
     <div >
-     <span class="pc-button buttonNoback" >培训+考核</span>
+     <span class="pc-button buttonNoback" @click="changeType(3)">培训+考核</span>
      <span class="pc-button " >培训模块</span>
-     <span class="pc-button buttonNoback" >考核模块</span>
+     <span class="pc-button buttonNoback" @click="changeType(2)">考核模块</span>
     </div>
     <div>
      <span class="pc-button buttonNoback" @click="goBack">返回</span>
@@ -74,7 +74,7 @@
   import LastStep from './LastStep'
   import Pagination from '../Pagination'
  export default {
-    name: 'trainIndex',
+    name: 'newTrain',
     components:{Pagination,LastStep},
     data(){
       return{
@@ -92,14 +92,14 @@
      goBack(){
       this.$router.go(-1);
      },
-     changeStep(){
-       this.step=1;
+     changeStep(val){
+       this.step=val||1;
      },
      saveDraft(){
 
      },
      nextStep(){
-       this.step=2;
+       this.changeStep(3);
      },
      deleteFile(){
 
@@ -109,6 +109,9 @@
         this.pageSize=val.pageSize;
         //this.queryInfo();
       },
+      changeType(val){
+        this.$emit("changeType",val);
+      }
    },
 
  }
