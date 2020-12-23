@@ -362,7 +362,7 @@
                   if(res){
            	 			if (res.success == true) {
                     utils.box.toast("上传成功");
-                     this.photo='';
+                     this.photo=res.result[0];
            	 			} else {
                    //  item.onSuccess(res, item.file);
            	 				utils.box.toast("上传失败");

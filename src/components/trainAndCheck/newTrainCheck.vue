@@ -93,8 +93,8 @@
 </template>
 
 <script>
-  import NewCheckTwo from './NewCheckTwo'
-  import LastStep from './LastStep'
+  import NewCheckTwo from './newCheckTwo'
+  import LastStep from './lastStep'
  export default {
     name: 'newCheck',
     components:{NewCheckTwo,LastStep},

@@ -1,5 +1,5 @@
- loading:false,<template>
-  <a-modal v-model="visible" title="" :afterClose="handleCancel">
+<template>
+  <a-modal v-model="visible" title="" :afterClose="handleCancel" :dialogClass="'bigModel'">
       <div class="format ">
 
       </div>

@@ -2,7 +2,8 @@
 <div class="list-main" ref="main">
 <div class="list-search">
       <div class="list-search-one flexBtw">
-      <div><span><span>试题类型：</span><select class="pc-input"  ><option  value="" ></option></select></span>
+      <div>
+      <span><span>试题类型：</span><select class="pc-input"  ><option  value="" ></option></select></span>
       <span><span>试题分类：</span><select class="pc-input"  ><option  value="" ></option></select></span>
       <span><span>难易程度：</span><select class="pc-input"  ><option  value="" ></option></select></span>
       </div>
@@ -11,7 +12,7 @@
     <div class="list-search-two"></div>
     <div class="list-search-three">
     <span class="positionR">
-     <span class="pc-button buttonNoback" ><i class="iconfont icon-jiahao "></i>新建题目<i class="iconfont icon-jiantou "></i></span>
+     <span class="pc-button buttonNoback" @click="newQuestion"><i class="iconfont icon-jiahao "></i>新建题目</span>
     </span>
     <span class="pc-button buttonNoback" ><i class="iconfont icon-shangchuan1 "></i>删除</span>
      <span class="pc-button buttonNoback" ><i class="iconfont icon-shangchuan1 "></i>导入</span>
@@ -44,16 +45,19 @@
    <div class="list-bottom">
    <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
     </div>
+    <NewQuestion :visible="visible"  @closeModel="closeModel"/>
   </div>
 </template>
 
 <script>
   import Pagination from '../Pagination'
+  import NewQuestion from './newQuestion'
   export default {
     name: 'questionBank',
-    components:{Pagination},
+    components:{Pagination,NewQuestion},
     data() {
       return{
+      visible:false,
       pageIndex: 1,
       pageSize:10,
       maxPage: 1,
@@ -73,6 +77,12 @@
       }
     },
     methods:{
+      newQuestion(){
+        this.visible=true;
+      },
+      closeModel(){
+        this.visible=false;
+      },
       search(){
 
       },

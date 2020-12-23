@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import LastStep from './LastStep'
+  import LastStep from './lastStep'
   import Pagination from '../Pagination'
  export default {
     name: 'newTrain',
