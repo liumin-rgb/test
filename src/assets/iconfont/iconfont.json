@@ -6,6 +6,97 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18988601",
+      "name": "operation",
+      "font_class": "icon-caozuo",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "425795",
+      "name": "复制",
+      "font_class": "fuzhi",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "1160156",
+      "name": "html",
+      "font_class": "html",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "8319347",
+      "name": "启用-生效-提交审核",
+      "font_class": "qiyong-shengxiao-tijiaoshenhe",
+      "unicode": "e6cf",
+      "unicode_decimal": 59087
+    },
+    {
+      "icon_id": "8949010",
+      "name": "图片",
+      "font_class": "tupian",
+      "unicode": "e658",
+      "unicode_decimal": 58968
+    },
+    {
+      "icon_id": "15838516",
+      "name": "pdf",
+      "font_class": "pdf",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "6773155",
+      "name": "文件-退回文件",
+      "font_class": "wj-thwj",
+      "unicode": "e757",
+      "unicode_decimal": 59223
+    },
+    {
+      "icon_id": "11569563",
+      "name": "完成",
+      "font_class": "wancheng",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "16372313",
+      "name": "通过",
+      "font_class": "tongguo1",
+      "unicode": "e65f",
+      "unicode_decimal": 58975
+    },
+    {
+      "icon_id": "18211615",
+      "name": "退回",
+      "font_class": "tuihui",
+      "unicode": "e7d1",
+      "unicode_decimal": 59345
+    },
+    {
+      "icon_id": "6539846",
+      "name": "不可见",
+      "font_class": "bukejian",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "12183288",
+      "name": "可见",
+      "font_class": "kejian",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "551844",
+      "name": "竖线",
+      "font_class": "vertical_line",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
       "icon_id": "4320344",
       "name": "开始",
       "font_class": "kaishi1",

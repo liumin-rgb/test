@@ -145,6 +145,22 @@ const router = new Router({
               title : '参与培训考核'
           },
         },
+        {
+          path: '/viewTrain',
+          name:'viewTrain',
+          component: resolve => require(['@/components/trainAssessment/viewTrain'], resolve),
+          meta : {
+              title : '查看培训'
+          },
+        },
+        {
+          path: '/startExamine',
+          name:'startExamine',
+          component: resolve => require(['@/components/trainAssessment/startExamine'], resolve),
+          meta : {
+              title : '开始答题'
+          },
+        },
        ],
  },
  {

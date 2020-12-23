@@ -5,7 +5,7 @@
         <div class="weight600">组织架构</div>
         <div class="textAlignR">
            <span class="pc-button buttonNoback" @click="addParent()">添加分院</span>
-          <span :class="['pc-button','buttonNoback',showButton==true?'':'buttonGray']" @click="addBranch()"  >添加下属组织机构</span>
+          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()"  >添加下属组织机构</span>
         </div>
       </div>
       <div class="inner">
@@ -177,6 +177,7 @@
 
     },
     created(){
+      utils.cache.setSession("choosen","权限分配");
       this.queryParent();
     },
     mounted(){

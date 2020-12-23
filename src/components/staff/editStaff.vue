@@ -20,7 +20,7 @@
          <table class="table">
            <tr>
              <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="staffInfo.workingStatus==1?'在职':'离职'" readonly="readonly" /></div></td>
-             <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input :class="['pc-input',flag=='edit'?'backGray borderGray':'']" v-model="staffInfo.employeeNo" :readonly="flag=='edit'?'readonly':false"/></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input class="pc-input" v-model="staffInfo.employeeNo" /></div></td>
              <td  rowspan="4" class="center">
                  <a-upload
                      name="avatar"
@@ -54,17 +54,20 @@
                <td></td>
              </tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="department"><span class="icon-xing">*</span>部门</span><a-tree-select
+               <td><div class="textInput"><span class="label font12 weight600" ref="department"><span class="icon-xing">*</span>部门</span><span><a-tree-select
                  allow-clear
+                 tree-checkable
                  multiple
                  size="small"
                  style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
                  @change="onChange"
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                 :tree-data="departmentList"
+                 :tree-data="treemap"
+                 :show-checked-strategy="SHOW_PARENT"
                  tree-default-expand-all
                >
                </a-tree-select>
+               </span>
               <!-- <input class='pc-input'  v-model="staffInfo.department"/> -->
                </div></td>
                <td><div class=" textInput"><span class="label font12 weight600">职称</span><input class='pc-input'  v-model="staffInfo.position"/></div></td>
@@ -170,13 +173,13 @@
         imageUrl: '',
         basicInfo:'基本信息',
         tagList:[],
-        departmentList:[],
+        treemap:[],
         workStatusList:[{code:'0',text:'请选择'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
         politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
        spinning:false,
        id:'',//员工id
-        staffInfo:{
+       staffInfo:{
   "workingStatus": 1,
   "employeeNo": "",
   "name": "",
@@ -233,23 +236,27 @@
           })
       },
       queryDepartment(){
-        let url="/api/Organization/department/list";
-        utils.request.get(url,true).then((res) => {
-        	if(res){
-            if(res.success==true){
-              let departmentList=res.result;
-              this.departmentList=departmentList.map((item)=>{
-                return {
-                      title: item,
-                      value: item,
-                      key: item,
-                }
-              })
-            }else{
+          let url="/api/Organization/treemap";
+          utils.request.get(url).then((res) => {
+          	if(res){
+              if(res.success==true){
+              let list=res.result;
+              this.treemap=JSON.parse(JSON.stringify(list).replace(/name/g,"title").replace(/id/g,"key"));
+               this.forTree(this.treemap);
+               console.log(this.treemap);
+              }else{
 
+              }
             }
+            });
+      },
+      forTree(treeList){
+        for(var i in treeList){
+           treeList[i].value=treeList[i].key;
+          if(treeList[i].children){
+            this.forTree(treeList[i].children);
           }
-          });
+        }
       },
       saveInfo(){  //添加/修改
         let staffInfo=this.staffInfo;

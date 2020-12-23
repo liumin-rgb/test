@@ -91,7 +91,9 @@ export default {
              ]
     };
   },
-
+updated(){
+  this.choosen=utils.cache.getSession("choosen");
+},
  created(){
    this.choosen=utils.cache.getSession("choosen");
  },

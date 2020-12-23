@@ -52,7 +52,7 @@
          <el-table-column prop="status" label="状态" >
 
          </el-table-column>
-         <el-table-column prop="include" label="包含培训" >
+         <el-table-column prop="include" label="包含考核" >
 
          </el-table-column>
          <el-table-column prop="" label="操作" align="center">

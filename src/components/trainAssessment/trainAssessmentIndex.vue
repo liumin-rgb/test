@@ -12,17 +12,6 @@
       <span class="pc-button" @click="search"><i class="iconfont icon-sousuo"></i>搜索</span>
     </div>
     <div class="list-search-two"></div>
-    <div class="list-search-three">
-    <span class="positionR">
-     <span class="pc-button buttonNoback" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao "></i>新建<i class="iconfont icon-jiantou "></i></span>
-    <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
-     <div @click="toUrl(1)">培训</div>
-     <div @click="toUrl(2)">考核</div>
-     <div @click="toUrl(3)">培训+考核</div>
-    </div>
-    </span>
-    <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>导出</span>
-     </div>
    </div>
    <div class="list-table">
      <el-table
@@ -36,9 +25,9 @@
          >
          <el-table-column type="selection"></el-table-column>
          <el-table-column prop="name" label="培训名称" >
-            <template slot-scope="scope">
+           <!-- <template slot-scope="scope">
                    <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.name}}</span>
-            </template>
+            </template> -->
          </el-table-column>
          <el-table-column prop="type" label="培训类型" >
 
@@ -52,22 +41,12 @@
          <el-table-column prop="status" label="状态" >
 
          </el-table-column>
-         <el-table-column prop="include" label="包含培训" >
+         <el-table-column prop="include" label="包含考核" >
 
          </el-table-column>
          <el-table-column prop="" label="操作" align="center">
-    <template slot-scope="scope">
-            <el-popover trigger="hover" placement="bottom">
-              <div class="pointer themeColor weight600 font12">
-              <p ><i class="iconfont icon-tijiao"></i>发布</p>
-              <p ><i class="iconfont icon-tubiao09"></i>编辑</p>
-              <p ><i class="iconfont icon-chuanyueicon"></i>复制</p>
-              <p ><i class="iconfont icon-shanchu"></i>删除</p>
-              </div>
-              <div slot="reference" class="name-wrapper">
-               <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
-              </div>
-            </el-popover>
+           <template slot-scope="scope">
+            <i class="iconfont icon-icon-caozuo themeColor font16 pointer" @click="toTrain()"></i>
           </template>
          </el-table-column>
        </el-table>
@@ -85,17 +64,6 @@
        <span class="pc-button" @click="search"><i class="iconfont icon-sousuo"></i>搜索</span>
      </div>
      <div class="list-search-two"></div>
-     <div class="list-search-three">
-     <span class="positionR">
-      <span class="pc-button buttonNoback" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao "></i>新建<i class="iconfont icon-jiantou "></i></span>
-     <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
-      <div @click="toUrl(1)">培训</div>
-      <div @click="toUrl(2)">考核</div>
-      <div @click="toUrl(3)">培训+考核</div>
-     </div>
-     </span>
-     <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>导出</span>
-      </div>
     </div>
     <div class="list-table">
       <el-table
@@ -109,14 +77,9 @@
           >
           <el-table-column type="selection"></el-table-column>
           <el-table-column prop="name" label="考核名称" >
-            <template slot="header" slot-scope="scope">
-               <span class="pointer" ><span class="gray ">考核名称</span></span>
-             </template>
-             <template slot-scope="scope">
-                    <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.name}}</span>
-             </template>
           </el-table-column>
-
+          <el-table-column prop="owner" label="考核结果">
+          </el-table-column>
           <el-table-column prop="owner" label="考核负责人">
           </el-table-column>
           <el-table-column prop="beginDate" label="考核开始时间" >
@@ -124,23 +87,12 @@
           <el-table-column prop="endDate" label="考核结束时间" >
           </el-table-column>
           <el-table-column prop="status" label="状态" >
-
           </el-table-column>
           <el-table-column prop="include" label="包含培训" >
-
           </el-table-column>
           <el-table-column prop="" label="操作" align="center">
-     <template slot-scope="scope">
-             <el-popover trigger="hover" placement="bottom">
-               <div class="pointer themeColor weight600 font12">
-               <p >复制</p>
-               <p >查看记录</p>
-               <p >停止</p>
-               </div>
-               <div slot="reference" class="name-wrapper">
-                <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
-               </div>
-             </el-popover>
+           <template slot-scope="scope">
+            <i class="iconfont icon-icon-caozuo themeColor font16 pointer" @click="toCheck"></i>
            </template>
           </el-table-column>
         </el-table>
@@ -170,7 +122,7 @@ import Pagination from '../Pagination'
             owner:'负责人1',
             beginDate:'2020-10-12',
             endDate:'2020-12-30',
-            status:'未发布',
+            status:'未参与',
             include:'是'
           }
         ],
@@ -180,7 +132,7 @@ import Pagination from '../Pagination'
             owner:'负责人1',
             beginDate:'2020-10-12',
             endDate:'2020-12-30',
-            status:'未发布',
+            status:'未参与',
             include:'是'
           }
         ],
@@ -194,6 +146,12 @@ import Pagination from '../Pagination'
       }
     },
     methods:{
+      toTrain(){
+        this.$router.push({path:'viewTrain',query:{}});
+      },
+      toCheck(){
+       this.$router.push({path:'startExamine',query:{}});
+      },
     search(){
 
     },
