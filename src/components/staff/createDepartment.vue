@@ -22,7 +22,7 @@
                  取消
                </a-button>
                <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
-                 提交
+                 确认
                </a-button>
         </template>
      </a-modal>

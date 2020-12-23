@@ -208,21 +208,11 @@
 ],
         tableData: [],
         gData1:[{
-            title: '0-0',
+            title: ' ',
             key: '0-0',
             scopedSlots: { title: 'custom' },
             multipleSelection:'',
             children: [
-              { isLeaf:true,
-                title: '0-0-1',
-                key: '0-0-1',
-                scopedSlots: { title: 'custom' },
-              },
-              { isLeaf:true,
-                title: '0-0-2',
-                key: '0-0-2',
-                scopedSlots: { title: 'custom' },
-              },
             ],
             }
         ]
@@ -230,6 +220,7 @@
     },
     filters:{
       filter1:function(val1,val2){
+        if(val1==0) return '';
          for(var i in val2){
            if(val2[i].code==val1){
              return val2[i].text;
@@ -238,7 +229,9 @@
       }
     },
     created(){
+      this.queryAllTags();
      this.queryInfo();
+
       console.log(this.gData);
     },
     methods: {
@@ -285,6 +278,27 @@
         if(this.checkSelection()){
 
         }
+      },
+      queryAllTags(){
+        let url="/api/Document/DocumentTagList";
+        utils.request.post(url,{},false).then((res) => {
+          this.spinning=false;
+        	if(res){
+            if(res.success==true){
+              let arr=res.result;
+              this.gData1[0].children=arr.map((item)=>{
+                return  {
+                isLeaf:true,
+                title: item.name,
+                key: item.id,
+              }
+              });
+              console.log(this.gData1);
+            }else{
+
+            }
+          }
+          });
       },
       queryInfo(){
         let url = "/api/Document/getList";
@@ -373,8 +387,13 @@
           }
           this.visible2=true;
         },
-        closeTagManage(){
+        closeTagManage(val){
           this.visible2=false;
+          if(val=='all'){
+            this.queryAllTags();
+          }else{
+            this.queryInfo()
+          }
         },
         closeCheckFile(){
           this.visible1=false;

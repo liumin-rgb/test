@@ -4,7 +4,7 @@
       <div>
         <div class="weight600">组织架构</div>
         <div class="textAlignR">
-           <span class="pc-button buttonNoback" @click="addParent()">添加分院</span>
+           <span :class="['pc-button',showButton==true?'buttonGray':'buttonNoback']" @click="addParent()">添加分院</span>
           <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()"  >添加下属组织机构</span>
         </div>
       </div>
@@ -236,22 +236,27 @@
               });
       },
    onSelect(selectedKeys, info) {
-      this.parentId=info.node.dataRef.key;//用作添加
-      this.currentNodeId=info.node.dataRef.key;//用作查询和修改
-      this.currentNodeType=info.node.dataRef.type;//
-      if(info.node.dataRef.type==1||info.node.dataRef.type==2){
-        this.showButton=true;
-       // this.chooseJob=false;
+      if(selectedKeys.length==0){  //取消选中
+       this.showButton=false;
       }else{
-        this.showButton=false;
-        //this.chooseJob=true;
+        this.parentId=info.node.dataRef.key;//用作添加
+        this.currentNodeId=info.node.dataRef.key;//用作查询和修改
+        this.currentNodeType=info.node.dataRef.type;//
+        if(info.node.dataRef.type==1||info.node.dataRef.type==2){
+          this.showButton=true;
+         // this.chooseJob=false;
+        }else{
+          this.showButton=false;
+          //this.chooseJob=true;
+        }
+        this.status=0;
+        this.queryOrgDetail(this.currentNodeId);
+        if(this.currentNodeType==3){
+          this.queryPermission(this.currentNodeId);
+          this.queryStaff();
+        }
       }
-      this.status=0;
-      if(this.currentNodeType==3){
-        this.queryPermission(this.currentNodeId);
-        this.queryStaff();
-      }
-      this.queryOrgDetail(this.currentNodeId);
+
     },
     addParent(){  //添加分院
       this.visible1=true;

@@ -1,13 +1,13 @@
 <template>
-  <a-modal v-model="visible" title="标签管理" @ok="handleOk">
+  <a-modal v-model="visible" title="标签管理" @ok="handleOk" :dialogClass="'middleModel'">
       <div class="tag-one" v-if="operation.type=='all'">
-       <div class="tag-one-create"><span class="pc-button buttonNoback font10"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
+       <div class="tag-one-create"><span class="pc-button buttonNoback font10" @click="addTags"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
        <div class="tag-one-drag">
          <draggable v-model="allTagsList"    :options="{animation: 300}" >
-         	<div  v-for="obj in allTagsList" class="pc-drag">
+         	<div  v-for="(obj,index) in allTagsList" class="pc-drag">
             <span contenteditable="true" style="outline: none;" @blur="obj.name=$event.target.innerHTML">{{obj.name}}</span>
          <span>
-          <i class="iconfont icon-shanchu themeColor weight600 font16 pointer"></i>
+          <i class="iconfont icon-shanchu themeColor weight600 font16 pointer" @click="deleteTag(index)"></i>
          	<i class="iconfont icon-tuodong themeColor weight600 font16 pointer"></i>
           </span>
             </div>
@@ -62,8 +62,13 @@ export default {
   data() {
     return {
       loading:false,
-      allTagsList:[{id:1,name:'组织管理'},{id:2,name:'外部服务和供应'},{id:3,name:'组织管理2'},{id:4,name:'组织管理3'},],
-      singleTagList:[]
+      allTagsList:[],
+      singleTagList:[],
+      tagObj:{
+            "id": 0,
+            "name": "新建标签",
+            "order": 0
+          }
     }
   },
   watch:{
@@ -77,9 +82,14 @@ export default {
     }
   },
   created(){
-
   },
   methods:{
+    addTags(){
+    this.allTagsList.unshift(this.tagObj);
+    },
+    deleteTag(index){
+    this.allTagsList.splice(index,1);
+    },
     chooseTag(obj){
       obj.choosen=!obj.choosen;
        if(obj.choosen==true){
@@ -90,8 +100,8 @@ export default {
        }
     },
     queryAllTags(){
-        let url="";
-        utils.request.get(url).then((res) => {
+        let url="/api/Document/DocumentTagList";
+        utils.request.post(url,{},true).then((res) => {
         	if(res){
             if(res.success==true){
               this.allTagsList=res.result;
@@ -114,14 +124,21 @@ export default {
     },
     handleOk(){
           this.loading=true;
-          let url="";
-          utils.request.post(url,params,false).then((res) => {
+          if(this.operation.type=='all'){
+            var url="/api/Document/InsertOrUpdateTag";
+            var params=this.allTagsList
+          }else{
+            var url="/api/Document/InsertOrDeleteTag";
+            var params=this.singleTagList
+          }
+          utils.request.put(url,params,false).then((res) => {
           	if(res){
               this.loading=false;
               if(res.success==true){
                 utils.box.toast("提交成功");
-                this.handleCancel()
+                this.$emit("closeTagManage",{config:this.operation.type});
               }else{
+                utils.box.toast("提交失败");
               }
             }
             });
