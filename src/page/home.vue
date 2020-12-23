@@ -86,7 +86,7 @@ export default {
    visible:false,
    menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',announce:1,toggle:false,subMenuList:[]},
              {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
-             {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:'trainIndex'},{name:'题库管理',url:'questionBank'},{name:'培训分类',url:''},{name:'参与培训考核',url:''}]},
+             {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:'trainIndex'},{name:'题库管理',url:'questionBank'},{name:'培训分类',url:'classification'},{name:'参与培训考核',url:'trainAssessmentIndex'}]},
              {name:'人员管理',icon:'icon-renyuan',url:'',toggle:false,subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
              ]
     };

@@ -129,6 +129,22 @@ const router = new Router({
               title : '题库管理'
           },
         },
+        {
+          path: '/classification',
+          name:'classification',
+          component: resolve => require(['@/components/trainAndCheck/classification'], resolve),
+          meta : {
+              title : '培训分类'
+          },
+        },
+        {
+          path: '/trainAssessmentIndex',
+          name:'trainAssessmentIndex',
+          component: resolve => require(['@/components/trainAssessment/trainAssessmentIndex'], resolve),
+          meta : {
+              title : '参与培训考核'
+          },
+        },
        ],
  },
  {
