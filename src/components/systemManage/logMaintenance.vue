@@ -1,53 +1,72 @@
 <template>
-  <div class="list-main">
-  <div class="list-main-top">
-    <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
-    <div>
-      <span class="pc-button buttonNoback1 font12" v-show="ifPrivate==true" @click="visible=true"><i class="iconfont icon-yulan font12"></i>可见人员</span>
-
-      </div>
+  <div class="list-main positionR">
+<div class="list-search-one ">
+ <input class="pc-input bigInput" placeholder="输入客户名称/操作"/>
+<span class="pc-button" @click="search"><i class="iconfont icon-sousuo"></i>搜索</span>
+ </div>
+ <div class="list-table marginT1VH">
+   <el-table
+       :data="tableData"
+       border
+       height="70vh"
+       style="width: 100%"
+       stripe
+       :header-cell-class-name="'table-header'"
+       >
+       <el-table-column prop="" label="客户名称">
+         <template slot="header" slot-scope="scope">
+            <span class="pointer" @click="takeOrder()"><span class="gray ">客户名称</span><i class="iconfont icon-paixu themeColor"></i></span>
+          </template>
+       </el-table-column>
+       <el-table-column prop="" label="操作人" >
+         <template slot="header" slot-scope="scope">
+            <span class="pointer" @click="takeOrder()"><span class="gray ">操作人</span><i class="iconfont icon-paixu themeColor"></i></span>
+          </template>
+       </el-table-column>
+       <el-table-column prop="" label="操作" >
+         <template slot="header" slot-scope="scope">
+            <span class="pointer" @click="takeOrder()"><span class="gray ">操作</span><i class="iconfont icon-paixu themeColor"></i></span>
+          </template>
+       </el-table-column>
+       <el-table-column prop="" label="功能模块" >
+         <template slot="header" slot-scope="scope">
+            <span class="pointer" @click="takeOrder()"><span class="gray ">功能模块</span><i class="iconfont icon-paixu themeColor"></i></span>
+          </template>
+       </el-table-column>
+      <el-table-column prop="" label="操作时间" >
+        <template slot="header" slot-scope="scope">
+           <span class="pointer" @click="takeOrder()"><span class="gray ">操作时间</span><i class="iconfont icon-paixu themeColor"></i></span>
+         </template>
+      </el-table-column>
+     </el-table>
   </div>
-  <div class="list-main-body">
-    <div class="list-head">
-      <div><i class="iconfont icon-jiantou themeColor"></i>文档信息</div>
-      <div>
-        </div>
-      </div>
-     <div>
-
-     </div>
-     <div class="list-head">
-       <div><i class="iconfont icon-jiantou themeColor"></i>流转情况</div>
-       <div>
-         </div>
-       </div>
-    <div class="marginT1VH">
-
-    </div>
-    <div class="list-head">
-       <div><i class="iconfont icon-jiantou themeColor"></i>历史版本</div>
-       <div>
-         </div>
-       </div>
-    <div class="marginT1VH">
-    </div>
-  </div>
+  <div class="list-bottom">
+  <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+   </div>
   </div>
 </template>
 
 <script>
+  import Pagination from '../Pagination'
   export default {
-    name: 'fileDetail',
-    components:{},
+    name: 'logMaintenance',
+    components:{Pagination},
     data() {
       return{
-
+        pageIndex:1,
+        maxPage:1,
+        pageSize:10,
+        totalCount:0,
+        tableData:[],
       }
     },
     methods:{
-      goBack(){
-        this.$router.go(-1);
-      }
+      takeOrder(){
+
+      },
+      search(){
+
+      },
     }
   };
 
@@ -56,9 +75,6 @@
 <style lang="less" scoped>
   .list-main{
     height:100%;
-    //background:#fff;
-/*    display: flex;
-    display: -webkit-flex; */
     border-radius: 5px;
     background:#fff;
     padding:.1rem;
