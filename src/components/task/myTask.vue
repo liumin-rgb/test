@@ -15,6 +15,7 @@
        <el-table-column prop="task" label="事项简介" ></el-table-column>
        <el-table-column prop="deadline" label="截止日期" ></el-table-column>
      </el-table>
+     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
      </transition>
      <div class="list-head" @click="toggle2=!toggle2">
@@ -28,6 +29,7 @@
        <el-table-column prop="task" label="事项简介" ></el-table-column>
        <el-table-column prop="deadline" label="截止日期" ></el-table-column>
      </el-table>
+     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
      </transition>
    </div>
@@ -42,6 +44,7 @@
        <el-table :data="finishData1" border height="30vh" style="width:unset" :header-cell-class-name="'table-header'">
        <el-table-column prop="task" label="事项简介" ></el-table-column>
      </el-table>
+     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
      </transition>
      <div class="list-head" @click="toggle4=!toggle4">
@@ -54,12 +57,11 @@
        <el-table :data="finishData2" border height="30vh" style="width:unset" :header-cell-class-name="'table-header'">
        <el-table-column prop="task" label="事项简介" ></el-table-column>
      </el-table>
+     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
      </transition>
    </div>
-  <!-- <div class="list-bottom">
-     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
-   </div> -->
+
   </div>
 </template>
 
@@ -115,6 +117,9 @@ import Pagination from '../Pagination'
     background:#fff;
     padding:.1rem;
   }
-
+.list-table{
+  height:75vh;
+  overflow: auto;
+}
 
 </style>
