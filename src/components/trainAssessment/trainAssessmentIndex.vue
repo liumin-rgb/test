@@ -92,7 +92,7 @@
           </el-table-column>
           <el-table-column prop="" label="操作" align="center">
            <template slot-scope="scope">
-            <i class="iconfont icon-icon-caozuo themeColor font16 pointer" @click="toCheck"></i>
+            <i class="iconfont icon-icon-caozuo themeColor font16 pointer" @click="toCheck(scope.row.status)"></i>
            </template>
           </el-table-column>
         </el-table>
@@ -134,7 +134,15 @@ import Pagination from '../Pagination'
             endDate:'2020-12-30',
             status:'未参与',
             include:'是'
-          }
+          },
+          {
+            name:'考核2',
+            owner:'负责人1',
+            beginDate:'2020-10-12',
+            endDate:'2020-12-30',
+            status:'已参与',
+            include:'是'
+          },
         ],
         tab:'1',
         trainName:'',
@@ -149,8 +157,12 @@ import Pagination from '../Pagination'
       toTrain(){
         this.$router.push({path:'viewTrain',query:{}});
       },
-      toCheck(){
-       this.$router.push({path:'startExamine',query:{}});
+      toCheck(status){
+        if(status=='未参与'){
+          this.$router.push({path:'startExamine',query:{}});       
+        }else{
+          this.$router.push({path:'finishedExamine',query:{}});         
+        }
       },
     search(){
 

@@ -3,23 +3,23 @@
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
   <div class="list-main-top marginT2VH">
        <div><span>考核名称：</span><span>考核时长：30分钟</span></div>
-         <span>倒计时：00:30:00</span>
+        <div><span>倒计时：00:30:00</span> <span class="pc-button buttonNoback">保存进度</span></div>
     </div>
 
   <div class="list-main-body">
-   <span class="block flexAround">
-   <!-- <span class="flexCol">
+   <span class="block flexAround pointer">
+   <span class="flexCol" v-show="status=='pause'" @click="exit">
       <img src="../../assets/img/exit.png"/>
       <span class="themeColor marginT1VH">退出答题</span>
-   </span> -->
-   <span class="flexCol pointer" @click="start()">
-      <img src="../../assets/img/start.png"/>
-      <span class="themeColor marginT1VH">开始答题</span>
    </span>
-  <!-- <span class="flexCol">
+   <span class="flexCol" @click="start()">
+      <img src="../../assets/img/start.png"/>
+      <span class="themeColor marginT1VH">{{status=='pause'?'重新开始':'开始答题'}}</span>
+   </span>
+   <span class="flexCol" v-show="status=='pause'">
       <img src="../../assets/img/restart.png"/>
       <span class="themeColor marginT1VH">继续答题</span>
-   </span> -->
+   </span>
    </span>
   </div>
   </div>
@@ -31,10 +31,17 @@
     components:{},
     data() {
       return{
-
+     status:'start',
       }
     },
+    created(){
+      this.status=utils.cache.getSession("testStatus");
+      utils.cache.removeSession("testStatus");
+    },
     methods:{
+      exit(){
+        this.$router.push({path:'trainAssessmentIndex',query:{}});
+      },
       start(){
         this.$router.push({path:'examine',query:{}});
       },

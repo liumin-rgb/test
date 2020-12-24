@@ -4,13 +4,13 @@
   <div class="list-main-top marginT2VH">
        <div><span>考核名称：</span><span>考核时长：30分钟</span></div>
        <div>
-         <span>倒计时：00:30:00</span>
-         <span class="pc-button buttonNoback">保存进度</span>
-          <span class="pc-button buttonNoback" @click="pause">暂停答题</span>
+         <span>用时：00:24:00</span>
           <span class="pc-button" @click="restart">重新答题</span>
          </div>
     </div>
-
+ <div>
+   <span>状态：<span class="green">已及格</span></span><span>得分：<span class="green">80分</span></span><span>总分：100分</span>
+ </div>
   <div class="list-main-body">
   <!-- <div class="block">
     <span>1.(多选)以下哪些定义为危险化学品</span><span></span>
@@ -47,10 +47,6 @@
       goBack(){
         this.$router.go(-1);
       },
-      pause(){
-        utils.cache.setSession("testStatus","pause");
-        this.$router.push({path:'startExamine'});
-      },
       restart(){
         this.$router.push({path:'startExamine'});
       },
@@ -73,11 +69,16 @@
     }
     &-body{
       width:100%;
-      margin-top:.2rem;
       position:relative;
       height:70vh;
       padding:.1rem;
       overflow:auto;
     }
+  }
+  .green{
+    color:#37a21e;
+  }
+  .red{
+    color:#af1e2b
   }
 </style>

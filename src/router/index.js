@@ -169,6 +169,32 @@ const router = new Router({
               title : '答题'
           },
         },
+        {
+          path: '/finishedExamine',
+          name:'finishedExamine',
+          component: resolve => require(['@/components/trainAssessment/finishedExamine'], resolve),
+          meta : {
+              title : '已完成'
+          },
+        },
+        {
+               path: '/superADM',
+               name:'superADM',
+               component: resolve => require(['@/components/systemManage/superADM'], resolve),
+               meta : {
+                   title : 'superADM',
+
+               }
+         },
+         {
+               path: '/logMaintenance',
+               name:'logMaintenance',
+               component: resolve => require(['@/components/systemManage/logMaintenance'], resolve),
+               meta : {
+                   title : '日志维护',
+
+               }
+         },
        ],
  },
  {
@@ -185,15 +211,6 @@ const router = new Router({
                component: resolve => require(['@/page/changePassword'], resolve),
                meta : {
                    title : '修改密码',
-               }
-         },
-         {
-               path: '/superADM',
-               name:'superADM',
-               component: resolve => require(['@/page/superADM'], resolve),
-               meta : {
-                   title : 'superADM',
-
                }
          },
        ]
