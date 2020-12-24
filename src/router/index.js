@@ -161,6 +161,14 @@ const router = new Router({
               title : '开始答题'
           },
         },
+        {
+          path: '/examine',
+          name:'examine',
+          component: resolve => require(['@/components/trainAssessment/examine'], resolve),
+          meta : {
+              title : '答题'
+          },
+        },
        ],
  },
  {

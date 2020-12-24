@@ -1,5 +1,5 @@
 <template>
-<div class="list-main" ref="main">
+<div class="list-main positionR" ref="main">
 <div class="list-search">
       <div class="list-search-one flexBtw">
       <div>
@@ -42,9 +42,9 @@
                     <el-table-column prop="content" label="试题题目内容"  min-width="110"></el-table-column>
                   </el-table>
    </div>
-   <div class="list-bottom">
-   <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
-    </div>
+  <div class="list-bottom">
+  <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+   </div>
     <NewQuestion :visible="visible"  @closeModel="closeModel"/>
   </div>
 </template>

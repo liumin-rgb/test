@@ -83,11 +83,11 @@
         <el-table-column prop="workingDate" label="入职时间"></el-table-column>
         <el-table-column prop="mobile" label="手机长号"></el-table-column>
       <!--  <el-table-column prop="seniority" label="工作年限" width="70"></el-table-column> -->
-        <el-table-column prop="department" label="部门" width="60"></el-table-column>
+        <el-table-column prop="department" label="部门" min-width="100"></el-table-column>
         <el-table-column prop="education" label="学历" width="50">
           <template slot-scope="scope"> <span>{{scope.row.education| filter1(educationList)}}</span></template>
         </el-table-column>
-        <el-table-column prop="workingStatus" label="在职状态">
+        <el-table-column prop="workingStatus" label="在职状态" min-width="50">
           <template slot-scope="scope"> <span>{{scope.row.workingStatus| filter1(workStatusList)}}</span></template>
         </el-table-column>
         <el-table-column prop="address" label="操作" align="center" width="50">

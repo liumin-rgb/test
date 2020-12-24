@@ -95,7 +95,7 @@
          <transition name="t1">
              <table class="table " v-show="toggle11==true">
                <tr>
-                 <td><div class=" textInput"><span class="label font12 weight600">身份证号</span><input class='pc-input' readonly="true"  v-model="staffInfo.idCard"/></div></td>
+                 <td><div class=" textInput"><span class="label font12 weight600">身份证号</span><input class='pc-input'   v-model="staffInfo.idCard"/></div></td>
                  <td><div class=" textInput"><span class="label font12 weight600">学历</span><select class="pc-input" v-model="staffInfo.education" @change="getSelectInfo('education')" id="education"><option v-for="obj in educationList" :value="obj.code" >{{obj.text}}</option></select></div></td>
                  <td><div class=" textInput"><span class="label font12 weight600">籍贯</span><input class='pc-input'  v-model="staffInfo.native"/></div></td>
                </tr>

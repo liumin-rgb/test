@@ -8,6 +8,7 @@
           :customRequest="upload"
           :before-upload="beforeUpload"
           @change="handleChange"
+          :fileList="fileList"
         >
         <span class="pc-input uploadS displayLB">点击上传<i class="iconfont icon-shangchuan floatR themeColor"></i></span>
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
@@ -85,7 +86,8 @@ export default {
       loading:false,
       orgnize:'',
       orgnizeList:[],
-      tableData:[]
+      tableData:[],
+      fileList:[],
     }
   },
   watch:{

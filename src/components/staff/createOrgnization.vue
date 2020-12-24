@@ -37,6 +37,7 @@ export default {
   methods:{
     handleCancel(){
       this.$emit("closeModel");
+      utils.common.resetData(this);
     },
     handleOk(){
     //this.handleCancel()
@@ -45,6 +46,7 @@ export default {
       return;
     }
     this.$emit("closeModel",{name:this.name,remark:this.remark});
+     utils.common.resetData(this);
     }
   }
 }

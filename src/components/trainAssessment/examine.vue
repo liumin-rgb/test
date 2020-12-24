@@ -3,31 +3,30 @@
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
   <div class="list-main-top marginT2VH">
        <div><span>考核名称：</span><span>考核时长：30分钟</span></div>
+       <div>
          <span>倒计时：00:30:00</span>
+         <span class="pc-button buttonNoback">保存进度</span>
+          <span class="pc-button buttonNoback">暂停答题</span>
+          <span class="pc-button">重新答题</span>
+         </div>
     </div>
 
   <div class="list-main-body">
-   <span class="block flexAround">
-   <!-- <span class="flexCol">
-      <img src="../../assets/img/exit.png"/>
-      <span class="themeColor marginT1VH">退出答题</span>
-   </span> -->
-   <span class="flexCol pointer" @click="start()">
-      <img src="../../assets/img/start.png"/>
-      <span class="themeColor marginT1VH">开始答题</span>
-   </span>
-  <!-- <span class="flexCol">
-      <img src="../../assets/img/restart.png"/>
-      <span class="themeColor marginT1VH">继续答题</span>
-   </span> -->
-   </span>
+   <div class="block">
+    <span>1.(多选)以下哪些定义为危险化学品</span>
+    <div>
+      <span>A.聚乙烯</span>
+      <span>B.聚丙烯</span>
+      <span>C.乙醇</span>
+    </div>
+   </div>
   </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'startExamine',
+    name: 'examine',
     components:{},
     data() {
       return{
@@ -35,9 +34,6 @@
       }
     },
     methods:{
-      start(){
-        this.$router.push({path:'examine',query:{}});
-      },
       goBack(){
         this.$router.go(-1);
       }
@@ -67,22 +63,17 @@
       margin-top:.2rem;
       position:relative;
       height:70vh;
+      padding:.1rem;
+      overflow:auto;
     }
   }
 .block{
-  width: 3rem;
-  height: 1.5rem;
+  width: 100%;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.16);
-  padding:.2rem;
-  position: absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-60%,-50%);
+  padding:.1rem;
 }
-.block img{
-  height:.6rem;
-}
+
 
 </style>
