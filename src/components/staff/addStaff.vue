@@ -35,7 +35,7 @@
         </div>
            </div>
            </a-spin>
-            <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+            <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount" :pageSizeList="pageSizeList"/>
       </div>
         <template slot="footer">
                <a-button key="back" @click="handleCancel">
@@ -70,7 +70,7 @@ export default {
        isFilter:false,
        totalCount:0,
        pageIndex: 1,
-       pageSize:10,
+       pageSize:30,
        maxPage: 1,
        tableData:[],
        tableData1:[],
@@ -80,6 +80,7 @@ export default {
        employeeIds:[],
        sping:false,
        loading:false,
+       pageSizeList:[30,60,90,120,150,300],
     }
   },
   watch:{
@@ -119,7 +120,7 @@ export default {
                 if(res.success==true){
                   let data=res.result;
                  this.totalCount=data.totalCount||0;
-                 this.maxPage=Math.ceil(this.totalCount/(this.pageSize*3));
+                 this.maxPage=Math.ceil(this.totalCount/(this.pageSize));
                  this.tableData=data.items;
                  let newArr=utils.common.group(this.tableData,10);
                  this.tableData1=newArr[0]||[];

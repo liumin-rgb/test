@@ -278,6 +278,7 @@
            if(res){
             if(res.success==true){
               utils.box.toast("添加成功","success");
+              this.$router.push({path:'managePower'});
             }else{
               utils.box.toast(res.error.message);
             }
@@ -368,8 +369,9 @@
            	 			this.loading=false;
                   if(res){
            	 			if (res.success == true) {
-                    utils.box.toast("上传成功");
-                     this.photo=res.result[0];
+                    utils.box.toast("上传成功","success");
+                     this.photo=res.result[0].id;
+                     this.imageUrl=res.result[0].path;
            	 			} else {
                    //  item.onSuccess(res, item.file);
            	 				utils.box.toast("上传失败");

@@ -27,8 +27,11 @@
       totalCount:{
         type: Number,
         default: 0
+      },
+      pageSizeList:{
+        type:Array,
+        default:[10,20,30,50,100]
       }
-
 		},
 		data(){
 			return{
@@ -36,7 +39,7 @@
       pageSizeCode:0,
 			threeDot: '···',
 			tempPageNo:1,
-      pageSizeList:[10,20,30,50,100],
+     /* pageSizeList:[10,20,30,50,100], */
 		}
 		},
 		watch: {

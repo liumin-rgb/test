@@ -226,7 +226,7 @@ updated(){
   .menu{
    // padding:.1rem;
     .menuitem{
-      padding:.1rem 0.1rem;
+      padding:.1rem 0rem .1rem .1rem;
       .title{margin:0 0.2rem 0 0.05rem;}
     }
     .subMenuitem{
@@ -298,6 +298,9 @@ updated(){
   display: inline-block;
   text-align: center;
   line-height: .15rem;
+}
+.sider::webkit-scrollbar{
+   display:none !important;
 }
 
 </style>

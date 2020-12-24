@@ -32,7 +32,7 @@
          </div>
             </div>
             </a-spin>
-          <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+          <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount" :pageSizeList="pageSizeList"/>
       </div>
         <template slot="footer">
                <a-button key="back" @click="handleCancel">
@@ -59,7 +59,7 @@ export default {
   data() {
     return {
         pageIndex: 1,
-        pageSize:10,
+        pageSize:30,
         maxPage: 1,
         totalCount:0,
         tableData:[],
@@ -71,7 +71,8 @@ export default {
         sping:false,
         name:'',
         employeeNo:'',
-        department:''
+        department:'',
+        pageSizeList:[30,60,90,120,150,300],
     }
   },
   created(){
@@ -95,13 +96,13 @@ export default {
     },
     queryInfo(){
       this.sping=true;
-      let url = '/api/Employee/template/infos?searchDto.pageIndex='+this.pageIndex+'&searchDto.pageSize='+this.pageSize*3+'&searchDto.name='+this.name+'&searchDto.employeeNo='+this.employeeNo+'&searchDto.department='+this.department
+      let url = '/api/Employee/template/infos?searchDto.pageIndex='+this.pageIndex+'&searchDto.pageSize='+this.pageSize+'&searchDto.name='+this.name+'&searchDto.employeeNo='+this.employeeNo+'&searchDto.department='+this.department
       	utils.request.get(url).then((res) => {
           this.sping=false;
       		if(res){
          if(res.success==true){
            this.totalCount=res.result.totalCount;
-           this.maxPage=Math.ceil(this.totalCount/(this.pageSize*3));
+           this.maxPage=Math.ceil(this.totalCount/(this.pageSize));
            this.tableData=res.result.items||[];
            let newArr=utils.common.group(this.tableData,10);
            this.tableData1=newArr[0]||[];

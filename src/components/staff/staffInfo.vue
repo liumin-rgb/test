@@ -353,7 +353,7 @@
           utils.request.delete(url,true).then((res) => {
           	if(res){
               if(res.success==true){
-                utils.box.toast("删除成功");
+                utils.box.toast("删除成功","success");
                 this.queryInfo();
               }else{
                utils.box.toast(res.error.message);

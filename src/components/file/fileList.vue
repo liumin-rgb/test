@@ -253,8 +253,19 @@
         this.pageSize=val.pageSize;
         this.queryInfo();
       },
+      addTags(){
+        if(this.check1){
+          let ids=this.multipleSelection.map((item)=>{return item.id});
+           this.openTagManage('single',ids);
+        }
+      },
+      download(){
+        if(this.check1){
+
+        }
+      },
       abolish(){
-        if(this.checkSelection()){
+        if(this.check2){
           this.config={
             title:'提交废除',
             label:'审批人',
@@ -263,20 +274,12 @@
         }
       },
       examine(){
-         if(this.checkSelection()){
+         if(this.check3){
         this.config={
           title:'提交审核',
           label:'审批人',
         },
         this.visible1=true;
-        }
-      },
-      addTags(){
-
-      },
-      download(){
-        if(this.checkSelection()){
-
         }
       },
       queryAllTags(){
@@ -379,12 +382,21 @@
           this.showSelect=false;
           this.$router.push({path:url,query:{}});
     },
-        openTagManage(type,id,tags){
+        openTagManage(type,ids,tags){
+          let arr=[];
+          if(ids!=undefined){
+            if(Array.isArray(ids)){
+              arr=ids;
+            }else{
+              arr.push(ids);
+            }
+          }
           this.operation={
             type:type,
-            id:id||'',
+            ids:arr,//文件id
             singleTag:tags||[]
           }
+          console.log(this.operation);
           this.visible2=true;
         },
         closeTagManage(val){

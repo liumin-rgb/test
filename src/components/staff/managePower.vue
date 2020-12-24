@@ -185,7 +185,7 @@
     },
     methods: {
       calcHeight(){
-       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-this.$refs.bottom.offsetHeight-22-24-60;
+       this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-this.$refs.bottom.offsetHeight-22-24-80;
       },
       queryParent(){
            let url="/api/Organization/organization/0/children";

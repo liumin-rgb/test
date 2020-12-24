@@ -106,18 +106,34 @@ export default {
             if(res.success==true){
               this.allTagsList=res.result;
               if(this.operation.type=="single"){
-                for(var i in this.allTagsList){
-                  for(var j in this.singleTagList){
-                    if(this.allTagsList[i].id==this.singleTagList[j].id){
-                      this.allTagsList[i].choosen=true;
-                    }
-                  }
-                }
+                this.querySingleTag();
               }
             }else{
             }
           }
           });
+    },
+    querySingleTag(){
+          let url="/api/Document/findTags";
+          let params={
+            DocumentIds:this.operation.ids
+          }
+          utils.request.post(url,params,true).then((res) => {
+          	if(res){
+              if(res.success==true){
+                this.singleTagList=res.result;
+                  for(var i in this.allTagsList){
+                    for(var j in this.singleTagList){
+                      if(this.allTagsList[i].id==this.singleTagList[j].id){
+                        this.allTagsList[i].choosen=true;
+                      }
+                    }
+                }
+              }else{
+              }
+            }
+            });
+
     },
     handleCancel(){
       this.$emit("closeTagManage");
@@ -128,14 +144,17 @@ export default {
             var url="/api/Document/InsertOrUpdateTag";
             var params=this.allTagsList
           }else{
-            var url="/api/Document/InsertOrDeleteTag";
-            var params=this.singleTagList
+            var url="/api/Document/batch"; //单或多个文件修改标签
+            var params={
+              documentId:this.operation.ids,
+              tagId:this.singleTagList.map((item)=>{return item.id})
+            }
           }
           utils.request.put(url,params,false).then((res) => {
           	if(res){
               this.loading=false;
               if(res.success==true){
-                utils.box.toast("提交成功");
+                utils.box.toast("提交成功","success");
                 this.$emit("closeTagManage",{config:this.operation.type});
               }else{
                 utils.box.toast("提交失败");

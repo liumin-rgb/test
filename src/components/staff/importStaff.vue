@@ -205,13 +205,16 @@ export default {
                //this.tableData=res.result||[];
                this.checkInfo();
                item.onSuccess(res, item.file);
+               this.fileList=[];
      	 			} else {
                item.onSuccess(res, item.file);
      	 				utils.box.toast("上传失败");
+              this.fileList=[];
      	 			}
      	 			 }else{
                 item.onSuccess(res, item.file);
                utils.box.toast("上传失败");
+               this.fileList=[];
              }
      	 		});
     },
