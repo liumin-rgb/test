@@ -62,7 +62,7 @@
                  style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
                  @change="onChange"
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                 :tree-data="treemap" 
+                 :tree-data="treemap"
                  tree-default-expand-all
                >
                </a-tree-select>
@@ -164,10 +164,10 @@
   import RewardPunish from"../editStaff/rewardPunish"
   import Teach from"../editStaff/teach"
   import PaperPublish from"../editStaff/paperPublish"
-  import HealthStatus from"../editStaff/HealthStatus"
+  import HealthStatus from"../editStaff/healthStatus"
   import ScientificResearch from"../editStaff/scientificResearch"
   import Certificate from"../editStaff/certificate"
-  import AcademicConference from"../editStaff/AcademicConference"
+  import AcademicConference from"../editStaff/academicConference"
   function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
