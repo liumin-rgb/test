@@ -11,13 +11,13 @@
   </div>
   <div class="list-main-body">
     <div class="list-head" @click="toggle1=!toggle1">
-      <div><i class="iconfont icon-jiantou themeColor"></i>基本信息</div>
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>基本信息</div>
       <div>
         <span class="marginR2VW">文件目录：问卷11</span>
         <span>申请人：1-R</span>
         </div>
       </div>
-     <!-- <transition-group name="t1"> -->
+     <transition name="t1">
       <div v-show="toggle1==true">
     <div class="flex paddingLR2rem gray">
       <div class=" textInput"><span class="label"><span class="icon-xing">*</span>文件名称</span><input class='pc-input middleInput' v-model="name"/></div>
@@ -29,15 +29,27 @@
  --><!--      <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input'/></div>
  -->    </div>
     </div>
-   <!-- </transition-group> -->
-    <div class="list-head" @click="toggle2=!toggle2">
-      <div><i class="iconfont icon-jiantou themeColor"></i>编辑文档</div>
+    </transition>
+    <div class="list-head" @click.stop="toggle2=!toggle2">
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle2==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle2==false"></i>编辑文档
+
+      </div>
     </div>
-  <!--  <transition-group name="t1"> -->
-     <div v-show="toggle2==true">
+    <transition name="t1">
+     <div v-show="toggle2==true" :class="fullScreen?'modelEditor':'pageEditor'">
+       <div :class="fullScreen?'modelEditor2':'pageEditor2'">
+         <el-popover trigger="hover" placement="bottom">
+           <div>点击缩小编辑器</div>
+         <i class="iconfont icon-suoxiao themeColor font30 iconPosition pointer" v-show="fullScreen==true" slot="reference" @click="fullScreen=false"></i>
+           </el-popover>
+           <el-popover trigger="hover" placement="bottom">
+             <div>点击放大编辑器</div>
+            <i class="iconfont icon-fangda themeColor font20 iconPosition pointer" @click.stop="fullScreen=true" slot="reference" v-show="fullScreen==false" ></i>
+            </el-popover>
       <Editor id="tinymce"  :init="editorInit" v-model='tinymceHtml'></Editor>
+      </div>
      </div>
-   <!--  </transition-group> -->
+    </transition>
   </div>
   <CheckFile :visible="visible" :config="config" @closeModel="closeModel"/>
   </div>
@@ -66,6 +78,7 @@
         name:'',
         docNo:'',
         version:'',
+        fullScreen:false,
         config:{
          title:'提交审核',
          label:'审批人',
@@ -75,23 +88,35 @@
          language_url: './static/tinymce/zh_CN.js',
          language: 'zh_CN',
          skin_url: './static/tinymce/skins/ui/oxide',
-         min_height: 280,
-         max_height:500,
+         height:'100%',
+        // min_height: 300,
+         //max_height:550,
+           menu: {
+                /* file: {title: '文件', items: 'newdocument'}, */
+                 edit: {title: '编辑', items: 'undo redo | cut copy paste pastetext | selectall'},
+                 insert: {title: '插入', items: 'link media | template hr'},
+               /*  view: {title: '查看', items: 'visualaid'}, */
+                 format: {title: '格式', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+                 table: {title: '表格', items: 'inserttable tableprops deletetable | cell row column'},
+                 tools: {title: '工具', items: 'spellchecker code'}
+             },
+              menubar: 'edit insert  format table ',
         toolbar:'forecolor backcolor bold italic underline   | alignleft aligncenter alignright alignjustify outdent indent | \
                    fontselect fontsizeselect | bullist numlist | table image | link',
         plugins:'table image link'	,
         fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
         font_formats: '宋体=simsun,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;',
            link_list: [
-               { title: '预置链接1', value: 'http://www.tinymce.com' },
-               { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
+             //  { title: '预置链接1', value: 'http://www.tinymce.com' },
+              // { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
            ],
            image_class_list: [
            { title: 'None', value: '' },
-           { title: 'Some class', value: 'class-name' }
+          // { title: 'Some class', value: 'class-name' }
            ],
            importcss_append: true,
            //自定义文件选择器的回调内容
+           file_picker_type:'image',
            file_picker_callback: function (callback, value, meta) {
                /* if (meta.filetype === 'file') {
                  callback('https://www.baidu.com/img/bd_logo1.png', { text: 'My text' });
@@ -101,12 +126,42 @@
                }
 
            },
-            automatic_uploads: false,
-            images_upload_url: '',
-             images_upload_base_path: '/demo',
-           autosave_ask_before_unload: false,
-        branding: false
+           automatic_uploads: false,
+          /*  images_upload_url: '',
+           images_upload_base_path: '/demo', */
+          // autosave_ask_before_unload: false,
+            branding: false,
+            images_upload_handler:function (blobInfo, succFun, failFun) {/*
+              console.log(blobInfo);
+                	 		let url = "/api/Employee/uploadAttachment?type=1";
+                			 const form = new FormData();
+                			   // 文件对象
+                			  form.append('files', blobInfo.blob(), blobInfo.filename());
+                	 		utils.request.post(url,form,{headers: {"content-type": "multipart/form-data"}}).then((res) => {
+                       if(res){
+                	 			if (res.success == true) {
+                          succFun("success");
+
+                	 			} else {
+                           failFun("failed");
+                	 			}
+                	 			 }else{
+                           failFun("failed");
+                        }
+                	 		});
+
+            */},
        },
+      }
+    },
+    watch:{
+      fullScreen:function(val){
+        if(val==true){
+          //this.editorInit.height='100vh';
+          //tinymce.theme.resizeTo('100%','100%');
+        }else{
+
+        }
       }
     },
     mounted(){
@@ -130,7 +185,7 @@
       },
       saveDraft(){
         if(this.check()){
-
+        console.log(this.tinymceHtml);
         }
       },
       submitCheck(){
@@ -142,6 +197,25 @@
          if(this.check()){
 
          }
+      },
+      upload(blobInfo){
+         	 		let url = "/api/Employee/uploadAttachment?type=1";
+         			 const form = new FormData();
+         			   // 文件对象
+         			  form.append("file", 'files', blobInfo.blob(), blobInfo.filename());
+         	 		utils.request.post(url,form,{headers: {"content-type": "multipart/form-data"}}).then((res) => {
+         	 			this.loading=false;
+                if(res){
+         	 			if (res.success == true) {
+                  utils.box.toast("上传成功","success");
+
+         	 			} else {
+         	 				utils.box.toast("上传失败");
+         	 			}
+         	 			 }else{
+                   utils.box.toast("上传失败");
+                 }
+         	 		});
       },
       goBack(){
         this.$router.go(-1);
@@ -178,5 +252,32 @@
 .t1-enter-active {transition: all .5s ease;}
 .t1-leave-active {transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);}
 .t1-enter, .t1-leave-to{transform: translateX(5px);opacity: 0;}
-
+.modelEditor{
+  position: absolute;
+  width:100vw;
+  height:100vh;
+  background:rgba(0, 0, 0, 0.45);
+  top:0;
+  left:0;
+  z-index:1000;
+  bottom:0;
+  right:0;
+}
+.modelEditor2{
+ position: relative;
+ height:100%;
+}
+.iconPosition{
+  position: absolute;
+  top:0;
+  right:0;
+  z-index:1001;
+}
+.pageEditor{
+  height:55vh;
+}
+.pageEditor2{
+   position: relative;
+  height:100%;
+}
 </style>

@@ -237,9 +237,8 @@ const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
- /* if(!to.meta.noLogin) {
+  /* if(!to.meta.noLogin) {
     const token = utils.cache.get('TOKEN') || ''
-
 		if(token) {
 		  //TODO 验证TOKEN获取用户信息
 		} else {

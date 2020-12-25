@@ -1,7 +1,7 @@
 <template>
   <a-modal v-model="visible" title="标签管理" @ok="handleOk" :dialogClass="'middleModel'">
       <div class="tag-one" v-if="operation.type=='all'">
-       <div class="tag-one-create"><span class="pc-button buttonNoback font10" @click="addTags"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
+       <div class="tag-one-create flexBtw"><span class="font12 color999">提示：可拖动进行排序</span><span class="pc-button buttonNoback font10" @click="addTags"><i class="iconfont icon-jiahao font12"></i>新建</span></div>
        <div class="tag-one-drag">
          <draggable v-model="allTagsList"    :options="{animation: 300}" >
          	<div  v-for="(obj,index) in allTagsList" class="pc-drag">

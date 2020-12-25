@@ -49,7 +49,7 @@
           </div>
           <div class="pc-header-two flex">
             <span class="pointer" @click="toPersonal"><img src="../assets/img/background_easy.png" class="headerImg"/></span>
-            <div class="color999  flexCol headerUser pointer" @click="toPersonal"><span>Liza<br>系统管理员</span></div>
+            <div class="color999  flexCol headerUser pointer" @click="toPersonal"><span>{{userName}}<br>{{role}}</span></div>
             <el-popover trigger="hover" placement="bottom">
               <div class="pointer themeColor weight600 font12">
               <p @click="setting"><i class="iconfont icon-mima"></i>修改密码</p>
@@ -84,19 +84,26 @@ export default {
    transitionName:'',
    choosen:'',
    visible:false,
+   userName:'',
+   role:'',
    menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',announce:1,toggle:false,subMenuList:[]},
              {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
              {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:'trainIndex'},{name:'题库管理',url:'questionBank'},{name:'培训分类',url:'classification'},{name:'参与培训考核',url:'trainAssessmentIndex'}]},
              {name:'人员管理',icon:'icon-renyuan',url:'',toggle:false,subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
              {name:'系统配置',icon:'icon-shezhi1',url:'',toggle:false,subMenuList:[{name:'配置医院管理员',url:'superADM'},{name:'日志维护',url:'logMaintenance'}]},
 
-             ]
+             ],
+   roleType:['','罗氏管理员','医院管理员','员工'],
+
     };
   },
 updated(){
   this.choosen=utils.cache.getSession("choosen");
 },
  created(){
+   let userInfo=utils.cache.get("userInfo");
+   this.userName=userInfo.userName;
+   this.role=this.roleType[userInfo.userType];
    this.choosen=utils.cache.getSession("choosen");
  },
   methods:{
@@ -245,7 +252,7 @@ updated(){
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
   margin-left:.1rem;
-  padding-left:.3rem !important;
+  //padding-left:.3rem !important;
 }
 
 

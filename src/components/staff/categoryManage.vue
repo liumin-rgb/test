@@ -1,5 +1,6 @@
 <template>
   <a-modal v-model="visible" title="修改详情页类目名称" :afterClose="handleCancel" :dialogClass="'middleModel'">
+    <span class="font12 color999">提示：可拖动进行排序</span>
      <a-spin :spinning="spinning" >
       <div class="tag-one" >
  <div class="tag-one-drag">

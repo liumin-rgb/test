@@ -28,7 +28,11 @@
       </div>
       <transition name="t1">
      <div class="marginT1VH" v-show="toggle3==true">
-       <el-table
+       <div><span class="label">附件</span><span class="preview flexBtw"><span class="file">培训附件1.pdf</span><span>预览</span></span></div>
+       <div>
+
+       </div>
+      <!-- <el-table
            :data="tableData"
            border
            style="width: 100%"
@@ -50,7 +54,7 @@
              prop=""
              label="废除时间">
            </el-table-column>
-         </el-table>
+         </el-table> -->
      </div>
      </transition>
      <div class="list-head" @click="toggle2=!toggle2">
@@ -153,6 +157,19 @@
     &-body{
       width:100%;
       margin-top:.2rem;
+    }
+  }
+
+  .preview{
+    padding:0.05rem 0.05rem;
+    display: inline-block;
+    margin-left:.1rem;
+    border:1px solid #e4e4e4;
+    border-radius: 5px;
+    color:#2e6eb4;
+    .file{
+      text-decoration: underline;
+      margin-right:.5rem;
     }
   }
 

@@ -8,12 +8,12 @@
 	    <div class="tab-inner-login">
 	    <div class="tab-text-login">账号密码登录</div>
 	    <div class="tab-con-login">
-	    <div class="context"><span><img src="../assets/img/icon-user.png"/></span><input class="login-input" placeholder="请输入账号" @keyup.enter="skipInput"/>
+	    <div class="context"><span><img src="../assets/img/icon-user.png"/></span><input class="login-input" placeholder="请输入账号"  v-model="displayName" @keyup.enter="skipInput"/>
       <span></span>
       </div>
-	    <div class="context positionR"><span><img src="../assets/img/icon-passward.png"/></span><input class="login-input" placeholder="请输入密码" type="password" @keyup.enter="skipInput"/>
-      <span class="eye"><img src="../assets/img/icon-eye.png"/></span>
-      <div class="errInfo"><img src="../assets/img/icon-warning.png"/><span>密码错误请重新输入</span></div>
+	    <div class="context positionR"><span><img src="../assets/img/icon-passward.png"/></span><input class="login-input" v-model="password" placeholder="请输入密码"  :type="ifShow?'text':'password'"  @keyup.enter="skipInput"/>
+      <span class="eye" @click="ifShow=!ifShow"><i :class="['iconfont', 'themeColor','font20',ifShow?'icon-kejian':'icon-bukejian']"></i></span>
+      <div class="errInfo" v-show="errorMsg!=''"><img src="../assets/img/icon-warning.png"/><span>{{errorMsg}}</span></div>
       </div>
 	    <div class="login pointer" @click="login">登录</div>
 	    </div>
@@ -31,45 +31,33 @@
     name:'login',
     data(){
 		return{
-	  email:'',
-      password:'' ,
-	  displayName:''
+	   email:'',
+     password:'' ,
+	   displayName:'',
+     errorMsg:'',
+     ifShow:false,
+
     }},
     mounted(){
-
+     	utils.cache.removeItem('TOKEN');
     },
     methods:{
       login(){
-       this.$router.push({path:'staffInfo',query:{}});
-       return;
-		  let params={
-			  email:this.email,
-			  password:this.password,
-		  };
-		  let url="/api/Login/login";
-		  utils.request.post(url,params,false).then((res)=>{
-			  let body=res;
-			  if(body.isSuccess==true){
-				  let data=body.data;
-				utils.cache.set('TOKEN',data.token||'');
-				this.queryLoginInfo();
+        this.errorMsg='';
+		  let url="/api/Account/Login?employeeNo="+this.displayName+"&password="+this.password;
+		 utils.request.get(url,true).then((res)=>{
+       if(res){
+         if(res.success==true){
+           let userInfo=res.result.userInfo;
+           let accesssToken=res.result.accesssToken||'';
+           utils.cache.set('userInfo',userInfo);
+           utils.cache.set('TOKEN',accesssToken);       
+           this.$router.push({path:'fileList',query:{}});
+         }else{
+          this.errorMsg=res.error.message;
+         }
+       }
 
-			  }else{
-				 utils.box.toast(body.message);
-				  return;
-			  }
-		  });
-	  },
-      queryLoginInfo(){
-		  let url="/api/Account/loginAccount";
-		 utils.request.get(url).then((res)=>{
-		 			  let body=res;
-		 			  let data=body.data;
-					  utils.cache.set('displayName',data.displayName);
-					  utils.cache.set("role",data.role);
-					  utils.cache.set("roleId",data.roleId);
-					  utils.cache.set("email",data.email);
-					  this.$router.push({path:'surveyManage',query:{}});
 		 });
 	  },
     skipInput(thisInput){

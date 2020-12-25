@@ -58,7 +58,7 @@
                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
                 <template slot-scope="scope">
-                      <span class="gray ">{{scope.row.employeeNo}}</span>
+                      <span class="gray pointer" @click="toStaffInfo('edit',scope.row.id)">{{scope.row.employeeNo}}</span>
                 </template>
         </el-table-column>
         <el-table-column prop="name" label="姓名"  width="70">
@@ -66,7 +66,7 @@
                  <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
            </template>
           <template slot-scope="scope">
-                 <span class="gray ">{{scope.row.name}}</span>
+                 <span class="gray pointer"  @click="toStaffInfo('edit',scope.row.id)">{{scope.row.name}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
@@ -95,7 +95,8 @@
                   <el-popover trigger="hover" placement="bottom">
                     <div class="pointer themeColor weight600 font12">
                     <p @click="toStaffInfo('edit',scope.row.id)"><i class="iconfont icon-bianji"></i>编辑</p>
-                    <p @click="offWork(scope.row.id)"><i class="iconfont icon-lizhi"></i>离职</p>
+                    <p @click="offWork(scope.row.id,0)"><i class="iconfont icon-lizhi"></i>离职</p>
+                     <p @click="offWork(scope.row.id,1)"><i class="iconfont icon-lizhi"></i>退休</p>
                     <p @click="resetPassword(scope.row.id)"><i class="iconfont icon-suo"></i>重置密码</p>
                     <p @click="deleteStaff(scope.row.id)"><i class="iconfont icon-shanchu"></i>删除</p>
                     </div>
@@ -307,17 +308,17 @@
           }
         }
       },
-      offWork(id){
-        		  utils.box.confirm("是否确认离职？").then(()=>{
-        		  			 this.confirmOffWork(id);
+      offWork(id,type){
+        		  utils.box.confirm(type==0?"是否确认离职？":"是否确认退休？").then(()=>{
+        		  			 this.confirmOffWork(id,type);
         		  			 });
       },
-      confirmOffWork(id){
-        let url="/api/Employee/IsOnwork?id="+id;
+      confirmOffWork(id,type){
+        let url="/api/Employee/IsOnwork?id="+id+"&type="+type;
         utils.request.get(url,true).then((res) => {
         	if(res){
             if(res.success==true){
-              utils.box.toast("成功离职");
+              utils.box.toast(type==0?"成功离职":"成功退休","success");
               this.queryInfo();
             }else{
              utils.box.toast(res.error.message);
