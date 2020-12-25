@@ -1,27 +1,17 @@
 <template>
-  <a-modal v-model="visible" :title="config.title" :afterClose="handleCancel">
+  <a-modal v-model="visible" :title="title" :afterClose="handleCancel">
       <div class="format ">
-       <div class="textInput positionR"><span class="label1">{{config.label}}:</span>
+       <div class="textInput positionR"><span class="label1">{{label}}:</span>
         <a-tree-select
-           v-model="value"
+           v-model="id"
            show-search
            style="width: 50%;margin: .02rem 0.1rem;"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            placeholder="请选择"
            allow-clear
            tree-default-expand-all
+           :tree-data="treeData"
          >
-           <a-tree-select-node key="0-1" value="parent 1" title="parent 1" :selectable="false">
-             <a-tree-select-node key="0-1-1" value="parent 1-0" title="parent 1-0"  :selectable="false">
-               <a-tree-select-node key="random"  value="leaf1" title="my leaf" />
-               <a-tree-select-node key="random1" value="leaf2" title="your leaf" />
-             </a-tree-select-node>
-             <a-tree-select-node key="random2" value="parent 1-1" title="parent 1-1" :selectable="false">
-               <a-tree-select-node key="random3" value="sss">
-                 <b slot="title" style="color: #08c">sss</b>
-               </a-tree-select-node>
-             </a-tree-select-node>
-           </a-tree-select-node>
          </a-tree-select>
        <!-- <input  class='pc-input' @click="showSelect=true" readonly="true" style="width:2rem;"/>
       <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
@@ -30,7 +20,7 @@
 
        </div>
        <div><span class="label1 verTop">备注:</span>
-       <textarea class='pc-textarea'/></div>
+       <textarea class='pc-textarea' v-model="suggestion"/></div>
       </div>
         <template slot="footer">
                <a-button key="back" @click="handleCancel">
@@ -57,17 +47,56 @@ export default {
   },
   data() {
     return {
+      title:'提交审核',
+      label:'审批人',
      showSelect:false,
      loading:false,
-       treeExpandedKeys: [],
-       value: undefined,
+     suggestion:'',
+     treeExpandedKeys: [],
+     treeData:[],
+     id:''
            }
-         },
-
+     },
+   watch:{
+     visible:function(val){
+       if(val==true){
+         let type=this.config.operationType;
+         this.title=type==1?'提交审核':type==2?'提交废除':'提交传阅';
+         this.label=type==3?'传阅人':'审核人';
+         this.getTreeMap();
+       }
+     },
+   },
   created(){
 
   },
   methods:{
+    getTreeMap(){
+      let url="/api/Document/getEmployeeTreeMap";
+      utils.request.get(url).then((res) => {
+      	if(res){
+          if(res.success==true){
+            let treemap=res.result;
+            this.treeData=JSON.parse(JSON.stringify(treemap).replace(/name/g,"title").replace(/id/g,"key"));
+            this.forTree(this.treeData);
+
+       }else{
+         utils.box.toast(res.error.message);
+          }
+        }
+        });
+    },
+    forTree(treeList){
+      for(var i in treeList){
+         treeList[i].value=treeList[i].key;
+          if(treeList[i].type==1||treeList[i].type==2){
+           treeList[i].disabled=true
+          }
+        if(treeList[i].children){
+          this.forTree(treeList[i].children);
+        }
+      }
+    },
     handleNodeClick(data) {
       console.log(data);
     },
@@ -75,10 +104,31 @@ export default {
       this.$emit("closeModel");
     },
     handleOk(){
-    this.handleCancel()
-    }
-
-
+      if(this.id==''){
+        let message=this.config.operationType==3?"请选择传阅人":"请选择审批人"
+         utils.box.toast(message);
+        return;
+      }
+      this.loading=true;
+            let url="/api/Document/operateDocVersion";
+            let params={
+               "operateType": this.config.operationType,
+               "employeeId": this.id,
+               "suggestion": this.suggestion,
+               "docVersionIds": this.config.ids
+            };
+            utils.request.post(url,params,true).then((res) => {
+              this.loading=false;
+            	if(res){
+                if(res.success==true){
+               utils.box.toast('提交成功','success');
+               this.$emit("closeModel",true);
+             }else{
+               utils.box.toast(res.error.message);
+                }
+              }
+              });
+    },
   }
 }
 </script>

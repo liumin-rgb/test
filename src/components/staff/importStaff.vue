@@ -229,6 +229,7 @@ export default {
             }
           },
     handleCancel(){
+      utils.common.resetData(this);
       this.$emit("closeModel");
     },
   }

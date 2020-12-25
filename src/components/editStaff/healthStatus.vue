@@ -6,13 +6,13 @@
     </div>
  <div class="list-table">
    <el-table :data="tableData" border height="100" style="width:unset" :header-cell-class-name="'table-header'">
-     <el-table-column prop="" label="合同签订日期" ></el-table-column>
-     <el-table-column prop="date" label="合同开始日期" ></el-table-column>
-     <el-table-column prop="name" label="合同结束日期"></el-table-column>
+     <el-table-column prop="" label="年份" ></el-table-column>
+     <el-table-column prop="date" label="健康状况总体评估" ></el-table-column>
+     <el-table-column prop="name" label="备注"></el-table-column>
      </el-table>
    <Pagination :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
   </div>
-  <a-modal v-model="visible" title="合同履历_新增">
+  <a-modal v-model="visible" title="合同履历_新增"  :dialogClass="'bigModel'">
       <div class="format">
         <div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>合同签订日期</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
          <div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>合同开始日期</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
@@ -34,7 +34,7 @@
 <script>
   import Pagination from "../Pagination"
   export default {
-    name: 'contract',
+    name: 'healthStatus',
     components:{Pagination},
     props:{
       flag:{

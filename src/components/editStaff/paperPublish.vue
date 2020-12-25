@@ -16,7 +16,7 @@
      </el-table>
    <Pagination :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
   </div>
-  <a-modal v-model="visible" title="" width="50%">
+  <a-modal v-model="visible" title="论文发表" width="60%">
       <div class="format">
           <div class=" textInput">
           <span class="label font12 weight600"><span class="icon-xing">*</span>发表年月</span><input class="pc-input">

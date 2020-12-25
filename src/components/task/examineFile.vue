@@ -30,7 +30,6 @@
      <div class="marginT1VH" v-show="toggle3==true">
        <div><span class="label">附件</span><span class="preview flexBtw"><span class="file">培训附件1.pdf</span><span>预览</span></span></div>
        <div>
-
        </div>
       <!-- <el-table
            :data="tableData"

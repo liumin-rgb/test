@@ -19,7 +19,7 @@
      </el-table>
    <Pagination :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
   </div>
-  <a-modal v-model="visible" title="继续教育" width="50%">
+  <a-modal v-model="visible" title="继续教育" width="60%">
       <div class="format">
         <div class=" textInput">
           <span class="label font12 weight600"><span class="icon-xing">*</span>开始时间</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>

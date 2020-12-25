@@ -62,8 +62,7 @@
                  style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
                  @change="onChange"
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-                 :tree-data="treemap"
-                 :show-checked-strategy="SHOW_PARENT"
+                 :tree-data="treemap" 
                  tree-default-expand-all
                >
                </a-tree-select>
@@ -134,6 +133,13 @@
    <Qualifications v-if="obj.name=='执业资格'" :flag="flag"/>
    <ContinueEducation v-if="obj.name=='继续教育'" :flag="flag"/>
    <RewardPunish v-if="obj.name=='奖罚信息'" :flag="flag"/>
+    <Teach v-if="obj.name=='教学情况'" :flag="flag"/>
+    <PaperPublish v-if="obj.name=='论文发表'" :flag="flag"/>
+   <HealthStatus v-if="obj.name=='健康状况'" :flag="flag"/>
+   <ScientificResearch v-if="obj.name=='科研课题'" :flag="flag"/>
+    <Certificate v-if="obj.name=='培训证书'" :flag="flag"/>
+    <AcademicConference v-if="obj.name=='学术会议'" :flag="flag"/>
+
     </div>
     </transition>
     </div>
@@ -156,6 +162,12 @@
   import Qualifications from"../editStaff/qualifications"
   import ContinueEducation from"../editStaff/continueEducation"
   import RewardPunish from"../editStaff/rewardPunish"
+  import Teach from"../editStaff/teach"
+  import PaperPublish from"../editStaff/paperPublish"
+  import HealthStatus from"../editStaff/HealthStatus"
+  import ScientificResearch from"../editStaff/scientificResearch"
+  import Certificate from"../editStaff/certificate"
+  import AcademicConference from"../editStaff/AcademicConference"
   function getBase64(img, callback) {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
@@ -163,7 +175,7 @@
   }
   export default {
     name: 'editStaff',
-    components:{Contract,Experience,Qualifications,ContinueEducation,RewardPunish},
+    components:{Contract,Experience,Qualifications,ContinueEducation,RewardPunish,Teach,PaperPublish,HealthStatus,ScientificResearch,Certificate,AcademicConference},
     data() {
       return{
         toggle:true,

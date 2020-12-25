@@ -169,8 +169,8 @@
         check2:false,
         check3:false,
         config:{
-          title:'提交传阅',
-          label:'传阅人',
+          operationType:1, //1：审核 2：废除 3：传阅
+          ids:[]
         },
         status:0,
         fileName:'',
@@ -281,8 +281,7 @@
       abolish(){
         if(this.check2){
           this.config={
-            title:'提交废除',
-            label:'审批人',
+          operationType:2,
             ids:this.multipleSelection.map((item)=>{return item.id})
           },
           this.visible1=true;
@@ -291,8 +290,7 @@
       examine(){
          if(this.check3){
         this.config={
-          title:'提交审核',
-          label:'审批人',
+          operationType:1,
           ids:this.multipleSelection.map((item)=>{return item.id})
         },
         this.visible1=true;
@@ -358,10 +356,12 @@
       editHtml(){
         this.$router.push({path:'editHtml',query:{}});
       },
-      readFile(){
+      readFile(id){
+        let arr=[];
+        arr.push(id);
         this.config={
-          title:'提交传阅',
-          label:'传阅人',
+         operationType:3,
+         ids:arr,
         },
         this.visible1=true;
       },
@@ -423,8 +423,11 @@
             this.queryInfo()
           }
         },
-        closeCheckFile(){
+        closeCheckFile(val){
           this.visible1=false;
+          if(val==true){
+            this.queryInfo();
+          }
         },
          onDragEnter(info) {
               console.log(info);
