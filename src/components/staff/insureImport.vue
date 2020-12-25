@@ -104,7 +104,7 @@ export default {
            this.totalCount=res.result.totalCount;
            this.maxPage=Math.ceil(this.totalCount/(this.pageSize));
            this.tableData=res.result.items||[];
-           let newArr=utils.common.group(this.tableData,10);
+           let newArr=utils.common.group(this.tableData,this.pageSize/3);
            this.tableData1=newArr[0]||[];
            this.tableData2=newArr[1]||[];
             this.tableData3=newArr[2]||[];
