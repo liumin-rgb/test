@@ -3,7 +3,8 @@
   <div class="list-main-top">
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
     <div>
-      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>保存草稿</span>
+<!--      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>打标签</span>   
+ -->      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>保存草稿</span>
        <span class="pc-button" @click="submitCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
        <span class="pc-button" @click="submit"><i class="iconfont icon-tongguo1"></i>生效</span>
 
@@ -50,6 +51,19 @@
       </div>
      </div>
     </transition>
+    <div class="list-head" @click="toggle3=!toggle3">
+      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle3==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle3==false"></i>附录
+      </div>
+    </div>
+      <transition name="t1">
+        <div v-show="toggle3==true">
+        <div class="textAlignR"><span class="pc-button buttonNoback">添加</span></div>
+        <div class="flexCol marginL2VW" style="align-items: flex-start;">
+          <span class="themeColor text-line">附录4.1临床差错事故等级记录</span>
+          <span class="themeColor text-line">附录4.2保修记录</span>
+        </div>
+        </div>
+      </transition>
   </div>
   <CheckFile :visible="visible" :config="config" @closeModel="closeModel"/>
   </div>
@@ -74,6 +88,7 @@
       return{
         toggle1:true,
         toggle2:true,
+        toggle3:false,
         visible:false,
         name:'',
         docNo:'',
@@ -247,6 +262,8 @@
     &-body{
       width:100%;
       margin-top:.1rem;
+      height:75vh;
+      overflow: auto;
     }
   }
 .t1-enter-active {transition: all .5s ease;}

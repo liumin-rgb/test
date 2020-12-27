@@ -13,7 +13,7 @@
     <transition name="t1">
    <div v-show="toggle1==true">
        <div class="width50 textInput"><span class="label"><span class="icon-xing">*</span>医院名称</span><input class='pc-input middleInput'  v-model="name1"/></div>
-       <div class="width50 textInput"><span class="label"><span class="icon-xing">*</span>显示名</span><select  class='pc-input middleInput' ></select></div>
+       <div class="width50 textInput"><span class="label">显示名</span><input class='pc-input middleInput'  v-model="name2"/></div>
    </div>
    </transition>
    <div class="list-head" @click="toggle2=!toggle2">

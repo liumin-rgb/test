@@ -20,7 +20,6 @@
       show-icon
       :blockNode="'true'"
       defaultExpandParent
-      :default-selected-keys="['0-0-0']"
       @select="onSelect"
       @onCheck="onCheck">
           <a-icon slot="switcherIcon" type="down" />
@@ -134,6 +133,7 @@
     parentId:'',
     currentNodeId:'',
     currentNodeType:'',
+    selectedNode:{},
     treeData:[],
     permissionList:[],
     permissions:[],
@@ -153,7 +153,7 @@
      order2:false,
      isDescending:false,
      drag1:{},
-     drag2:{}
+     drag2:{},
       }
     },
     watch:{
@@ -210,10 +210,10 @@
       },
       onLoadData(treeNode){
         return new Promise(resolve=>{
-          if (treeNode.dataRef.children) {
+        /*  if (treeNode.dataRef.children) {
             resolve();
             return;
-          }
+          } */
              let url="/api/Organization/organization/"+treeNode.dataRef.key+"/children";
              utils.request.get(url,false).then((res) => {
                if(res){
@@ -236,9 +236,11 @@
               });
       },
    onSelect(selectedKeys, info) {
+
       if(selectedKeys.length==0){  //取消选中
        this.showButton=false;
       }else{
+        this.selectedNode=info.node; //当前选中的节点
         this.parentId=info.node.dataRef.key;//用作添加
         this.currentNodeId=info.node.dataRef.key;//用作查询和修改
         this.currentNodeType=info.node.dataRef.type;//
@@ -338,10 +340,13 @@
             if(status==2){
               utils.box.toast("修改成功","success");
               this.status=0;
-              this.queryParent();
+              this.onLoadData(this.selectedNode);
+             // this.queryParent();
+
             }else{
               utils.box.toast("添加成功","success");
-              this.queryParent();
+               this.onLoadData(this.selectedNode);
+             // this.queryParent();
             }
           }else{
             utils.box.toast(res.error.message);

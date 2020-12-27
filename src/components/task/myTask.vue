@@ -12,8 +12,8 @@
        <transition name="t1">
       <div v-show="toggle1==true">
      <el-table :data="doingData1" border stripe height="30vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
-       <el-table-column prop="task" label="事项简介" ></el-table-column>
-       <el-table-column prop="deadline" label="截止日期" ></el-table-column>
+       <el-table-column prop="title" label="事项简介" ></el-table-column>
+       <el-table-column prop="date" label="截止日期" ></el-table-column>
      </el-table>
      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
@@ -76,11 +76,11 @@ import Pagination from '../Pagination'
         toggle2:false,
         toggle3:true,
         toggle4:false,
-        doingData1:[
-          {task:'审批文件',
-          deadline:'无',
-          }
-        ],
+        totalCount:0,
+        pageIndex: 1,
+        pageSize:30,
+        maxPage: 1,
+        doingData1:[],
         doingData2:[
           {task:'审批培训',
           deadline:'无',
@@ -101,10 +101,34 @@ import Pagination from '../Pagination'
         tab:'1',
       }
     },
+    created(){
+      this.queryTaskList();
+    },
     methods:{
-        rowClick(){
-          this.$router.push({path:'examineFile'});
-        }
+        rowClick(obj){
+          this.$router.push({path:'examineFile',query:{id:obj.docVersionId}});
+        },
+        queryTaskList(){
+               let url="/api/Task/searchTaskList";
+               let params={
+               "isTodo": this.tab==1?true:false,
+               "employeeId": 1,
+               "pageIndex": 1,
+               "pageSize": 10
+               }
+               utils.request.post(url,params,true).then((res) => {
+                 if(res){
+                  if(res.success==true){
+                      let data=res.result;
+                     this.totalCount=data.totalCount||0;
+                     this.maxPage=Math.ceil(this.totalCount/(this.pageSize));
+                     this.doingData1=data.items;
+                  }else{
+                    utils.box.toast(res.error.message);
+                  }
+                 }
+                 })
+        },
     }
   };
 

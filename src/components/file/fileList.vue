@@ -65,7 +65,7 @@
         <div @click="toUrl('fileManage')">批量上传</div>
        </div>
        </span>
-       <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="addTags"><i class="iconfont icon-icontag"></i>标签</span>
+       <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="addTags"><i class="iconfont icon-icontag"></i>打标签</span>
        <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="download"><i class="iconfont icon-shangchuan1"></i>下载</span>
        <span :class="['pc-button',check2?'buttonNoback':'buttonGray']"  @click="abolish"><i class="iconfont icon-feichu"></i>废除</span>
        <span :class="['pc-button',check3?'buttonNoback':'buttonGray']"  @click="examine"><i class="iconfont icon-ziyuan202"></i>审核</span>
