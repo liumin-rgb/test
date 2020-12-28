@@ -14,7 +14,7 @@
      <el-table :data="doingData1" border stripe height="30vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
        <el-table-column prop="" label="事项简介" >
          <template slot-scope="scope">
-           <div class="flexWrap"><span class="marginR1Rem">名称：{{scope.row.name}}</span><span class="marginR1Rem">编号：{{scope.row.docNo}}</span><span class="marginR1Rem">版本号：{{scope.row.version}}</span><span class="marginR1Rem">状态：{{scope.row.status}}</span><span class="marginR1Rem">创建人：{{scope.row.creator}}</span></span><br>
+           <div class="flexWrap"><span class="marginR1Rem">名称：{{scope.row.name}}</span><span class="marginR1Rem">编号：{{scope.row.docNo}}</span><span class="marginR1Rem">版本号：{{scope.row.version}}</span><span class="marginR1Rem">状态：{{scope.row.status|filter1(statusList)}}</span><span class="marginR1Rem">创建人：{{scope.row.creator}}</span></span><br>
            <div>备注：{{scope.row.suggestion}}</div>
            </div>
          </template>
@@ -105,12 +105,24 @@ import Pagination from '../Pagination'
           }
         ],
         tab:'1',
+        statusList:[{code:'0',text:''},{code:'1',text:'草稿'},{code:'2',text:'已生效'},{code:'3',text:'流转中'},{code:'4',text:'废除'}],
       }
     },
     created(){
       this.queryTaskList();
     },
+    filters:{
+      filter1:function(val1,val2){
+        let index=val2.findIndex((item)=>{return item.code==val1})||0;
+        return val2[index].text;
+      },
+    },
     methods:{
+        changePage(val){
+          this.pageIndex=val.pageIndex;
+          this.pageSize=val.pageSize;
+          this.queryTaskList();
+        },
         rowClick(obj){
           this.$router.push({path:'examineFile',query:{id:obj.docVersionId}});
         },
@@ -128,7 +140,11 @@ import Pagination from '../Pagination'
                       let data=res.result;
                      this.totalCount=data.totalCount||0;
                      this.maxPage=Math.ceil(this.totalCount/(this.pageSize));
+                     if(this.tab==1){
                      this.doingData1=data.items;
+                     }else{
+                     this.finishData1=data.items;
+                     }
                   }else{
                     utils.box.toast(res.error.message);
                   }
