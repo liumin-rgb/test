@@ -140,6 +140,7 @@ export default{
     background: #fff;
     padding: .1rem;
     position: relative;
+    overflow: auto;
   }
   .list-search {
     border: 1px dashed #cccccc;
@@ -152,10 +153,10 @@ export default{
 
     }
   }
-  .list-table{
+ /* .list-table{
     height:70vh;
     overflow: auto;
-  }
+  } */
   /*时间控件*/
    /deep/.el-table th>.cell{padding-left:5px;padding-right:0;}
    /deep/.el-input__inner{height:.25rem;/* border: 1px solid #2e6eb4; */}
