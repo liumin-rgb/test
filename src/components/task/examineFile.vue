@@ -13,15 +13,15 @@
       <transition name="t1">
         <div v-show="toggle1==true">
           <div class="flex paddingLR2rem gray">
-            <div class="width50 textInput"><span class="label">文件名称</span><input v-model="name" class='pc-input middleInput'
+            <div class="width50 textInput"><span class="label">文件名称:</span><input v-model="name" class='pc-input middleInput'
                 readonly="true" /></div>
-            <div class="width50 textInput"><span class="label">文档编号</span><input v-model="docNo" class='pc-input middleInput'
+            <div class="width50 textInput"><span class="label">文档编号:</span><input v-model="docNo" class='pc-input middleInput'
                 readonly="true" /></div>
           </div>
           <div class="flex paddingLR2rem gray">
-            <div class="width50 textInput"><span class="label">版本号</span><input v-model="version" class='pc-input'
+            <div class="width50 textInput"><span class="label">版本号:</span><input v-model="version" class='pc-input'
                 readonly="true" /></div>
-            <div class="width50 textInput"><span class="label">文档类型</span><input v-model="typeList[type]" class='pc-input'
+            <div class="width50 textInput"><span class="label">文档类型:</span><input v-model="typeList[type]" class='pc-input'
                 readonly="true" /></div>
           </div>
         </div>

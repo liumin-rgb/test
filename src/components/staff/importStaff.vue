@@ -117,7 +117,7 @@ export default {
       },
     downloadTemplate(){
       let url='/api/Employee/template?id='+this.orgnize;
-      utils.download(url,'模板');
+      utils.download.downLoadFile(url,'模板');
     },
     checkInfo(status){
       let url = "/api/Employee/template/infos/checking";

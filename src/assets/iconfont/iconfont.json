@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "19066741",
+      "name": "1-icon-table",
+      "font_class": "1-icon-table",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "19066751",
+      "name": "1-icon-function",
+      "font_class": "1-icon-function",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "19066760",
+      "name": "1-icon-print",
+      "font_class": "1-icon-print",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "521036",
+      "name": "系统管理",
+      "font_class": "xitongguanli",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "19066740",
+      "name": "1-icon-表单模板管理",
+      "font_class": "1-icon-biaodanmobanguanli",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "19066745",
+      "name": "1-icon-仪器管理",
+      "font_class": "1-icon-yiqiguanli",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
       "icon_id": "1359251",
       "name": "缩小",
       "font_class": "suoxiao",

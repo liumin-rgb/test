@@ -45,4 +45,10 @@ export default {
   put(service,params,isLoad=false) {
 	  return instance.put(Global.baseUrl + service,params,{isLoad:isLoad})
 	},
+  getFile(service,config,isLoad=true){
+    return instance.get(Global.baseUrl + service,config,{isLoad:isLoad})
+  },
+  postFile(service,params,config,isLoad=true){
+    return instance.post(Global.baseUrl + service,params,config,{isLoad:isLoad})
+  },
 }

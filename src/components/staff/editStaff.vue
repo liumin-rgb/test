@@ -48,13 +48,14 @@
              <tr>
                <td><div class=" textInput"><span class="label font12 weight600" ref="age">年龄</span><input class='pc-input smallInput backGray'  v-model="staffInfo.age" readonly="true"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600" ref="sex"><span class="icon-xing">*</span>性别</span>
-               <a-radio-group name="radioGroup" :default-value="staffInfo.sex" @change="getRadioValue($event,'sex')"><a-radio :value="1"> 男</a-radio><a-radio :value="2"> 女</a-radio></a-radio-group>
+               <a-radio-group name="radioGroup" v-model="staffInfo.sex" @change="getRadioValue($event,'sex')"><a-radio :value="1"> 男</a-radio><a-radio :value="2"> 女</a-radio></a-radio-group>
                </div>
                </td>
                <td></td>
              </tr>
              <tr>
                <td><div class="textInput"><span class="label font12 weight600" ref="department"><span class="icon-xing">*</span>部门</span><span><a-tree-select
+                 v-model="department"
                  allow-clear
                  tree-checkable
                  multiple
@@ -100,7 +101,7 @@
                </tr>
                 <tr>
                 <td><div class=" textInput"><span class="label font12 weight600">民族</span><input class='pc-input' v-model="staffInfo.nation" /></div></td>
-                 <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>婚姻状况</span><a-radio-group name="radioGroup1" :default-value="staffInfo.marriage" @change="getRadioValue($event,'marriage')"><a-radio :value="0"> 未知</a-radio><a-radio :value="1"> 已婚</a-radio><a-radio :value="2"> 未婚</a-radio></a-radio-group>
+                 <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>婚姻状况</span><a-radio-group name="radioGroup1" v-model="staffInfo.marriage" @change="getRadioValue($event,'marriage')"><a-radio :value="0"> 未知</a-radio><a-radio :value="1"> 已婚</a-radio><a-radio :value="2"> 未婚</a-radio></a-radio-group>
                  </div>
                  </td>
                  <td><div class=" textInput"><span class="label font12 weight600">政治面貌</span><select class="pc-input" v-model="staffInfo.political"  @change="getSelectInfo('political')" id="political"><option v-for="obj in politicalList" :value="obj.code" >{{obj.text}}</option></select></div></td>
@@ -223,6 +224,7 @@
   "email": "",
   "id": 0
 },
+ department:[],
       }
     },
     created(){
@@ -241,6 +243,7 @@
           if(res){
              if(res.success==true){
                this.staffInfo=res.result||this.staffInfo;
+               this.queryDepartment();
              }else{
                utils.box.toast(res.error.message);
              }
@@ -254,6 +257,7 @@
               if(res.success==true){
               let list=res.result;
               this.treemap=JSON.parse(JSON.stringify(list).replace(/name/g,"title").replace(/id/g,"key"));
+               this.department=[];
                this.forTree(this.treemap);
                console.log(this.treemap);
               }else{
@@ -265,12 +269,16 @@
       forTree(treeList){
         for(var i in treeList){
            treeList[i].value=treeList[i].key;
+           if(this.staffInfo.department.includes(treeList[i].key)){
+             this.department.push(treeList[i].key);
+           }
           if(treeList[i].children){
             this.forTree(treeList[i].children);
           }
         }
       },
       saveInfo(){  //添加/修改
+      this.staffInfo.department=this.department;
         let staffInfo=this.staffInfo;
         for(var key in  staffInfo){
           if(this.$refs[key]){
@@ -331,7 +339,7 @@
         })
       },
       onChange(value){
-        this.staffInfo.department= value;
+        this.department= value;
       },
       getSelectInfo(id){
           this.staffInfo[id]=utils.common.getSelectValue(id);

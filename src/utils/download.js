@@ -1,4 +1,5 @@
-let downLoadFile=function (url,name){
+const download={
+  downLoadFile (url,name){
     			  		   			let params='';
     			  		   		    utils.request.get(url,{responseType: 'arraybuffer'},true).then((res)=>{
     			  		   		  			if(res){
@@ -26,6 +27,19 @@ let downLoadFile=function (url,name){
     			  		   		  			}
     			  		   		    });
 
+},
+downloadZip(url,params,name){
+	//var params=params;
+ utils.request.postFile(url,params,{responseType: 'blob'},true).then((res)=>{
+  if(res){
+ let blob = new Blob([res], {type: 'application/zip'})
+ let url = window.URL.createObjectURL(blob)
+ window.location.href = url
+ }else{
+
+ }
+ })
+},
 }
 
-export default downLoadFile;
+export default download;

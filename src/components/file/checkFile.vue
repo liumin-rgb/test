@@ -77,7 +77,8 @@ export default {
       	if(res){
           if(res.success==true){
             let treemap=res.result;
-            this.treeData=JSON.parse(JSON.stringify(treemap).replace(/name/g,"title").replace(/id/g,"key"));
+            this.treeData=JSON.parse(JSON.stringify(treemap).replace(/name/g,"title").replace(/id/g,"key").replace(/employees/g,"children"));
+            console.log(this.treeData);
             this.forTree(this.treeData);
 
        }else{
@@ -89,7 +90,7 @@ export default {
     forTree(treeList){
       for(var i in treeList){
          treeList[i].value=treeList[i].key;
-          if(treeList[i].type==1||treeList[i].type==2){
+          if(treeList[i].type!=4){
            treeList[i].disabled=true
           }
         if(treeList[i].children){

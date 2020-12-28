@@ -392,6 +392,9 @@ li {
 .smallInput{
   width:.6rem
 }
+.middInput{
+ width:1.8rem; 
+}
 .middleInput{
    width:2.5rem;
 }

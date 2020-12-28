@@ -75,7 +75,7 @@
   </a-layout>
 </template>
 <script>
-  import ChangePassword from '../components/changePassword'
+import ChangePassword from '../components/changePassword'
 export default {
   components:{ChangePassword},
   data() {
@@ -90,8 +90,9 @@ export default {
              {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
              {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:'trainIndex'},{name:'题库管理',url:'questionBank'},{name:'培训分类',url:'classification'},{name:'参与培训考核',url:'trainAssessmentIndex'}]},
              {name:'人员管理',icon:'icon-renyuan',url:'',toggle:false,subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
-             {name:'系统配置',icon:'icon-shezhi1',url:'',toggle:false,subMenuList:[{name:'配置医院管理员',url:'superADM'},{name:'日志维护',url:'logMaintenance'}]},
-
+             {name:'系统配置',icon:'icon-xitongguanli',url:'',toggle:false,subMenuList:[{name:'配置医院管理员',url:'superADM'},{name:'日志维护',url:'logMaintenance'}]},
+             {name:'表单模板管理',icon:'icon-1-icon-biaodanmobanguanli',url:'formTemplate',toggle:false,subMenuList:[]},
+             {name:'仪器管理',icon:'icon-1-icon-yiqiguanli',url:'instrumentList',toggle:false,subMenuList:[]}
              ],
    roleType:['','罗氏管理员','医院管理员','员工'],
 

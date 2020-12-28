@@ -263,19 +263,10 @@
         if(this.check1){
               let url="/api/Document/batchDownload";
               let params={
-                "folderId": 0,
-                "ids": this.multipleSelection.map((item)=>{return item.id})
+                "folderId": 9,
+                "ids": [117,118]//this.multipleSelection.map((item)=>{return item.id})
               };
-              utils.request.post(url,params,true).then((res) => {
-              	if(res){
-                  if(res.success==true){
-                    utils.box.toast("下载成功");
-                  }else{
-                    utils.box.toast(res.error.message);
-                  }
-                }
-                });
-
+              utils.download.downloadZip(url,params,{responseType: 'blob'},true);
         }
       },
       abolish(){

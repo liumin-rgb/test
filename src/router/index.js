@@ -195,6 +195,22 @@ const router = new Router({
 
                }
          },
+         {
+               path: '/formTemplate',
+               name:'formTemplate',
+               component: resolve => require(['@/components/template/formTemplate'], resolve),
+               meta : {
+                   title : '表单模板',
+               }
+         },
+         {
+               path: '/instrumentList',
+               name:'instrumentList',
+               component: resolve => require(['@/components/instrument/instrumentList'], resolve),
+               meta : {
+                   title : '仪器管理',
+               }
+         },
        ],
  },
  {
