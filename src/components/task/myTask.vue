@@ -12,7 +12,13 @@
        <transition name="t1">
       <div v-show="toggle1==true">
      <el-table :data="doingData1" border stripe height="30vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
-       <el-table-column prop="title" label="事项简介" ></el-table-column>
+       <el-table-column prop="" label="事项简介" >
+         <template slot-scope="scope">
+           <div class="flexWrap"><span class="marginR1Rem">名称：{{scope.row.name}}</span><span class="marginR1Rem">编号：{{scope.row.docNo}}</span><span class="marginR1Rem">版本号：{{scope.row.version}}</span><span class="marginR1Rem">状态：{{scope.row.status}}</span><span class="marginR1Rem">创建人：{{scope.row.creator}}</span></span><br>
+           <div>备注：{{scope.row.suggestion}}</div>
+           </div>
+         </template>
+       </el-table-column>
        <el-table-column prop="date" label="截止日期" ></el-table-column>
      </el-table>
      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
