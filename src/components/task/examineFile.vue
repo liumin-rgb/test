@@ -62,6 +62,9 @@
             <el-table-column prop="endDate" label="完成时间">
             </el-table-column>
             <el-table-column prop="status" label="状态">
+              <template slot-scope="scope">
+                <div>{{scope.row.status| filter1(flowStatusList)}}</div>
+              </template>
             </el-table-column>
           </el-table>
         </div>
@@ -87,7 +90,8 @@
         toggle2: true,
         toggle3: true,
         tableData: [],
-        id: '',
+        docVersionId: '',
+        docApproveNoteId:'',
         name: '',
         docNo: '',
         version: '',
@@ -98,10 +102,18 @@
         pageSize:10,
         htmlStr:'',
         url:'',
+        flowStatusList:[{code:0,text:''},{code:1,text:'处理中'},{code:2,text:'已完成'},{code:3,text:'退回'},{code:4,text:'已读'}],
+      }
+    },
+    filters:{
+      filter1:function(val1,val2){
+          let index=val2.findIndex((item)=>{return item.code==val1})||0;
+          return val2[index].text;
       }
     },
     created() {
-      this.id = this.$route.query.id;
+      this.docVersionId = this.$route.query.docVersionId;
+      this.docApproveNoteId=this.$route.query.docApproveNoteId;
       this.queryDetail();
       this.queryPreview();
       this.queryFlowList();
@@ -111,7 +123,7 @@
         window.open(this.url);
       },
       queryDetail() {
-        let url = "/api/Task/getDocVersionInfo?docVersionId=" + this.id;
+        let url = "/api/Task/getDocVersionInfo?docVersionId=" + this.docVersionId+"&approveNoteId="+this.docApproveNoteId;
         utils.request.get(url, true).then((res) => {
           if (res) {
             if (res.success == true) {
@@ -127,7 +139,7 @@
         })
       },
       queryPreview(){
-          let url ="/api/Task/previewDocVerion?docVersionId="+this.id;
+          let url ="/api/Task/previewDocVerion?docVersionId="+this.docVersionId;
           utils.request.get(url, true).then((res) => {
             if (res) {
               if (res.success == true) {
@@ -142,7 +154,7 @@
 
       },
       queryFlowList(){
-          let url = "/api/Task/getFlowInfo?docVersionId="+this.id+"&pageIndex="+this.pageIndex+"&pageSize="+this.pageSize;
+          let url = "/api/Task/getFlowInfo?docVersionId="+this.docVersionId+"&pageIndex="+this.pageIndex+"&pageSize="+this.pageSize;
           utils.request.get(url,true).then((res) => {
             if (res) {
               if (res.success == true) {

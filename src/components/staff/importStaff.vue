@@ -208,12 +208,12 @@ export default {
                this.fileList=[];
      	 			} else {
                item.onSuccess(res, item.file);
-     	 				utils.box.toast("上传失败");
+     	 				utils.box.toast(res.error.message);
               this.fileList=[];
      	 			}
      	 			 }else{
                 item.onSuccess(res, item.file);
-               utils.box.toast("上传失败");
+               utils.box.toast(res.error.message);
                this.fileList=[];
              }
      	 		});

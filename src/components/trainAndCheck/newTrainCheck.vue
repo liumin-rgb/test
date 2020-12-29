@@ -3,9 +3,9 @@
   <div v-show="step==1">
   <div class="flexBtw">
     <div >
-     <span class="pc-button ">培训+考核</span>
      <span class="pc-button buttonNoback" @click="changeType(1)">培训模块</span>
      <span class="pc-button buttonNoback" @click="changeType(2)">考核模块</span>
+	 <span class="pc-button ">培训+考核</span>
     </div>
     <div>
      <span class="pc-button buttonNoback" @click="goBack">返回</span>

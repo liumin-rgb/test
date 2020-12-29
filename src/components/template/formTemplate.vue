@@ -42,7 +42,19 @@
               <p class="formIcon"><i class="iconfont icon-1-icon-table font30"></i></p>
               <div class="formBottom flexBtw">
                 <span></span>
-                <span><i class="iconfont icon-1-icon-function"></i></span>
+               <el-popover trigger="hover" placement="top">
+                 <ul class="operation">
+                  <li>预览</li>
+                  <li>编辑</li>
+                  <li>复制</li>
+                  <li>打印</li>
+                  <li>发布</li>
+                  <li>删除</li>
+                  <li>权限配置</li>
+                  <li>历史版本</li>
+                  </ul>
+                 <span slot="reference" class="name-wrapper"><i class="iconfont icon-1-icon-function"></i></span>
+                </el-popover>
               </div>
               </div>
              </div>
@@ -92,6 +104,7 @@
             </div>
              </div>
             <div v-show="isCard==false">
+
             </div>
           </a-spin>
        </div>
@@ -240,5 +253,14 @@ export default{
   }
   .headIconBlack{
       background-color: #000;
+  }
+  .operation{
+    cursor: pointer;
+    color:#2e6eb4;
+    li{
+      padding:.02rem 0;
+      text-align: center;
+      font-weight: 600;
+    }
   }
 </style>

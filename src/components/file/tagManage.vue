@@ -76,9 +76,9 @@ export default {
       if(val==true){
         this.queryAllTags();
       }
-      if(this.operation.type=="single"){
+    /*  if(this.operation.type=="single"){
         this.singleTagList=this.operation.singleTag;
-      }
+      } */
     }
   },
   created(){
@@ -106,7 +106,12 @@ export default {
             if(res.success==true){
               this.allTagsList=res.result;
               if(this.operation.type=="single"){
-                this.querySingleTag();
+                if(this.operation.ids.length!=0){
+                  this.querySingleTag();
+                }else{
+                  this.singleTagList=this.operation.singleTag;
+                  this.operateTags();
+                }
               }
             }else{
             }
@@ -122,34 +127,40 @@ export default {
           	if(res){
               if(res.success==true){
                 this.singleTagList=res.result;
-                  for(var i in this.allTagsList){
-                    for(var j in this.singleTagList){
-                      if(this.allTagsList[i].id==this.singleTagList[j].id){
-                        this.allTagsList[i].choosen=true;
-                      }
-                    }
-                }
+                 this.operateTags();
               }else{
               }
             }
             });
-
+    },
+    operateTags(){
+      for(var i in this.allTagsList){
+          for(var j in this.singleTagList){
+            if(this.allTagsList[i].id==this.singleTagList[j].id){
+              this.allTagsList[i].choosen=true;
+            }
+          }
+      }
     },
     handleCancel(){
       this.$emit("closeTagManage");
     },
     handleOk(){
-          this.loading=true;
           if(this.operation.type=='all'){
             var url="/api/Document/InsertOrUpdateTag";
             var params=this.allTagsList
           }else{
+            if(this.operation.ids.length==0){
+              this.$emit("closeTagManage",{singleTags:this.singleTagList});
+              return;
+            }
             var url="/api/Document/batch"; //单或多个文件修改标签
             var params={
               documentId:this.operation.ids,
               tagId:this.singleTagList.map((item)=>{return item.id})
             }
           }
+          this.loading=true;
           utils.request.put(url,params,false).then((res) => {
           	if(res){
               this.loading=false;

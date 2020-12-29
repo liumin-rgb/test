@@ -1,33 +1,16 @@
 <template>
   <div>
     <div class="marginB1VH">
-      <span class="pc-button font12" v-show="flag=='edit'" @click="editInfo(1)">添加</span>
-      <span class="pc-button font12" v-show="flag=='edit'" @click="deleteInfo">删除</span>
+      <span class="pc-button font12" v-show="flag=='edit'" >上传附件</span>
+      <span :class="['pc-button','font12',multipleSelection.length==0?'buttonGray':'']" v-show="flag=='edit'" >删除附件</span>
     </div>
  <div class="list-table">
-   <el-table :data="tableData" border height="100" style="width:unset" :header-cell-class-name="'table-header'">
-     <el-table-column prop="" label="年份" ></el-table-column>
-     <el-table-column prop="date" label="健康状况总体评估" ></el-table-column>
-     <el-table-column prop="name" label="备注"></el-table-column>
+   <el-table :data="tableData" border height="100" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+     <el-table-column type="selection"></el-table-column>
+     <el-table-column prop="date" label="附件名称" ></el-table-column>
      </el-table>
-   <Pagination :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
-  </div>
-  <a-modal v-model="visible" title="合同履历_新增"  :dialogClass="'bigModel'">
-      <div class="format">
-        <div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>合同签订日期</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
-         <div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>合同开始日期</span><el-date-picker  value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
-         <div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>合同结束日期</span><el-date-picker   value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div>
-
-      </div>
-        <template slot="footer">
-               <a-button key="back" @click="handleCancel">
-                 取消
-               </a-button>
-               <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
-                 提交
-               </a-button>
-        </template>
-     </a-modal>
+<!--   <Pagination :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+ -->  </div>
   </div>
 </template>
 
@@ -51,16 +34,12 @@
      pageSize:10,
      maxPage: 1,
      totalCount:0,
+     multipleSelection:[],
       }
     },
     methods:{
-      editInfo(type){
-       this.visible=true;
-       if(type==1){ //新增
-
-       }else{ //编辑
-
-       }
+      handleSelectionChange(){
+       this.multipleSelection = val;
       },
       deleteInfo(){
 

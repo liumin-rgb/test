@@ -3,7 +3,7 @@
   <div class="list-main-top">
     <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
     <div>
-<!--      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>打标签</span>   
+<!--      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>打标签</span>
  -->      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>保存草稿</span>
        <span class="pc-button" @click="submitCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
        <span class="pc-button" @click="submit"><i class="iconfont icon-tongguo1"></i>生效</span>
@@ -39,14 +39,19 @@
     <transition name="t1">
      <div v-show="toggle2==true" :class="fullScreen?'modelEditor':'pageEditor'">
        <div :class="fullScreen?'modelEditor2':'pageEditor2'">
+        <div class="iconPosition">
+          <span class="pc-button buttonNoback">保存模板</span>
+          <span class="pc-button buttonNoback">加载模板</span>
+          <span class="pc-button buttonNoback" @click="openTag">打标签</span>
          <el-popover trigger="hover" placement="bottom">
            <div>点击缩小编辑器</div>
-         <i class="iconfont icon-suoxiao themeColor font30 iconPosition pointer" v-show="fullScreen==true" slot="reference" @click="fullScreen=false"></i>
-           </el-popover>
-           <el-popover trigger="hover" placement="bottom">
+         <i class="iconfont icon-suoxiao themeColor font20  pointer" v-show="fullScreen==true" slot="reference" @click="fullScreen=false"></i>
+          </el-popover>
+          <el-popover trigger="hover" placement="bottom">
              <div>点击放大编辑器</div>
-            <i class="iconfont icon-fangda themeColor font20 iconPosition pointer" @click.stop="fullScreen=true" slot="reference" v-show="fullScreen==false" ></i>
-            </el-popover>
+            <i class="iconfont icon-fangda themeColor font20  pointer" @click.stop="fullScreen=true" slot="reference" v-show="fullScreen==false" ></i>
+          </el-popover>
+         </div>
       <Editor id="tinymce"  :init="editorInit" v-model='tinymceHtml'></Editor>
       </div>
      </div>
@@ -66,6 +71,7 @@
       </transition>
   </div>
   <CheckFile :visible="visible" :config="config" @closeModel="closeModel"/>
+  <TagManage :visible="visible1" :operation="operation" @closeTagManage="closeTagManage"/>
   </div>
 </template>
 
@@ -81,19 +87,23 @@
   import 'tinymce/plugins/wordcount'
   import 'tinymce/icons/default'
   import CheckFile from './checkFile'
+  import TagManage from './tagManage'
   export default {
     name: 'editHtml',
-    components: {Editor,CheckFile},
+    components: {Editor,CheckFile,TagManage},
     data() {
       return{
         toggle1:true,
         toggle2:true,
         toggle3:false,
         visible:false,
+        visible1:false,
+        operation:{type:'single',id:'',singleTag:[]},
         name:'',
         docNo:'',
         version:'',
         fullScreen:false,
+        singleTags:[],
         config:{
          title:'提交审核',
          label:'审批人',
@@ -107,13 +117,11 @@
         // min_height: 300,
          //max_height:550,
            menu: {
-                /* file: {title: '文件', items: 'newdocument'}, */
                  edit: {title: '编辑', items: 'undo redo | cut copy paste pastetext | selectall'},
                  insert: {title: '插入', items: 'link media | template hr'},
-               /*  view: {title: '查看', items: 'visualaid'}, */
                  format: {title: '格式', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
                  table: {title: '表格', items: 'inserttable tableprops deletetable | cell row column'},
-                 tools: {title: '工具', items: 'spellchecker code'}
+                 tools: {title: '工具', items: 'spellchecker code'},
              },
               menubar: 'edit insert  format table ',
         toolbar:'forecolor backcolor bold italic underline   | alignleft aligncenter alignright alignjustify outdent indent | \
@@ -183,6 +191,18 @@
       tinymce.init({});
     },
     methods:{
+      openTag(){
+          this.operation={
+            type:'single',
+            ids:[],//文件id
+            singleTag:this.singleTags
+          }
+          this.visible1=true;
+      },
+      closeTagManage(val){
+        this.visible1=false;
+        this.singleTags=val.singleTags;
+      },
       check(){
         if(this.name==''){
           utils.box.toast("文件名称必填");

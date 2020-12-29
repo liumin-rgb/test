@@ -408,7 +408,7 @@
         },
         closeTagManage(val){
           this.visible2=false;
-          if(val=='all'){
+          if(val.config=='all'){
             this.queryAllTags();
           }else{
             this.queryInfo()

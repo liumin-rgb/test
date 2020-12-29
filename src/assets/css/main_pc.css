@@ -184,6 +184,7 @@ li {
 字体通用
 */
 .font30{font-size:.30rem !important;}
+.font25{font-size:.25rem !important;}
 .font20{font-size:.20rem !important;}
 .font18{font-size:.18rem !important;}
 .font16{font-size:.16rem !important;}
@@ -393,7 +394,7 @@ li {
   width:.6rem
 }
 .middInput{
- width:1.8rem; 
+ width:1.8rem;
 }
 .middleInput{
    width:2.5rem;

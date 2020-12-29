@@ -12,15 +12,20 @@
        <transition name="t1">
       <div v-show="toggle1==true">
      <el-table :data="doingData1" border stripe height="30vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
-       <el-table-column prop="" label="事项简介" >
+       <el-table-column prop="name" label="文件名称" >
+        <template slot-scope="scope">
+          <div class="pointer themeColor text-line">{{scope.row.name}}</div>
+        </template>
+       </el-table-column>
+       <el-table-column prop="docNo" label="编号" ></el-table-column>
+       <el-table-column prop="version" label="版本号" ></el-table-column>
+       <el-table-column prop="status" label="状态" >
          <template slot-scope="scope">
-           <div class="flexWrap pointer">
-             <span class="marginR1Rem">名称：{{scope.row.name}}</span><span class="marginR1Rem">编号：{{scope.row.docNo}}</span><span class="marginR1Rem">版本号：{{scope.row.version}}</span><span class="marginR1Rem">状态：{{scope.row.status|filter1(statusList)}}</span><span class="marginR1Rem">创建人：{{scope.row.creator}}</span></span><br>
-           <div>备注：{{scope.row.suggestion}}</div>
-           </div>
+           <div>{{scope.row.status| filter1(statusList)}}</div>
          </template>
        </el-table-column>
-       <el-table-column prop="date" label="截止日期" ></el-table-column>
+       <el-table-column prop="creator" label="创建人" ></el-table-column>
+       <el-table-column prop="suggestion" label="备注" ></el-table-column>
      </el-table>
      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
@@ -125,7 +130,7 @@ import Pagination from '../Pagination'
           this.queryTaskList();
         },
         rowClick(obj){
-          this.$router.push({path:'examineFile',query:{id:obj.docVersionId}});
+          this.$router.push({path:'examineFile',query:{docVersionId:obj.docVersionId,docApproveNoteId:obj.docApproveNoteId}});
         },
         queryTaskList(){
                let url="/api/Task/searchTaskList";
