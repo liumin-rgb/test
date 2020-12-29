@@ -5,7 +5,7 @@
       <div>
         <!-- <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span> -->
         <span class="pc-button" @click="openCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
-        <span class="pc-button" @click="openCheck"><i class="iconfont icon-tongguo1"></i>生效</span>
+        <span class="pc-button" @click="enable"><i class="iconfont icon-tongguo1"></i>生效</span>
 
       </div>
     </div>
@@ -92,14 +92,32 @@
         fileList:[],
         spinning:false,
         config: {
-          title: '提交审核',
-          label: '审批人',
+        operationType:1, //1：审核 2：废除 3：传阅
+        ids:[]
         },
         tableData: [],
         typeList: ['HTML', '视频', 'PDF', '图片'],
       }
     },
     methods: {
+		enable(){
+			if(this.ids.length==0){
+			  utils.box.toast("请上传文件");
+			  return;
+			}
+			  let url = "/api/Document/enableDocVersions";
+			  let params = {docVersionIds:this.ids}
+			  utils.request.post(url, params, true).then((res) => {
+			    if (res) {
+			      if (res.success == true) {
+			        utils.box.toast("已生效");
+			      } else {
+			        utils.box.toast(res.error.message);
+			      }
+			    }
+			  });
+
+		},
       editFile(id) {
         this.$router.push({
           path: 'editHtml',
@@ -163,11 +181,11 @@
             this.queryInfo();
             } else {
               //  item.onSuccess(res, item.file);
-              utils.box.toast("上传失败");
+              utils.box.toast(res.error.message);
             }
           } else {
             //  item.onSuccess(res, item.file);
-            utils.box.toast("上传失败");
+            utils.box.toast(res.error.message);
           }
         });
       },
@@ -217,6 +235,7 @@
           return;
         }
         this.visible1 = true;
+        this.config.ids=this.ids;
       },
       changePage(val){
         this.pageIndex=val.pageIndex;

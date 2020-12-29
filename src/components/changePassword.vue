@@ -37,6 +37,7 @@ export default {
   },
 
   created(){
+    this.id=utils.cache.get('userInfo').userId;
   },
   methods:{
     handleCancel(){
@@ -67,7 +68,7 @@ export default {
              }
               this.loading=true;
               let url="/api/Employee/ChangePassword"
-              utils.request.put(url,params).then((res) => {
+              utils.request.put(url,params,true).then((res) => {
                 this.loading=false;
               	if(res){
                   if(res.success==true){

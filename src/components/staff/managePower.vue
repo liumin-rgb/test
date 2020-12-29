@@ -4,52 +4,47 @@
       <div>
         <div class="weight600">组织架构</div>
         <div class="textAlignR">
-           <span :class="['pc-button',showButton==true?'buttonGray':'buttonNoback']" @click="addParent()">添加分院</span>
-          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()"  >添加下属组织机构</span>
+          <span :class="['pc-button',showButton==true?'buttonGray':'buttonNoback']" @click="addParent()">添加分院</span>
+          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()">添加下属组织机构</span>
         </div>
       </div>
       <div class="inner">
-      <a-tree
-       class="draggable-tree"
-       draggable
-       @dragstart="onDragStart"
-       @dragenter="onDragEnter"
-       @drop="onDrop"
-       :load-data="onLoadData"
-      :tree-data="treeData"
-      show-icon
-      :blockNode="'true'"
-      defaultExpandParent
-      @select="onSelect"
-      @onCheck="onCheck">
+        <a-tree class="draggable-tree" draggable @dragstart="onDragStart" @dragenter="onDragEnter" @drop="onDrop"
+          :load-data="onLoadData" :tree-data="treeData" show-icon :blockNode="'true'" defaultExpandParent @select="onSelect"
+          @onCheck="onCheck">
           <a-icon slot="switcherIcon" type="down" />
-         <!-- <a-icon slot="smile" type="smile-o" />
+          <!-- <a-icon slot="smile" type="smile-o" />
           <a-icon slot="meh" type="smile-o" /> -->
-       <!--   <template slot="custom" slot-scope="{ selected }">
+          <!--   <template slot="custom" slot-scope="{ selected }">
             <a-icon :type="selected ? 'frown' : 'frown-o'" />
           </template> -->
         </a-tree>
-     </div>
+      </div>
     </div>
     <div class="list-main-two" ref="mainTwo">
-    <div class="textAlignR border-bottom-line paddingTB1rem" ref="search">
-       <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
-       <span :class="['pc-button',status==0&&orgDetail.name!=''?'':'buttonGray']" @click="startEdit()" v-show="status==0">编辑</span>
-    </div>
-    <div class="list-head" @click="toggle1=!toggle1" ref="head">
-      <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle1==false"></i>详情</div>
-    </div>
-     <transition name="t1">
-    <div class="textAlignL" v-show="toggle1==true" ref="body1">
-       <div class="margin05rem">
-         <span><span class="label1">名称：</span><input :class="['pc-input','bigInput',status==0?'backGray':'']" v-model="orgDetail.name" :readonly="status==0?true:false"/></span>
-<!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
- -->        <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input backGray" readonly="true" v-model="orgDetail.type==3?'岗位':orgDetail.type==2?'部门':orgDetail.type==1?'分院':''"/></span>
-       </div>
-     <div class="flex marginT1VH">
-       <span class="label1 verTop">描述：</span>
-     <textarea :class="['pc-textarea', 'textareaOne', 'flex1',status==0?'backGray':'']" v-model="orgDetail.remark" :readonly="status==0?true:false"/>
-     </div>
+      <div class="textAlignR border-bottom-line paddingTB1rem" ref="search">
+        <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
+        <span :class="['pc-button',status==0&&orgDetail.name!=''?'':'buttonGray']" @click="startEdit()" v-show="status==0">编辑</span>
+      </div>
+      <div class="list-head" @click="toggle1=!toggle1" ref="head">
+        <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor"
+            v-show="toggle1==false"></i>详情</div>
+      </div>
+      <transition name="t1">
+        <div class="textAlignL" v-show="toggle1==true" ref="body1">
+          <div class="margin05rem">
+            <span><span class="label1">名称：</span><input :class="['pc-input','bigInput',status==0?'backGray':'']"
+                v-model="orgDetail.name" :readonly="status==0?true:false" /></span>
+            <!--         <a-radio-group name="radioGroup" :default-value="1" v-show="status==1&&chooseJob==false" @change="selectRadio"><a-radio :value="1"> 组织架构</a-radio><a-radio :value="2">岗位</a-radio></a-radio-group>
+ -->
+            <span v-show="status!=1"><span class="label1">类型：</span><input class="pc-input backGray" readonly="true"
+                v-model="orgDetail.type==3?'岗位':orgDetail.type==2?'部门':orgDetail.type==1?'分院':''" /></span>
+          </div>
+          <div class="flex marginT1VH">
+            <span class="label1 verTop">描述：</span>
+            <textarea :class="['pc-textarea', 'textareaOne', 'flex1',status==0?'backGray':'']" v-model="orgDetail.remark"
+              :readonly="status==0?true:false" />
+            </div>
     </div>
     </transition>
     <div class="list-head" @click="toggle2=!toggle2" v-show="currentNodeType==3" ref="head">
@@ -79,8 +74,10 @@
       </div> -->
       <div class="margin05rem">
       <span class="pc-button" @click="visible=true">添加</span>
-       <span class="pc-button" @click="removeStaff()">删除</span>
-  <el-table :data="tableData" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange">
+       <span :class="['pc-button',multipleSelection.length==0?'buttonGray':'']" @click="removeStaff()">删除</span>
+       <div class="flexBtw">
+         <div class=" width33">
+  <el-table :data="tableData1" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange1">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -92,11 +89,42 @@
                 <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
          </template>
         </el-table-column>
-<!--        <el-table-column prop="" label="部门"></el-table-column>
- -->  </el-table>
+  </el-table>
+  </div>
+  <div class=" width33">
+  <el-table :data="tableData2" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange2">
+        <el-table-column type="selection"></el-table-column>
+        <el-table-column prop="name" label="姓名" >
+          <template slot="header" slot-scope="scope">
+                 <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="employeeNo" label="工号" >
+         <template slot="header" slot-scope="scope">
+                <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
+         </template>
+        </el-table-column>
+  </el-table>
+  </div>
+  <div class=" width33">
+    <el-table :data="tableData3" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange3">
+          <el-table-column type="selection"></el-table-column>
+          <el-table-column prop="name" label="姓名" >
+            <template slot="header" slot-scope="scope">
+                   <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="employeeNo" label="工号" >
+           <template slot="header" slot-scope="scope">
+                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
+           </template>
+          </el-table-column>
+    </el-table>
+  </div>
+ </div>
       </div>
       <div class="list-bottom" ref="bottom">
-        <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+        <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount" :pageSizeList="pageSizeList"/>
       </div>
     </div>
     </transition>
@@ -122,8 +150,13 @@
     showButton:false, //是否显示添加下属机构
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
-    tableData:[],
+    tableData1:[],
+    tableDat2:[],
+    tableDat3:[],
     multipleSelection:[],
+    multipleSelection1:[],
+    multipleSelection2:[],
+    multipleSelection3:[],
     toggle1:true,
     toggle2:false,
     toggle3:false,
@@ -146,7 +179,7 @@
     },
      totalCount:0,
      pageIndex: 1,
-     pageSize:10,
+     pageSize:30,
      maxPage: 1,
      sortField:true,
      order1:false,
@@ -154,9 +187,19 @@
      isDescending:false,
      drag1:{},
      drag2:{},
+     pageSizeList:[30,60,90,120,150,300],
       }
     },
     watch:{
+      multipleSelection1:function(newVal){
+        this.multipleSelection=[...newVal,...this.multipleSelection2,...this.multipleSelection3];
+      },
+      multipleSelection2:function(newVal){
+        this.multipleSelection=[...this.multipleSelection1,...newVal,...this.multipleSelection3];
+      },
+      multipleSelection3:function(newVal){
+        this.multipleSelection=[...this.multipleSelection1,...this.multipleSelection2,...newVal];
+      },
       toggle1:function(){
         this.$nextTick(()=>{
           this.calcHeight();
@@ -236,7 +279,6 @@
               });
       },
    onSelect(selectedKeys, info) {
-
       if(selectedKeys.length==0){  //取消选中
        this.showButton=false;
       }else{
@@ -278,8 +320,14 @@
     onChange(e){
      this.permissions=e;
     },
-    handleSelectionChange(val) {
-       this.multipleSelection = val.map((item)=>{return item.id});
+    handleSelectionChange1(val) {
+       this.multipleSelection1 = val.map((item)=>{return item.id});
+        },
+    handleSelectionChange2(val) {
+       this.multipleSelection2 = val.map((item)=>{return item.id});
+        },
+    handleSelectionChange3(val) {
+       this.multipleSelection3 = val.map((item)=>{return item.id});
         },
     closeModel(val){
          this.visible = false;
@@ -394,8 +442,12 @@
           if(res.success==true){
             let data=res.result;
            this.totalCount=data.totalCount;
-           this.maxPage=Math.ceil(this.totalCount/(this.pageSize*3));
+           this.maxPage=Math.ceil(this.totalCount/(this.pageSize));
            this.tableData=data.items;
+           let newArr=utils.common.group(this.tableData,this.pageSize/3);
+           this.tableData1=newArr[0]||[];
+           this.tableData2=newArr[1]||[];
+           this.tableData3=newArr[2]||[];
           }
           }
       })
@@ -410,7 +462,7 @@
       this.queryStaff()
     },
     removeStaff(){
-      if(this.multipleSelection==[]){
+      if(this.multipleSelection.length==0){
         utils.box.toast("请先勾选员工！");
         return
       }

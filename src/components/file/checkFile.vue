@@ -111,13 +111,22 @@ export default {
         return;
       }
       this.loading=true;
-            let url="/api/Document/operateDocVersion";
-            let params={
-               "operateType": this.config.operationType,
-               "employeeId": this.id,
-               "suggestion": this.suggestion,
-               "docVersionIds": this.config.ids
-            };
+      if(this.config.ids.length==0){
+       var url="/api/Document/submitDocVersion";
+       var params={
+         "approveEmployeeId": this.id,
+         "suggesion": this.suggestion,
+       }
+       params=Object.assign(params,this.config.params);
+      }else{
+       var url="/api/Document/operateDocVersion";
+       var params={
+          "operateType": this.config.operationType,
+          "employeeId": this.id,
+          "suggestion": this.suggestion,
+          "docVersionIds": this.config.ids
+       };
+      }
             utils.request.post(url,params,true).then((res) => {
               this.loading=false;
             	if(res){

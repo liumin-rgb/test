@@ -54,7 +54,7 @@
                <td></td>
              </tr>
              <tr>
-               <td><div class="textInput"><span class="label font12 weight600" ref="department"><span class="icon-xing">*</span>部门</span><span><a-tree-select
+               <td><div class="textInput"><span class="label font12 weight600 verTop" ref="department"><span class="icon-xing">*</span>部门</span><span><a-tree-select
                  v-model="department"
                  allow-clear
                  tree-checkable
@@ -442,6 +442,9 @@
 .t1-leave-active {transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);}
 .t1-enter, .t1-leave-to{transform: translateX(5px);opacity: 0;}
 
+/deep/.ant-select-selection{
+  overflow:auto !important;
+}
 
 /deep/.ant-upload.ant-upload-select-picture-card{
   width: 1.04rem;

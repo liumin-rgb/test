@@ -9,6 +9,7 @@
           :before-upload="beforeUpload"
           @change="handleChange"
           :fileList="fileList"
+          :showUploadList="false"
         >
         <span class="pc-input uploadS displayLB">点击上传<i class="iconfont icon-shangchuan floatR themeColor"></i></span>
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
@@ -157,6 +158,10 @@ export default {
          })
     },
     handleOk(){  //更新
+    if(this.fileList.length==0){
+      utils.box.toast("请上传excel文件");
+      return;
+    }
       let url = "/api/Employee/template/infos";
       let inputs=this.tableData.map((item)=>{
         return {
@@ -205,20 +210,21 @@ export default {
                //this.tableData=res.result||[];
                this.checkInfo();
                item.onSuccess(res, item.file);
-               this.fileList=[];
+              // this.fileList=[];
      	 			} else {
                item.onSuccess(res, item.file);
      	 				utils.box.toast(res.error.message);
-              this.fileList=[];
+             // this.fileList=[];
      	 			}
      	 			 }else{
                 item.onSuccess(res, item.file);
                utils.box.toast(res.error.message);
-               this.fileList=[];
+               //this.fileList=[];
              }
      	 		});
     },
     handleChange(info){
+      this.fileList=info.fileList;
        if (info.file.status !== 'uploading') {
               console.log(info.file, info.fileList);
             }
