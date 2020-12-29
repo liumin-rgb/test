@@ -123,7 +123,7 @@
                  <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
                  <p @click="editHtml(scope.row.id)"><i class="iconfont icon-bianji"></i>编辑</p>
                  <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
-                 <p @click="openTagManage('single',scope.row.id,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
+                 <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                  </div>
                  <div slot="reference" class="name-wrapper">
                   <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
@@ -255,7 +255,7 @@
       },
       addTags(){
         if(this.check1){
-          let ids=this.multipleSelection.map((item)=>{return item.id});
+          let ids=this.multipleSelection.map((item)=>{return item.documentId});
            this.openTagManage('single',ids);
         }
       },
@@ -408,10 +408,12 @@
         },
         closeTagManage(val){
           this.visible2=false;
-          if(val.config=='all'){
-            this.queryAllTags();
-          }else{
-            this.queryInfo()
+          if(val){
+           if(val.config=='all'){
+             this.queryAllTags();
+           }else{
+             this.queryInfo()
+           }
           }
         },
         closeCheckFile(val){

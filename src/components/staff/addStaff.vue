@@ -17,7 +17,7 @@
                >
                </a-tree-select>
         <!-- <input class="pc-input" v-model="department"> -->
-        <span class="pc-button" @click="searchStaff">搜索</span>
+      <!--  <span class="pc-button" @click="searchStaff">搜索</span> -->
        <span class="floatR"><a-switch checked-children="过滤" un-checked-children=""   @change="onChange"/></span>
        </div>
        <a-spin :spinning="sping">
@@ -100,6 +100,15 @@ export default {
     }
   },
   watch:{
+    key:function(){
+       this.searchStaff();
+    },
+    department:function(){
+        this.searchStaff();
+    },
+    isFilter:function(){
+       this.searchStaff();
+    },
     visible:function(newVal){
       if(newVal==true){
          this.searchStaff();
