@@ -3,9 +3,10 @@
     <div class="list-main-one">
       <div>
         <div class="weight600">组织架构</div>
-        <div class="textAlignR">
+        <div class="textAlignL">
           <span :class="['pc-button',showButton==true?'buttonGray':'buttonNoback']" @click="addParent()">添加分院</span>
           <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()">添加下属组织机构</span>
+          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="deleteNode()">删除</span>
         </div>
       </div>
       <div class="inner">
@@ -227,6 +228,7 @@
       this.calcHeight();
     },
     methods: {
+
       calcHeight(){
        this.tableHeight=this.$refs.mainTwo.offsetHeight-this.$refs.search.offsetHeight-this.$refs.head.offsetHeight*3-this.$refs.body1.offsetHeight-this.$refs.body2.offsetHeight-this.$refs.bottom.offsetHeight-22-24-80;
       },
@@ -304,6 +306,9 @@
     },
     addParent(){  //添加分院
       this.visible1=true;
+    },
+    deleteNode(){
+
     },
     addBranch(){ //添加下属组织机构
      //this.status=1;
@@ -394,7 +399,11 @@
             }else{
               utils.box.toast("添加成功","success");
                this.onLoadData(this.selectedNode);
-             // this.queryParent();
+               let val={
+                 name:val.name,
+                 id:res.result
+               }
+               this.appendNode(val);
             }
           }else{
             utils.box.toast(res.error.message);
@@ -402,6 +411,69 @@
          }
          })
     },
+    appendNode(val){
+         //模拟添加
+               const newChild = {
+                 title: val.name,
+                 key: val.id,
+                 scopedSlots: { title: 'custom' },
+                 children: [] ,
+                 }
+               if (!this.selectedNode.children) {
+                 this.$set(selectedNode, 'children', [])
+               }
+               selectedNode.children.push(newChild)
+     },
+     editNode(data){
+       this.editable=true;
+
+     },
+     insuerEdit(e,data){
+       this.editable=false;
+       data.title=e.target.innerHTML;
+      this.searchOption(data, this.gData, 'edit',data.title);
+     },
+     deleteNode(data){
+       //删除机构
+          let url="/api/Organization/organization/"+this.currentNodeId;
+          utils.request.delete(url,true).then((res) => {
+            if(res){
+             if(res.success==true){
+               utils.box.toast('删除成功');
+              // this.searchOption(data, this.gData,'delete');
+             }else{
+               utils.box.toast(res.error.message);
+             }
+            }
+            })
+
+
+     },
+     //递归查找
+    searchOption (option, arr, type = 'delete',title) {
+          console.log(option, arr)
+          for (let s = 0; s < arr.length; s++) {
+            console.log(arr[s].key, option.key)
+            if (arr[s].key === option.key) {
+              if (type === 'delete') {
+                arr.splice(s, 1)
+              } else {
+              //这是模拟数据编辑数据
+                /* this.$set(arr, s, {
+                  title: title,
+                  key: '12121212',
+                  scopedSlots: { title: 'custom' }
+                }) */
+                arr[s].title=title;
+              }
+              break
+            } else if (arr[s].children && arr[s].children.length > 0) { // 递归条件
+              this.searchOption(option, arr[s].children,type,title)
+            } else {
+              continue
+            }
+          }
+        },
     queryOrgDetail(id){ //查询组织机构详情
       let url="/api/Organization/organization/"+id;
       utils.request.get(url,true).then((res) => {

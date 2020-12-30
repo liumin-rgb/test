@@ -65,6 +65,8 @@
         <div @click="toUrl('fileManage')">批量上传</div>
        </div>
        </span>
+       <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="readFile1"><i class="iconfont icon-chuanyueicon"></i>传阅</span>
+       <span :class="['pc-button',check2?'buttonNoback':'buttonGray']"  @click="shareFile"><i class="iconfont icon-fenxiang"></i>分享</span>
        <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="addTags"><i class="iconfont icon-icontag"></i>打标签</span>
        <span :class="['pc-button',check1?'buttonNoback':'buttonGray']"  @click="download"><i class="iconfont icon-shangchuan1"></i>下载</span>
        <span :class="['pc-button',check2?'buttonNoback':'buttonGray']"  @click="abolish"><i class="iconfont icon-feichu"></i>废除</span>
@@ -139,6 +141,7 @@
     </div>
     <TagManage :visible="visible2" :operation="operation" @closeTagManage="closeTagManage"/>
    <CheckFile :visible="visible1" :config="config" @closeModel="closeCheckFile"/>
+   <ShareFile :visible="visible3" @closeModel="closeShareFile"/>
   </div>
 </template>
 
@@ -146,9 +149,10 @@
   import Pagination from '../Pagination'
   import TagManage from './tagManage'
   import CheckFile from './checkFile'
+  import ShareFile from './shareFile'
   export default {
     name: 'fileList',
-    components:{Pagination,TagManage,CheckFile},
+    components:{Pagination,TagManage,CheckFile,ShareFile},
     data() {
       return {
         pageIndex:1,
@@ -158,6 +162,7 @@
         showSelect:false,
         visible1:false,
         visible2:false,
+        visible3:false,
         sortField:true,
         order1:false,
         order2:false,
@@ -269,6 +274,19 @@
               utils.download.downloadZip(url,params,{responseType: 'blob'},true);
         }
       },
+      shareFile(){
+         if(this.check2){
+           this.visible3=true;
+         }
+      },
+      readFile1(){
+          let ids=this.multipleSelection.map((item)=>{return item.documentId});
+          this.config={
+           operationType:3,
+           ids:ids,
+          },
+          this.visible1=true;
+      },
       abolish(){
         if(this.check2){
           this.config={
@@ -347,6 +365,7 @@
       editHtml(){
         this.$router.push({path:'editHtml',query:{}});
       },
+
       readFile(id){
         let arr=[];
         arr.push(id);
@@ -421,6 +440,9 @@
           if(val==true){
             this.queryInfo();
           }
+        },
+        closeShareFile(){
+          this.visible3=false;
         },
          onDragEnter(info) {
               console.log(info);
