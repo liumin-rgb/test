@@ -1,7 +1,7 @@
 <template>
   <div class="pdf-conatiner">
           <div class="pdfbox">
-              <iframe :src=' "./static/pdfjs/web/viewer.html?file=" + pdfUrl ' style="width:100%"></iframe>
+              <iframe :src=' "./static/pdfjs/web/viewer.html?file=" + pdfUrl ' style="width:100%;height:100vh"></iframe>
           </div>
       </div>
 </template>
