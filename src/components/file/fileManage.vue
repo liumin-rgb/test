@@ -101,7 +101,8 @@
     },
     methods: {
       reviewFile(url){
-        window.location.href=url;
+       // window.location.href=url;
+       window.open(url);
       },
 		enable(){
 			if(this.ids.length==0){
