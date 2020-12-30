@@ -243,6 +243,7 @@
           if(res){
              if(res.success==true){
                this.staffInfo=res.result||this.staffInfo;
+               this.imageUrl=this.staffInfo.url;
                this.queryDepartment();
              }else{
                utils.box.toast(res.error.message);
@@ -390,7 +391,7 @@
                   if(res){
            	 			if (res.success == true) {
                     utils.box.toast("上传成功","success");
-                     this.photo=res.result[0].id;
+                     this.staffInfo.photo=res.result[0].id;
                      this.imageUrl=res.result[0].path;
            	 			} else {
                    //  item.onSuccess(res, item.file);
