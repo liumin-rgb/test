@@ -84,6 +84,7 @@ export default {
    transitionName:'',
    choosen:'',
    visible:false,
+   userId:'',
    userName:'',
    role:'',
    menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',announce:1,toggle:false,subMenuList:[]},
@@ -104,12 +105,13 @@ updated(){
  created(){
    let userInfo=utils.cache.get("userInfo");
    this.userName=userInfo.userName;
+   this.userId=userInfo.userId;
    this.role=this.roleType[userInfo.userType];
    this.choosen=utils.cache.getSession("choosen");
  },
   methods:{
     toPersonal(){
-      this.$router.push({path:'editStaff',query:{flag:'edit',id:''}})
+      this.$router.push({path:'editStaff',query:{flag:'edit',id:this.userId}})
     },
     toUrl1(obj){
       let name='';

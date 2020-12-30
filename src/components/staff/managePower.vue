@@ -307,9 +307,7 @@
     addParent(){  //添加分院
       this.visible1=true;
     },
-    deleteNode(){
 
-    },
     addBranch(){ //添加下属组织机构
      //this.status=1;
      if(this.showButton==false) return;
@@ -433,14 +431,14 @@
        data.title=e.target.innerHTML;
       this.searchOption(data, this.gData, 'edit',data.title);
      },
-     deleteNode(data){
+     deleteNode(){
        //删除机构
           let url="/api/Organization/organization/"+this.currentNodeId;
           utils.request.delete(url,true).then((res) => {
             if(res){
              if(res.success==true){
                utils.box.toast('删除成功');
-              // this.searchOption(data, this.gData,'delete');
+              this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
              }else{
                utils.box.toast(res.error.message);
              }
@@ -653,7 +651,7 @@
       border-radius: 5px;
       padding:.05rem;
       .inner{
-        height:76vh;
+        height:72vh;
         overflow: auto;
       }
     }
