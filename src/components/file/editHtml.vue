@@ -47,8 +47,8 @@
         <div v-show="toggle2==true" :class="fullScreen?'modelEditor':'pageEditor'">
           <div :class="fullScreen?'modelEditor2':'pageEditor2'">
             <div class="iconPosition">
-              <span class="pc-button buttonNoback">保存模板</span>
-              <span class="pc-button buttonNoback">加载模板</span>
+              <span class="pc-button buttonNoback" @click="saveTemplate">保存模板</span>
+              <span class="pc-button buttonNoback" @click="loadTemplate">加载模板</span>
               <span class="pc-button buttonNoback" @click="openTag">打标签</span>
               <el-popover trigger="hover" placement="bottom">
                 <div>点击缩小编辑器</div>
@@ -82,6 +82,8 @@
     </div>
     <CheckFile :visible="visible" :config="config" @closeModel="closeModel" />
     <TagManage :visible="visible1" :operation="operation" @closeTagManage="closeTagManage" />
+    <SaveTemplate :visible="visible2" @closeModel="closeModel1"/>
+    <LoadTemplate :visible="visible3" @closeModel="closeModel2"/>
   </div>
 </template>
 
@@ -98,12 +100,16 @@
   import 'tinymce/icons/default'
   import CheckFile from './checkFile'
   import TagManage from './tagManage'
+  import SaveTemplate from './saveTemplate'
+  import LoadTemplate from './loadTemplate'
   export default {
     name: 'editHtml',
     components: {
       Editor,
       CheckFile,
-      TagManage
+      TagManage,
+      SaveTemplate,
+      LoadTemplate
     },
     data() {
       return {
@@ -112,6 +118,8 @@
         toggle3: false,
         visible: false,
         visible1: false,
+        visible2: false,
+        visible3:false,
         operation: {
           type: 'single',
           id: '',
@@ -232,6 +240,12 @@
       tinymce.init({});
     },
     methods: {
+      saveTemplate(){
+        this.visible2=true;
+      },
+      loadTemplate(){
+        this.visible3=true;
+      },
       enable() {
         if (this.check()) {
           let url = "/api/Document/enableDocVersion";
@@ -347,6 +361,12 @@
       },
       goBack() {
         this.$router.go(-1);
+      },
+      closeModel2(){
+        this.visible3=false;
+      },
+      closeModel1(){
+        this.visible2=false;
       },
       closeModel(val) {
         this.visible = false;

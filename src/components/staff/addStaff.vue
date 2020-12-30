@@ -70,9 +70,13 @@ export default {
       default:false,
       type:Boolean,
     },
+    parentId:{
+      default:null,
+      type:Number,
+    },
     orgId:{
-      default:"",
-      type:String,
+      default:null,
+      type:Number,
 
     },
   },
@@ -100,6 +104,14 @@ export default {
     }
   },
   watch:{
+    visible:function(newVal){
+      if(newVal==true){
+        let arr=[]
+        arr.push(this.parentId)
+        this.department=arr;
+        this.searchStaff();
+      }
+    },
     key:function(){
        this.searchStaff();
     },
@@ -109,11 +121,7 @@ export default {
     isFilter:function(){
        this.searchStaff();
     },
-    visible:function(newVal){
-      if(newVal==true){
-         this.searchStaff();
-      }
-    }
+
   },
   created(){
    this.queryDepartment();
@@ -162,7 +170,7 @@ export default {
             let params={
   "key": this.key,
   "department": this.department,
-  "orgId": this.orgId,
+  "orgId": this.orgId||'',
   "isFilter": this.isFilter,
   "pageIndex": this.pageIndex,
   "pageSize": this.pageSize

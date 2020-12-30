@@ -130,7 +130,7 @@
     </transition>
 
     </div>
-    <AddStaff :visible="visible" @closeModel="closeModel" :orgId="currentNodeId"/>
+    <AddStaff :visible="visible" @closeModel="closeModel" :orgId="currentNodeId" :parentId="parentId"/>
      <CreateOrgnization :visible="visible1" @closeModel="closeModel1"/>
      <CreateDepartment :visible="visible2" :parentId="parentId" @closeModel="closeModel2" />
   </div>
@@ -151,8 +151,8 @@
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
     tableData1:[],
-    tableDat2:[],
-    tableDat3:[],
+    tableData2:[],
+    tableData3:[],
     multipleSelection:[],
     multipleSelection1:[],
     multipleSelection2:[],
