@@ -73,18 +73,25 @@
     <div class="list-bottom textAlignR">
       <span class="pc-button buttonNoback"><i class="iconfont icon-wj-thwj"></i>退回</span>
       <span class="pc-button buttonNoback"><i class="iconfont icon-wancheng"></i>立刻生效</span>
-      <span class="pc-button"><i class="iconfont icon-tongguo1"></i>通过</span>
+      <span class="pc-button" @click="approve"><i class="iconfont icon-tongguo1"></i>通过</span>
 
     </div>
+    <CheckFile  :visible="visible" :config="config" @closeModel="closeModel"/>
   </div>
 </template>
 
 <script>
+  import CheckFile from '../file/checkFile'
   export default {
     name: 'examineFile',
+    components:{CheckFile},
     data() {
       return {
         visible: false,
+        config:{
+          operationType:1, //1：审核 2：废除 3：传阅 
+          ids:[]
+        },
         ifPrivate: false,
         toggle1: true,
         toggle2: true,
@@ -119,6 +126,9 @@
       this.queryFlowList();
     },
     methods: {
+      approve(){
+        
+      },
       preview(){
         window.open(this.url);
       },

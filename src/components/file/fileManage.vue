@@ -102,7 +102,9 @@
     methods: {
       reviewFile(url){
        // window.location.href=url;
-       window.open(url);
+      // window.open(url);
+      utils.cache.setSession('pdfurl',url);
+      this.$router.push({path:'viewPDF'});
       },
 		enable(){
 			if(this.ids.length==0){

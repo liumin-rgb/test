@@ -24,6 +24,14 @@ const router = new Router({
   		      noLogin:true
         }
   },
+  {
+        path: '/viewPDF',
+        name:'viewPDF',
+        component: resolve => require(['@/components/viewPDF'], resolve),
+        meta : {
+            title : '查看PDF',
+        }
+  },
  {
        path: '/home',
        name:'home',
