@@ -134,7 +134,7 @@
              <el-popover trigger="hover" placement="bottom">
                <div class="pointer themeColor weight600 font12">
                <p >复制</p>
-               <p >查看记录</p>
+               <p @click="toRecord">查看记录</p>
                <p >停止</p>
                </div>
                <div slot="reference" class="name-wrapper">
@@ -194,6 +194,9 @@ import Pagination from '../Pagination'
       }
     },
     methods:{
+     toRecord(){
+        this.$router.push({path:'trainRecord',query:{}})
+      },
     search(){
 
     },

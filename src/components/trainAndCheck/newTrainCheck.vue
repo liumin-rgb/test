@@ -41,6 +41,13 @@
      </div>
      <transition name="t1">
       <div v-show="toggle2==true">
+        <div class="marginB1VH"><span class="pc-button" @click="openModel">从文档中心选择</span>
+         <a-upload name="file" :multiple="true" :show-upload-list="false" :before-upload="beforeUpload"
+            :customRequest="upload"
+            @change="handleChange">
+            <span class="pc-button">本地上传</span>
+          </a-upload>
+          </div>
     <el-table
           :data="tableData"
           border
@@ -89,15 +96,18 @@
   </div>
   <NewCheckTwo :step="step" @changeStep="changeStep"/>
   <LastStep :step="step" @changeStep="changeStep"/>
+  <ChooseFile :visible="visible" @closeModel="closeModel"/>
 </div>
 </template>
 
 <script>
   import NewCheckTwo from './newCheckTwo'
   import LastStep from './lastStep'
+  import Pagination from '../Pagination'
+  import ChooseFile from './chooseFile'
  export default {
     name: 'newCheck',
-    components:{NewCheckTwo,LastStep},
+    components:{NewCheckTwo,LastStep,Pagination,ChooseFile},
     data(){
       return{
       toggle1:true,
@@ -108,10 +118,17 @@
       maxPage: 1,
       totalCount:0,
       tableData:[],
-      step:1
+      step:1,
+      visible:false,
       }
     },
    methods:{
+     openModel(){
+       this.visible=true;
+     },
+     closeModel(){
+       this.visible=false;
+     },
      goBack(){
       this.$router.go(-1);
      },

@@ -138,6 +138,14 @@ const router = new Router({
           },
         },
         {
+          path: '/trainRecord',
+          name:'trainRecord',
+          component: resolve => require(['@/components/trainAndCheck/trainRecord'], resolve),
+          meta : {
+              title : '培训记录'
+          },
+        },
+        {
           path: '/trainAssessmentIndex',
           name:'trainAssessmentIndex',
           component: resolve => require(['@/components/trainAssessment/trainAssessmentIndex'], resolve),
@@ -177,6 +185,7 @@ const router = new Router({
               title : '已完成'
           },
         },
+
         {
                path: '/superADM',
                name:'superADM',

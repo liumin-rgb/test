@@ -5,7 +5,7 @@
     <div >
      <span class="pc-button buttonNoback" @click="changeType(1)">培训模块</span>
      <span class="pc-button ">考核模块</span>
-     <span class="pc-button buttonNoback" @click="changeType(3)">培训+考核</span>    
+     <span class="pc-button buttonNoback" @click="changeType(3)">培训+考核</span>
     </div>
     <div>
      <span class="pc-button buttonNoback" @click="goBack">返回</span>
@@ -20,7 +20,21 @@
       <div >
     <div class="flex paddingLR2rem gray">
       <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>考核名称</span><input class='pc-input middleInput'/></div>
-      <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>考核负责人</span><input  class='pc-input middleInput'/></div>
+      <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>考核负责人</span>
+      <span>
+        <a-tree-select
+         allow-clear
+         tree-checkable
+         size="small"
+         style="width:2.5rem;height:.25rem;margin: .02rem 0.1rem;"
+         @change="onChange"
+         :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+         :tree-data="treemap"
+         tree-default-expand-all
+       >
+        <!-- :show-checked-strategy="SHOW_PARENT" -->
+       </a-tree-select>
+      </span></div>
     </div>
     <div class="flex paddingLR2rem gray">
       <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>考核开始时间</span><input class='pc-input middleInput'/></div>
@@ -55,10 +69,14 @@
       maxPage: 1,
       totalCount:0,
       tableData:[],
-      step:1
+      step:1,
+      treemap:[],
       }
     },
    methods:{
+     onChange(){
+
+     },
      goBack(){
       this.$router.go(-1);
      },
