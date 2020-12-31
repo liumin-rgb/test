@@ -153,6 +153,7 @@
             if (res) {
               if (res.success == true) {
                  utils.box.toast("已生效",'success');
+                 this.goBack();
               } else {
                 utils.box.toast(res.error.message);
               }
@@ -218,8 +219,11 @@
       onChange(checked) {
         this.ifPrivate = checked;
       },
-      closeModel() {
+      closeModel(val) {
         this.visible = false;
+        if(val==true){
+          this.goBack();
+        }
       },
       goBack() {
         this.$router.go(-1);

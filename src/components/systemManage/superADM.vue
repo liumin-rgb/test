@@ -127,10 +127,10 @@
           utils.box.toast('请输入密码');
           return false;
         }
-        if (this.imageUrl == '') {
+      /*  if (this.imageUrl == '') {
           utils.box.toast('请上传图片');
           return false;
-        }
+        } */
         return true;
       },
       goBack() {

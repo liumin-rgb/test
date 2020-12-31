@@ -6,7 +6,7 @@
         <div class="textAlignL">
           <span :class="['pc-button',showButton==true?'buttonGray':'buttonNoback']" @click="addParent()">添加分院</span>
           <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()">添加下属组织机构</span>
-          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="deleteNode()">删除</span>
+          <span :class="['pc-button',showDelete==true?'buttonNoback':'buttonGray']" @click="deleteNode()">删除</span>
         </div>
       </div>
       <div class="inner">
@@ -149,6 +149,7 @@
       return {
     tableHeight:0,
     showButton:false, //是否显示添加下属机构
+    showDelete:false,//是否显示删除按钮
     status:0, //0:只读状态 1：添加状态 2：编辑状态
     radioValue:1,
     tableData1:[],
@@ -295,6 +296,7 @@
           this.showButton=false;
           //this.chooseJob=true;
         }
+        this.showDelete=true;
         this.status=0;
         this.queryOrgDetail(this.currentNodeId);
         if(this.currentNodeType==3){
@@ -432,12 +434,13 @@
       this.searchOption(data, this.gData, 'edit',data.title);
      },
      deleteNode(){
+       if(this.showDelete==false) return;
        //删除机构
           let url="/api/Organization/organization/"+this.currentNodeId;
           utils.request.delete(url,true).then((res) => {
             if(res){
              if(res.success==true){
-               utils.box.toast('删除成功');
+               utils.box.toast('删除成功',"success");
               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
              }else{
                utils.box.toast(res.error.message);

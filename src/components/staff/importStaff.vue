@@ -73,6 +73,7 @@
      </a-modal>
 </template>
 <script>
+ import Global from '../../assets/lib/globalConfig.js'
 export default {
   name: '',
   props:{
@@ -117,11 +118,12 @@ export default {
            })
       },
     downloadTemplate(){
-      let url='/api/Employee/template?id='+this.orgnize;
-      utils.download.downLoadFile(url,'模板');
+      let url='/api/Employee/template/branch/'+this.orgnize;
+      //utils.download.downLoadFile(url,'模板');
+      window.open(Global.baseUrl+url,'_self');
     },
     checkInfo(status){
-      let url = "/api/Employee/template/infos/checking";
+      let url = "/api/Employee/template/branch/"+this.orgnize+"/misdata";
        this.spining=true;
       	utils.request.get(url).then((res) => {
           this.spining=false;

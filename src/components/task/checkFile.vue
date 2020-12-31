@@ -121,7 +121,7 @@ export default {
             	if(res){
                 if(res.success==true){
                utils.box.toast('已通过','success');
-               //this.$emit("closeModel",true);
+               this.$emit("closeModel",true);
              }else{
                utils.box.toast(res.error.message);
                 }
