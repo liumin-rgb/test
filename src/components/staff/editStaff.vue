@@ -19,7 +19,7 @@
        </div> -->
          <table class="table">
            <tr>
-             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="staffInfo.workingStatus==1?'在职':'离职'" readonly="readonly" /></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="workStatusList[staffInfo.workingStatus]" readonly="readonly" /></div></td>
              <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input class="pc-input" v-model="staffInfo.employeeNo" /></div></td>
              <td  rowspan="4" class="center">
                  <a-upload
@@ -187,7 +187,7 @@
         basicInfo:'基本信息',
         tagList:[],
         treemap:[],
-        workStatusList:[{code:'0',text:'请选择'},{code:'1',text:'在职'},{code:'2',text:'离职'}],
+        workStatusList:['','在职','离职','退休'],
         politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
        spinning:false,

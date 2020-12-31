@@ -89,7 +89,7 @@ export default {
     },
     forTree(treeList){
       for(var i in treeList){
-         treeList[i].value=treeList[i].key;
+         treeList[i].value=treeList[i].title;
           if(treeList[i].type!=4){
            treeList[i].disabled=true
           }

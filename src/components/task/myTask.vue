@@ -111,12 +111,7 @@ import Pagination from '../Pagination'
           deadline:'无',
           }
         ],
-        finishData1:[
-          {
-          task:'审批文件',
-          deadline:'2020-12-23',
-          }
-        ],
+        finishData1:[],
         finishData2:[
           {
           task:'审批文件',
