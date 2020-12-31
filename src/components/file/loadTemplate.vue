@@ -1,10 +1,10 @@
 <template>
   <a-modal v-model="visible" title="选择模板" :afterClose="handleCancel">
       <div class="format ">
-       <el-table :data="tableData" border height="20vh" style="width:unset" :header-cell-class-name="'table-header'"  @row-click="rowclick">
+       <el-table :data="tableData" border height="50vh" style="width:unset" :header-cell-class-name="'table-header'"  @row-click="rowclick">
              <el-table-column width="50">
                <template slot-scope="scope">
-                 <i :class="['iconfont', scope.row.selected?'icon-danxuanxuanzhong':'icon-danxuan','themeColor']"></i>
+                 <i :class="['iconfont', scope.row.selected==true?'icon-danxuanxuanzhong':'icon-danxuan','themeColor']"></i>
                </template>
              </el-table-column>
              <el-table-column prop="name" label="模板名称" >
@@ -34,16 +34,14 @@ export default {
   data() {
     return {
  loading:false,
- tableData:[
-   {name:'模板1',selected:false},
-   {name:'模板2',selected:false}
- ],
+ tableData:[],
     }
   },
   watch:{
     visible:function(newVal){
       if(newVal==true){
          //this.searchStaff();
+         this.searchTemplate()
       }
     }
   },
@@ -51,17 +49,41 @@ export default {
 
   },
   methods:{
+    searchTemplate(){
+        let url = "/api/Document/getDocTemplates";
+        utils.request.get(url, {}, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              this.tableData=res.result;
+            } else {
+              utils.box.toast(res.error.message);
+            }
+          }
+        });
+
+    },
     rowclick(obj){
       this.tableData.forEach((item)=>{
-        item.selected=false
+        this.$set(item,"selected",false);
+        //item.selected=false
       })
-      obj.selected=true;
+      this.$set(obj,"selected",true);
     },
     handleCancel(){
       this.$emit("closeModel");
     },
     handleOk(){
-    this.handleCancel()
+      let selectedObj;
+     for(var i in this.tableData){
+       if(this.tableData[i].selected==true){
+         selectedObj=this.tableData[i];
+       }
+     }
+     if(selectedObj==undefined){
+       utils.box.toast("请勾选模板");
+       return;
+     }
+    this.$emit("closeModel",selectedObj)
     }
 
 

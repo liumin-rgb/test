@@ -82,7 +82,7 @@
     </div>
     <CheckFile :visible="visible" :config="config" @closeModel="closeModel" />
     <TagManage :visible="visible1" :operation="operation" @closeTagManage="closeTagManage" />
-    <SaveTemplate :visible="visible2" @closeModel="closeModel1"/>
+    <SaveTemplate :visible="visible2" :htmlContext="tinymceHtml" @closeModel="closeModel1"/>
     <LoadTemplate :visible="visible3" @closeModel="closeModel2"/>
   </div>
 </template>
@@ -244,6 +244,10 @@
     },
     methods: {
       saveTemplate(){
+        if(this.tinymceHtml==''){
+          utils.box.toast("文本内容不能为空");
+          return;
+        }
         this.visible2=true;
       },
       loadTemplate(){
@@ -365,8 +369,11 @@
       goBack() {
         this.$router.go(-1);
       },
-      closeModel2(){
+      closeModel2(val){
         this.visible3=false;
+        if(val){
+          this.tinymceHtml=val.htmlContext;
+        }
       },
       closeModel1(){
         this.visible2=false;

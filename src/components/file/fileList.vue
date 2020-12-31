@@ -46,7 +46,7 @@
         <div class="list-search-two"></div>
         <div class="list-search-three">
           <span class="positionR">
-            <span class="pc-button buttonNoback" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao "></i>新建<i
+            <span :class="['pc-button',folderId==''?'buttonGray':'buttonNoback']" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao "></i>新建<i
                 class="iconfont icon-jiantou "></i></span>
             <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
               <div @click="toUrl('editHtml')">新建HTML</div>
