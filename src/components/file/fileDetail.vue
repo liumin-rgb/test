@@ -65,7 +65,7 @@
             prop="status"
             label="状态">
            <template slot-scope="scope">
-               <span>{{flowStatusList[+scope.row.status-1]}}</span>
+               <span>{{scope.row.status}}</span>
            </template>
           </el-table-column>
         </el-table>
@@ -96,7 +96,7 @@
             prop="status"
             label="状态">
             <template slot-scope="scope">
-                <span>{{statusList[+scope.row.status-1]}}</span>
+                <span>{{scope.row.status}}</span>
             </template>
           </el-table-column>
           <el-table-column

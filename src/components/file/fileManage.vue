@@ -130,7 +130,7 @@
 			  utils.request.post(url, params, true).then((res) => {
 			    if (res) {
 			      if (res.success == true) {
-			        utils.box.toast("已生效");
+			        utils.box.toast("已生效","success");
 			      } else {
 			        utils.box.toast(res.error.message);
 			      }

@@ -15,7 +15,7 @@
             <span v-show="item.key==folderId">
               <i class='iconfont icon-jiahao themeColor' @click.stop="appendNode(item)"></i>
               <i :class='["iconfont", "icon-tubiao09",!item.editable?"color999":"themeColor"]' @click.stop="editNode(item)"></i>
-              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)"></i>
+              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)" v-show="!item.default"></i>
             </span>
           </template>
           <!-- <template slot='switcherIcon'>
@@ -67,9 +67,13 @@
           <el-table-column type="selection"></el-table-column>
           <el-table-column prop="name" label="文件名称" width="200">
             <template slot="header" slot-scope="scope">
+
               <span class="pointer" @click="takeOrder(true)"><span class="gray ">文件名称</span><i class="iconfont icon-paixu themeColor"></i></span>
             </template>
             <template slot-scope="scope">
+              <i class="iconfont icon-pdf themeColor" v-show="scope.row.type==3"></i>
+               <i class="iconfont icon-tupian themeColor" v-show="scope.row.type==4"></i>
+               <i class="iconfont icon-html themeColor" v-show="scope.row.type==1"></i>
               <span class="themeColor text-line pointer" @click="toDetail(scope.row.id,scope.row.documentId)">{{scope.row.name}}</span>
             </template>
           </el-table-column>
@@ -104,7 +108,7 @@
               <el-popover trigger="hover" placement="bottom">
                 <div class="pointer themeColor weight600 font12">
                   <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
-                  <p @click="editHtml(scope.row.id)"><i class="iconfont icon-bianji"></i>编辑</p>
+                  <p @click="editHtml(scope.row.id)" v-show="scope.row.type==1"><i class="iconfont icon-bianji"></i>编辑</p>
                   <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                   <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                 </div>
@@ -182,84 +186,13 @@
           code: '4',
           text: '废除'
         }],
+        typeList: ['','HTML', '视频', 'PDF', '图片'],
         operation: {
           type: 'all',
           id: '',
           singleTag: []
         },
-        gData: [{
-            title: '0-0',
-            key: '0-0',
-            scopedSlots: {
-              title: 'custom'
-            },
-            multipleSelection: [],
-            children: [{
-              title: '0-0-1',
-              key: '0-0-1',
-              scopedSlots: {
-                title: 'custom'
-              },
-              children: [{
-                  title: '0-0-1-0',
-                  key: '0-0-1-0',
-                  scopedSlots: {
-                    title: 'custom'
-                  },
-                  children: []
-                },
-                {
-                  title: '0-0-1-1',
-                  key: '0-0-1-1',
-                  scopedSlots: {
-                    title: 'custom'
-                  },
-                  children: []
-                },
-                {
-                  title: '0-0-1-2',
-                  key: '0-0-1-2',
-                  scopedSlots: {
-                    title: 'custom'
-                  },
-                  children: []
-                }
-              ]
-            }, ]
-          },
-          {
-            title: '0-1',
-            key: '0-1',
-            scopedSlots: {
-              title: 'custom'
-            },
-            children: [{
-                title: '0-1-0-0',
-                key: '0-1-0-0',
-                scopedSlots: {
-                  title: 'custom'
-                },
-                children: []
-              },
-              {
-                title: '0-1-0-1',
-                key: '0-1-0-1',
-                scopedSlots: {
-                  title: 'custom'
-                },
-                children: []
-              },
-              {
-                title: '0-1-0-2',
-                key: '0-1-0-2',
-                scopedSlots: {
-                  title: 'custom'
-                },
-                children: []
-              }
-            ]
-          },
-        ],
+        gData: [],
         tableData: [],
         gData1: [{
           title: ' ',
@@ -489,10 +422,10 @@
           }
         });
       },
-      editHtml() {
+      editHtml(id) {
         this.$router.push({
           path: 'editHtml',
-          query: {}
+          query: {id:id}
         });
       },
 

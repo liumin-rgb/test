@@ -113,6 +113,7 @@
     },
     data() {
       return {
+        id:'',//文档id
         toggle1: true,
         toggle2: true,
         toggle3: false,
@@ -241,8 +242,27 @@
       tinymce.init({});
       this.folderId=utils.cache.getSession("folderId")||'';
       this.folderName=utils.cache.getSession("folderName")||'';
+      this.id=this.$route.query.id;
+      this.queryHtml();
     },
     methods: {
+      queryHtml(){
+          let url = "/api/Document/getHtmlDocVersion?docVersionId="+this.id;
+          utils.request.get(url, {}, true).then((res) => {
+            if (res) {
+              if (res.success == true) {
+                let result=res.result;
+                this.name=result.name;
+                this.docNo=result.docNo;
+                this.version=result.version;
+                this.tinymceHtml=result.htmlStr;
+              } else {
+                utils.box.toast(res.error.message);
+              }
+            }
+          });
+
+      },
       saveTemplate(){
         if(this.tinymceHtml==''){
           utils.box.toast("文本内容不能为空");

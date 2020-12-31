@@ -112,6 +112,7 @@ export default {
              if(res){
                if(res.success==true){
                  this.orgnizeList=res.result;
+                 this.orgnize=this.orgnizeList[0].id;
                  //this.orgnizeList=orgnizeList.unshift('全部');
                }
              }

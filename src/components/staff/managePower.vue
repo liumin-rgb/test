@@ -393,14 +393,21 @@
             if(status==2){
               utils.box.toast("修改成功","success");
               this.status=0;
-              this.onLoadData(this.selectedNode);
+             // this.onLoadData(this.selectedNode);
              // this.queryParent();
+             let item={
+               title: params.name,
+               key: params.organizationId,
+               scopedSlots: { title: 'custom' },
+               children: [] ,
+               }
+             this.editNode(item);
 
             }else{
               utils.box.toast("添加成功","success");
-               this.onLoadData(this.selectedNode);
+               //this.onLoadData(this.selectedNode);
                let val={
-                 name:val.name,
+                 name:params.name,
                  id:res.result
                }
                this.appendNode(val);
@@ -417,51 +424,27 @@
                  title: val.name,
                  key: val.id,
                  scopedSlots: { title: 'custom' },
+                 isLeaf:true,
                  children: [] ,
                  }
-               if (!this.selectedNode.children) {
-                 this.$set(selectedNode, 'children', [])
+               if (!this.selectedNode.dataRef.children) {
+                 this.$set(this.selectedNode.dataRef, 'children', [])
                }
-               selectedNode.children.push(newChild)
+               this.selectedNode.dataRef.children.push(newChild)
      },
      editNode(data){
-       this.editable=true;
+      this.searchOption(data,this.treeData, 'edit',data.title);
+     },
 
-     },
-     insuerEdit(e,data){
-       this.editable=false;
-       data.title=e.target.innerHTML;
-      this.searchOption(data, this.gData, 'edit',data.title);
-     },
-     removeNode(){
-         //删除机构
-            let url="/api/Organization/organization/movement";
-            let params={
-               "sourceId": 0,
-                "sourceType": 0,
-                "targetId": 0,
-                "targetType": 0
-            };
-            utils.request.put(url,params,true).then((res) => {
-              if(res){
-               if(res.success==true){
-                 utils.box.toast('移动成功',"success");
-               // this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
-               }else{
-                 utils.box.toast(res.error.message);
-               }
-              }
-              })
-     },
      deleteNode(){
        if(this.showDelete==false) return;
        //删除机构
           let url="/api/Organization/organization/"+this.currentNodeId;
           utils.request.delete(url,true).then((res) => {
             if(res){
-             if(res.success==true){
-               utils.box.toast('删除成功',"success");
+             if(res.success==true){            
               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
+               utils.box.toast('删除成功',"success");
              }else{
                utils.box.toast(res.error.message);
              }
@@ -477,12 +460,7 @@
               if (type === 'delete') {
                 arr.splice(s, 1)
               } else {
-              //这是模拟数据编辑数据
-                /* this.$set(arr, s, {
-                  title: title,
-                  key: '12121212',
-                  scopedSlots: { title: 'custom' }
-                }) */
+              //编辑
                 arr[s].title=title;
               }
               break
@@ -492,6 +470,26 @@
               continue
             }
           }
+        },
+        moveNode(){
+            //移动机构
+               let url="/api/Organization/organization/movement";
+               let params={
+                  "sourceId": 0,
+                   "sourceType": 0,
+                   "targetId": 0,
+                   "targetType": 0
+               };
+               utils.request.put(url,params,true).then((res) => {
+                 if(res){
+                  if(res.success==true){
+                    utils.box.toast('移动成功',"success");
+                  // this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
+                  }else{
+                    utils.box.toast(res.error.message);
+                  }
+                 }
+                 })
         },
     queryOrgDetail(id){ //查询组织机构详情
       let url="/api/Organization/organization/"+id;
@@ -580,7 +578,7 @@
       this.pageSize=val.pageSize;
       this.queryStaff();
     },
-    
+
     onDragStart(info){
       this.drag1=info.node.dataRef;
        console.log(info);
