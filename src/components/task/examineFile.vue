@@ -71,9 +71,9 @@
       </transition>
     </div>
     <div class="list-bottom textAlignR">
-      <span class="pc-button buttonNoback"><i class="iconfont icon-wj-thwj"></i>退回</span>
-      <span class="pc-button buttonNoback"><i class="iconfont icon-wancheng"></i>立刻生效</span>
-      <span class="pc-button" @click="approve"><i class="iconfont icon-tongguo1"></i>通过</span>
+      <span class="pc-button buttonNoback" @click="operate(2)" ><i class="iconfont icon-wj-thwj"></i>退回</span>
+      <span class="pc-button buttonNoback" @click="operate(3)"><i class="iconfont icon-wancheng"></i>立刻生效</span>
+      <span class="pc-button" @click="operate(1)"><i class="iconfont icon-tongguo1"></i>通过</span>
 
     </div>
     <CheckFile  :visible="visible" :config="config" @closeModel="closeModel"/>
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-  import CheckFile from '../file/checkFile'
+  import CheckFile from './checkFile'
   export default {
     name: 'examineFile',
     components:{CheckFile},
@@ -89,7 +89,7 @@
       return {
         visible: false,
         config:{
-          operationType:1, //1：审核 2：废除 3：传阅 
+          operationType:1, //1：审核 2：废除 3：传阅
           ids:[]
         },
         ifPrivate: false,
@@ -126,8 +126,39 @@
       this.queryFlowList();
     },
     methods: {
-      approve(){
-        
+      operate(approveResult){
+        if(approveResult==3){
+          this.enableFile();
+          return;
+        }
+       this.config={
+        operationType:1, //1：审核 2：废除 3：传阅
+        approveResult:approveResult,    //1：通过 2：退回 3：立刻生效
+        docVersionId:this.docVersionId,
+        docApproveNoteId:this.docApproveNoteId,
+       }
+       this.visible=true;
+      },
+      enableFile(){
+          let url = "/api/Task/approveDocVersion";
+          let params={
+              "docVersionId": this.docVersionId,
+              "docApproveNoteId": this.docApproveNoteId,
+              "operationType": 1,
+              "approveResult": 3,
+              "nextEmployeeId": 0,
+              "suggesion": ""
+          };
+          utils.request.post(url,params,true).then((res) => {
+            if (res) {
+              if (res.success == true) {
+                 utils.box.toast("已生效",'success');
+              } else {
+                utils.box.toast(res.error.message);
+              }
+            }
+          })
+
       },
       preview(){
         window.open(this.url);
