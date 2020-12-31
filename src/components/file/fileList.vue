@@ -9,18 +9,20 @@
        <a-tree
            class="draggable-tree"
            draggable
-		       show-icon
-           :tree-data="gData"
+           @dragstart="onDragStart"
            @dragenter="onDragEnter"
            @drop="onDrop"
+           :tree-data="gData"
+           :load-data="onLoadData"
            @select="onSelect"
+           show-icon
            :icon='getIcon'
            defaultExpandParent
          >
          <template slot="custom" slot-scope="item">
-                <span v-if="item.key==chooseKey1&&editable" contenteditable="true" @blur="insuerEdit($event,item)" @click.stop="">{{item.title}}</span>
+                <span v-if="item.key==folderId&&editable" contenteditable="true" @blur="insuerEdit($event,item)" @click.stop="">{{item.title}}</span>
                 <span v-else>{{item.title}}</span>
-                <span v-show="item.key==chooseKey1">
+                <span v-show="item.key==folderId">
                  <i  class='iconfont icon-jiahao themeColor'  @click.stop="appendNode(item)"></i>
                  <i  class='iconfont icon-tubiao09 themeColor' @click.stop="editNode(item)"></i>
                  <i  class='iconfont icon-shanchu themeColor' @click.stop="deleteNode(item)"></i>
@@ -167,8 +169,9 @@
         order1:false,
         order2:false,
         isDescending:false,
-        chooseKey1:1,
-        chooseKey2:[],
+        folderId:'',
+        folderName:'',
+        tagIds:[],
         editable:false,
         check1:false,
         check2:false,
@@ -234,12 +237,67 @@
       }
     },
     created(){
+      this.queryParent();//查询一级文件夹
       this.queryAllTags();
      this.queryInfo();
 
       console.log(this.gData);
     },
     methods: {
+      queryParent(){
+           let url="/api/Document/folder/0/list";
+           utils.request.get(url,true).then((res) => {
+             if(res){
+              if(res.success==true){
+               let data=res.result;
+               this.gData=data.map((item)=>{
+                 return{
+                 title: item.name,
+                 key: item.id,
+                 parentId:item.parentId, //0代表一级文件
+                 isLeaf: false,//!item.haveChildren,
+                 editable:item.editable,
+                 isDefault:item.isDefault,
+                 //children:[],
+                 scopedSlots: { title: 'custom' },
+                 }
+               });
+               console.log(this.gData);
+              }else{
+                utils.box.toast(res.error.message);
+              }
+             }
+             })
+      },
+      onLoadData(treeNode){
+        return new Promise(resolve=>{
+        /*  if (treeNode.dataRef.children) {
+            resolve();
+            return;
+          } */
+             let url="/api/Document/folder/"+treeNode.dataRef.key+"/list";
+             utils.request.get(url,false).then((res) => {
+               if(res){
+                if(res.success==true){
+                 let data=res.result;
+                 treeNode.dataRef.children =data.map((item)=>{
+                   return{
+                     title: item.name,
+                     key: item.id,
+                     parentId:item.parentId, //0代表一级文件
+                     isLeaf: false,//!item.haveChildren,
+                     editable:item.editable,
+                     isDefault:item.isDefault,
+                     //type:item.type
+                   }
+                 });
+                 this.gData= [...this.gData];
+                 resolve();
+                }
+               }
+               })
+              });
+      },
       search(){
         this.pageIndex=1;
         this.queryInfo();
@@ -268,8 +326,8 @@
         if(this.check1){
               let url="/api/Document/batchDownload";
               let params={
-                "folderId": 9,
-                "ids": [117,118]//this.multipleSelection.map((item)=>{return item.id})
+                "folderId": this.folderId,
+                "ids": this.multipleSelection.map((item)=>{return item.id})
               };
               utils.download.downloadZip(url,params,{responseType: 'blob'},true);
         }
@@ -329,8 +387,8 @@
       queryInfo(){
         let url = "/api/Document/getList";
         let params={
-   "floderId": this.chooseKey1,
-   "tagIds": this.chooseKey2,
+   "floderId": this.folderId,
+   "tagIds": this.tagIds,
   "fileName": this.fileName,
   "status": this.status,
   "sortField": this.sortField,
@@ -391,11 +449,17 @@
             return true
           },
     onSelect(keys, event) {
-      this.chooseKey1=keys[0]; //keys[0]||
+      if(keys.length==0){
+        return;
+      }
+      this.folderId=keys[0];
+      this.folderName=event.node.dataRef.title;
+      utils.cache.setSession("folderName",this.folderName);
+      utils.cache.setSession("folderId",this.folderId);
       this.queryInfo();
     },
     onSelect1(keys, event) {  //点击标签过滤文件
-    this.chooseKey2=keys;
+    this.tagIds=keys;
     this.queryInfo();
     },
     onExpand() {
@@ -443,6 +507,10 @@
         },
         closeShareFile(){
           this.visible3=false;
+        },
+        onDragStart(info){
+          this.drag1=info.node.dataRef;
+           console.log(info);
         },
          onDragEnter(info) {
               console.log(info);

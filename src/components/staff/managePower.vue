@@ -433,6 +433,26 @@
        data.title=e.target.innerHTML;
       this.searchOption(data, this.gData, 'edit',data.title);
      },
+     removeNode(){
+         //删除机构
+            let url="/api/Organization/organization/movement";
+            let params={
+               "sourceId": 0,
+                "sourceType": 0,
+                "targetId": 0,
+                "targetType": 0
+            };
+            utils.request.put(url,params,true).then((res) => {
+              if(res){
+               if(res.success==true){
+                 utils.box.toast('移动成功',"success");
+               // this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
+               }else{
+                 utils.box.toast(res.error.message);
+               }
+              }
+              })
+     },
      deleteNode(){
        if(this.showDelete==false) return;
        //删除机构
@@ -447,8 +467,6 @@
              }
             }
             })
-
-
      },
      //递归查找
     searchOption (option, arr, type = 'delete',title) {
@@ -562,6 +580,7 @@
       this.pageSize=val.pageSize;
       this.queryStaff();
     },
+    
     onDragStart(info){
       this.drag1=info.node.dataRef;
        console.log(info);

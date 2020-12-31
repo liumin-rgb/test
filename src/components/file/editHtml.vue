@@ -16,7 +16,7 @@
         <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor"
             v-show="toggle1==false"></i>基本信息</div>
         <div>
-          <span class="marginR2VW">文件目录：问卷11</span>
+          <span class="marginR2VW">文件目录：{{folderName}}</span>
           <span>申请人：1-R</span>
         </div>
       </div>
@@ -125,7 +125,8 @@
           id: '',
           singleTag: []
         },
-        folderId:9,
+        folderId:'',
+        folderName:'',
         creatorId:0,
         name: '',
         docNo: '',
@@ -238,6 +239,8 @@
     },
     mounted() {
       tinymce.init({});
+      this.folderId=utils.cache.getSession("folderId")||'';
+      this.folderName=utils.cache.getSession("folderName")||'';
     },
     methods: {
       saveTemplate(){
@@ -250,7 +253,7 @@
         if (this.check()) {
           let url = "/api/Document/enableDocVersion";
           let params = {
-            "folderId": this.folderId||9,
+            "folderId": this.folderId,
             "creatorId": this.creatorId,
             "name": this.name,
             "docNo": this.docNo,
@@ -261,7 +264,7 @@
           utils.request.post(url, params, true).then((res) => {
             if (res) {
               if (res.success == true) {
-                utils.box.toast("已生效");
+                utils.box.toast("已生效","success");
                 this.goBack();
               } else {
                 utils.box.toast(res.error.message);
@@ -302,7 +305,7 @@
           //console.log(this.tinymceHtml);
             let url = "/api/Document/saveDocVersion";
             let params = {
-              "folderId": this.folderId||9,
+              "folderId": this.folderId,
               "creatorId": this.creatorId,
               "name": this.name,
               "docNo": this.docNo,
@@ -313,7 +316,7 @@
             utils.request.post(url, params, true).then((res) => {
               if (res) {
                 if (res.success == true) {
-                  utils.box.toast("保存成功");
+                  utils.box.toast("保存成功","success");
                   this.goBack();
                 } else {
                   utils.box.toast(res.error.message);
@@ -326,7 +329,7 @@
         if (this.check()) {
          this.visible=true;
          this.config.params={
-           "folderId": this.folderId||9,
+           "folderId": this.folderId,
            "creatorId": this.creatorId,
            "name": this.name,
            "docNo": this.docNo,

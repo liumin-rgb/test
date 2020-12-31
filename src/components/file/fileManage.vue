@@ -13,7 +13,7 @@
       <div class="list-head">
         <div><i class="iconfont icon-jiantou themeColor"></i>基本信息</div>
         <div>
-          <span class="marginR2VW">文件目录：文件0-1</span>
+          <span class="marginR2VW">文件目录：{{folderName}}</span>
           <!-- <span>申请人：1-R</span> -->
         </div>
       </div>
@@ -86,7 +86,8 @@
         maxPage: 1,
         totalCount: 0,
         format:'文件名称_文件编号_版本号',
-        floderId:1,
+        floderId:0,
+        folderName:'',
         fileFormatId:0,
         ids:[],
         fileList:[],
@@ -98,6 +99,9 @@
         tableData: [],
         typeList: ['HTML', '视频', 'PDF', '图片'],
       }
+    },
+    created(){
+      this.folderName=utils.cache.getSession("folderName")||'';
     },
     methods: {
       reviewFile(url,type){
