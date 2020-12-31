@@ -242,8 +242,10 @@
       tinymce.init({});
       this.folderId=utils.cache.getSession("folderId")||'';
       this.folderName=utils.cache.getSession("folderName")||'';
-      this.id=this.$route.query.id;
-      this.queryHtml();
+      this.id=this.$route.query.id||'';
+      if(this.id!=''){
+         this.queryHtml();
+      }
     },
     methods: {
       queryHtml(){

@@ -5,7 +5,7 @@
         <div class="weight600">组织架构</div>
         <div class="textAlignL">
           <span :class="['pc-button',showButton==true?'buttonGray':'buttonNoback']" @click="addParent()">添加分院</span>
-          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()">添加下属组织机构</span>
+          <span :class="['pc-button',showButton==true?'buttonNoback':'buttonGray']" @click="addBranch()">添加组织</span>
           <span :class="['pc-button',showDelete==true?'buttonNoback':'buttonGray']" @click="deleteNode()">删除</span>
         </div>
       </div>
@@ -442,7 +442,7 @@
           let url="/api/Organization/organization/"+this.currentNodeId;
           utils.request.delete(url,true).then((res) => {
             if(res){
-             if(res.success==true){            
+             if(res.success==true){
               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
                utils.box.toast('删除成功',"success");
              }else{
@@ -665,7 +665,7 @@
     display: -webkit-flex;
 
     &-one {
-      width:20%;
+      width:23%;
       background: #fff;
       margin-right: .1rem;
       border-radius: 5px;
@@ -677,7 +677,7 @@
     }
 
     &-two {
-      width:80%;
+      width:77%;
       background: #fff;
       border-radius: 5px;
       padding: .1rem .2rem;

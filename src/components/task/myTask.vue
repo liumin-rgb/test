@@ -54,7 +54,20 @@
        <transition name="t1">
        <div v-show="toggle3==true">
        <el-table :data="finishData1" border height="30vh" style="width:unset" :header-cell-class-name="'table-header'">
-       <el-table-column prop="task" label="事项简介" ></el-table-column>
+      <el-table-column prop="name" label="文件名称" >
+       <template slot-scope="scope">
+         <div class="pointer themeColor text-line">{{scope.row.name}}</div>
+       </template>
+      </el-table-column>
+      <el-table-column prop="docNo" label="编号" ></el-table-column>
+      <el-table-column prop="version" label="版本号" ></el-table-column>
+      <el-table-column prop="status" label="状态" >
+        <template slot-scope="scope">
+          <div>{{scope.row.status| filter1(statusList)}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="creator" label="创建人" ></el-table-column>
+      <el-table-column prop="suggestion" label="备注" ></el-table-column>
      </el-table>
      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>

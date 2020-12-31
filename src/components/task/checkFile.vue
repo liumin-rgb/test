@@ -1,15 +1,15 @@
 <template>
   <a-modal v-model="visible" :title="title" :afterClose="handleCancel">
     <div class="format ">
-      <div class="textInput positionR"><span class="label1">{{label}}:</span>
-        <a-tree-select v-model="id" show-search style="width: 50%;margin: .02rem 0.1rem;" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+      <div class="textInput positionR" v-show="config.approveResult==1">
+        <span class="label1">{{label}}:</span>
+        <a-tree-select  v-model="id" show-search style="width: 50%;margin: .02rem 0.1rem;" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
           placeholder="请选择" allow-clear tree-default-expand-all :tree-data="treeData">
         </a-tree-select>
-        <!-- <input  class='pc-input' @click="showSelect=true" readonly="true" style="width:2rem;"/>
-      <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
-      <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-       </div> -->
-
+      </div>
+      <div class="textInput positionR" v-show="config.approveResult==2">
+      <span class="label1">{{label}}:</span>
+      <select  class="pc-input" @change="getSelectInfo('employee')" id="employee"><option v-for="obj in returnEmployeeList" :value="obj.id">{{obj.name}}[{{obj.employeeNo}}]</option></select>
       </div>
       <div><span class="label1 verTop">备注:</span>
         <textarea class='pc-textarea' v-model="suggestion" /></div>
@@ -46,20 +46,24 @@ export default {
      suggestion:'',
      treeExpandedKeys: [],
      treeData:[],
-     id:''
+     id:'',
+     returnEmployeeList:[],
            }
      },
    watch:{
      visible:function(val){
        if(val==true){
+         this.id='';
          let type=this.config.operationType;
          let approveResult=this.config.approveResult;
          this.title=approveResult==1?'通过审核':'退回审核'
          this.label=approveResult==1?'下一节点':'退回人'
-         //this.title=type==1?'通过审核':type==2?'通过废除':'';
-        // this.label=type==1?'下一节点':''
-        // this.label=type==3?'下一节点':'';
-         this.getTreeMap();
+         if(approveResult==2){//1：通过 2：退回 3：立刻生效
+           this.getReturnEmployee();
+         }else{
+            this.getTreeMap();
+         }
+
        }
      },
    },
@@ -67,6 +71,23 @@ export default {
 
   },
   methods:{
+    getSelectInfo(id) {
+     this.id=utils.common.getSelectValue(id);
+    },
+    getReturnEmployee(){
+      let url="/api/Task/getReturnEmployeeList?approveNoteId=42"//this.config.docApproveNoteId;
+      utils.request.get(url).then((res) => {
+      	if(res){
+          if(res.success==true){
+            let data=res.result;
+            this.returnEmployeeList=data.returnEmployeeList;
+            this.id=this.returnEmployeeList[0].id;
+          }else{
+         utils.box.toast(res.error.message);
+          }
+        }
+        });
+        },
     getTreeMap(){
       let url="/api/Document/getEmployeeTreeMap";
       utils.request.get(url).then((res) => {

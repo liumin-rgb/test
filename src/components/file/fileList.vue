@@ -411,7 +411,7 @@
 
       },
       getSelectInfo(id) {
-        this[id] = utils.common.getSelectValue(id);
+       this[id] = utils.common.getSelectValue(id);
       },
       toDetail(id, documentId) {
         this.$router.push({
