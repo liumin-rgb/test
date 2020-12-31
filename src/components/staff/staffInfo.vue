@@ -44,7 +44,7 @@
             class="pc-input" style="width:.6rem" v-model="searchInfo.seniorityEnd"/></span> -->
       </div>
       <div class="list-search-three">
-        <span class="pc-button buttonNoback" @click=""><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
+        <span class="pc-button buttonNoback" @click="exportFile"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
         <span class="pc-button buttonNoback" @click="openImport"><i class="iconfont icon-shangchuan "></i>批量导入</span>
         <span class="pc-button buttonNoback" @click="toStaffInfo('add')"><i class="iconfont icon-jiahao"></i>添加</span>
         <span class="pc-button buttonNoback" @click="changeCategory"><i class="iconfont icon-tubiao09"></i>修改详情页类目名称</span>
@@ -125,6 +125,7 @@
   import CategoryManage from './categoryManage'
   import { TreeSelect } from 'ant-design-vue';
   const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+  import Global from '../../assets/lib/globalConfig.js'
   export default {
     name: 'staffInfo',
     components: {
@@ -201,6 +202,9 @@
          this.tableHeight=this.$refs.main.offsetHeight-this.$refs.search.offsetHeight-34-24
     },
     methods: {
+      exportFile(){
+        window.open(Global.baseUrl+'/api/Employee/export','_self');
+      },
       search(){
         this.pageIndex=1;
         this.queryInfo();

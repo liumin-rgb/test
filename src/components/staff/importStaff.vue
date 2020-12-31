@@ -215,12 +215,12 @@ export default {
                item.onSuccess(res, item.file);
               // this.fileList=[];
      	 			} else {
-               item.onSuccess(res, item.file);
+              // item.onSuccess(res, item.file);
      	 				utils.box.toast(res.error.message);
              // this.fileList=[];
      	 			}
      	 			 }else{
-                item.onSuccess(res, item.file);
+               // item.onSuccess(res, item.file);
                utils.box.toast(res.error.message);
                //this.fileList=[];
              }

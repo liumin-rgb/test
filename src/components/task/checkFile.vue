@@ -109,6 +109,9 @@ export default {
          treeList[i].value=treeList[i].key;
           if(treeList[i].type!=4){
            treeList[i].disabled=true
+          }else{
+           treeList[i].title=treeList[i].title+'['+treeList[i].employeeNo+']'
+           //treeList[i].value=treeList[i].value+'['+treeList[i].employeeNo+']'
           }
         if(treeList[i].children){
           this.forTree(treeList[i].children);

@@ -78,8 +78,8 @@ export default {
           if(res.success==true){
             let treemap=res.result;
             this.treeData=JSON.parse(JSON.stringify(treemap).replace(/name/g,"title").replace(/id/g,"key").replace(/employees/g,"children"));
-            console.log(this.treeData);
             this.forTree(this.treeData);
+             console.log(this.treeData);
 
        }else{
          utils.box.toast(res.error.message);
@@ -89,9 +89,12 @@ export default {
     },
     forTree(treeList){
       for(var i in treeList){
-         treeList[i].value=treeList[i].title;
+         treeList[i].value=treeList[i].key;
           if(treeList[i].type!=4){
            treeList[i].disabled=true
+          }else{
+           treeList[i].title=treeList[i].title+'['+treeList[i].employeeNo+']'
+           //treeList[i].value=treeList[i].value+'['+treeList[i].employeeNo+']'
           }
         if(treeList[i].children){
           this.forTree(treeList[i].children);
