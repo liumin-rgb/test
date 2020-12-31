@@ -86,7 +86,7 @@
         maxPage: 1,
         totalCount: 0,
         format:'文件名称_文件编号_版本号',
-        floderId:0,
+        folderId:0,
         folderName:'',
         fileFormatId:0,
         ids:[],
@@ -101,6 +101,7 @@
       }
     },
     created(){
+      this.folderId=utils.cache.getSession("folderId")||0;
       this.folderName=utils.cache.getSession("folderName")||'';
     },
     methods: {
@@ -125,7 +126,7 @@
 			  return;
 			}
 			  let url = "/api/Document/enableDocVersions";
-			  let params = {docVersionIds:this.ids}
+			  let params = this.ids
 			  utils.request.post(url, params, true).then((res) => {
 			    if (res) {
 			      if (res.success == true) {
@@ -177,7 +178,7 @@
       upload(item) {
         let fileList=this.fileList;
         if(fileList.length==0) return;
-        let url = "/api/Document/batchUpload?floderId="+this.floderId+"&fileFormatId="+this.fileFormatId;
+        let url = "/api/Document/batchUpload?floderId="+this.folderId+"&fileFormatId="+this.fileFormatId;
         const form = new FormData();
         // 文件对象
         /* for(var item of fileList){
