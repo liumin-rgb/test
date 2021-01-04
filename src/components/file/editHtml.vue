@@ -170,8 +170,10 @@
           },
           menubar: 'edit insert  format table ',
           toolbar: 'forecolor backcolor bold italic underline   | alignleft aligncenter alignright alignjustify outdent indent | \
-                   fontselect fontsizeselect | bullist numlist | table image | link',
-          plugins: 'table image link',
+                   fontselect fontsizeselect | bullist numlist | table image | link ',
+          plugins: 'table image link lists advlist',
+          advlist_bullet_styles: 'square',
+          advlist_number_styles: 'lower-alpha lower-roman upper-alpha upper-roman',
           fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
           font_formats: '黑体=SimHei;宋体=simsun,serif;Arial=arial,helvetica;Arial Black=arial black,avant garde;',
           link_list: [
