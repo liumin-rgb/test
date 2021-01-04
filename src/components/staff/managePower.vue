@@ -11,7 +11,7 @@
       </div>
       <div class="inner">
         <a-tree class="draggable-tree" draggable @dragstart="onDragStart" @dragenter="onDragEnter" @drop="onDrop"
-          :load-data="onLoadData" :tree-data="treeData" show-icon :blockNode="'true'" defaultExpandParent @select="onSelect"
+          :load-data="onLoadData" :tree-data="treeData" show-icon blockNode defaultExpandParent @select="onSelect"
           @onCheck="onCheck">
           <a-icon slot="switcherIcon" type="down" />
           <!-- <a-icon slot="smile" type="smile-o" />
@@ -165,8 +165,8 @@
     visible:false,
     visible1:false,
     visible2:false,
-    parentId:'',
-    currentNodeId:'',
+    parentId:0,
+    currentNodeId:0,
     currentNodeType:'',
     selectedNode:{},
     treeData:[],
@@ -405,7 +405,7 @@
 
             }else{
               utils.box.toast("添加成功","success");
-               //this.onLoadData(this.selectedNode);
+               this.onLoadData(this.selectedNode);
                let val={
                  name:params.name,
                  id:res.result
@@ -420,7 +420,7 @@
     },
     appendNode(val){
          //模拟添加
-               const newChild = {
+              /* const newChild = {
                  title: val.name,
                  key: val.id,
                  scopedSlots: { title: 'custom' },
@@ -430,7 +430,9 @@
                if (!this.selectedNode.dataRef.children) {
                  this.$set(this.selectedNode.dataRef, 'children', [])
                }
-               this.selectedNode.dataRef.children.push(newChild)
+               this.selectedNode.dataRef.children.push(newChild) */
+              this.searchOption(this.selectedNode.dataRef, this.treeData,'add',val);
+
      },
      editNode(data){
       this.searchOption(data,this.treeData, 'edit',data.title);
@@ -443,8 +445,9 @@
           utils.request.delete(url,true).then((res) => {
             if(res){
              if(res.success==true){
-              this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
+               this.onLoadData(this.selectedNode);
                utils.box.toast('删除成功',"success");
+               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');               
              }else{
                utils.box.toast(res.error.message);
              }
@@ -452,20 +455,33 @@
             })
      },
      //递归查找
-    searchOption (option, arr, type = 'delete',title) {
+    searchOption (option, arr, type = 'delete',val) {
           console.log(option, arr)
           for (let s = 0; s < arr.length; s++) {
             console.log(arr[s].key, option.key)
             if (arr[s].key === option.key) {
               if (type === 'delete') {
                 arr.splice(s, 1)
-              } else {
+              } else if(type=='add'){
+                const newChild = {
+                   title: val.name,
+                   key: val.id,
+                   scopedSlots: { title: 'custom' },
+                   isLeaf:true,
+                   children: [] ,
+                   }
+                 if (!arr[s].children) {
+                   this.$set(arr[s], 'children', [])
+                 }
+                 arr[s].children.push(newChild)
+                 console.log(this.treeData);
+              }else {
               //编辑
-                arr[s].title=title;
+                arr[s].title=val;
               }
               break
             } else if (arr[s].children && arr[s].children.length > 0) { // 递归条件
-              this.searchOption(option, arr[s].children,type,title)
+              this.searchOption(option, arr[s].children,type,val)
             } else {
               continue
             }

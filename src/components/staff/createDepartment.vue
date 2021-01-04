@@ -36,8 +36,8 @@ export default {
       type:Boolean
     },
     parentId:{
-      default:'',
-      type:String
+      default:null,
+      type:Number
     }
   },
   data() {

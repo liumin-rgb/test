@@ -173,31 +173,30 @@
                    fontselect fontsizeselect | bullist numlist | table image | link',
           plugins: 'table image link',
           fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
-          font_formats: '宋体=simsun,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;',
+          font_formats: '黑体=SimHei;宋体=simsun,serif;Arial=arial,helvetica;Arial Black=arial black,avant garde;',
           link_list: [
             //  { title: '预置链接1', value: 'http://www.tinymce.com' },
             // { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
           ],
-          image_class_list: [{
+        /*  image_class_list: [{
               title: 'None',
               value: ''
             },
-            // { title: 'Some class', value: 'class-name' }
-          ],
+          ], */
           importcss_append: true,
           //自定义文件选择器的回调内容
-          file_picker_type: 'image',
-          file_picker_callback: function(callback, value, meta) {
+        //  file_picker_type: 'image',
+         // file_picker_callback: function(callback, value, meta) {
             /* if (meta.filetype === 'file') {
               callback('https://www.baidu.com/img/bd_logo1.png', { text: 'My text' });
             } */
-            if (meta.filetype === 'image') {
+          /*  if (meta.filetype === 'image') {
               callback('https://www.baidu.com/img/bd_logo1.png', {
                 alt: 'My alt text'
               });
-            }
+            } */
 
-          },
+        //  },
           automatic_uploads: false,
           /*  images_upload_url: '',
            images_upload_base_path: '/demo', */

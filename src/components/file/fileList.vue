@@ -598,6 +598,7 @@
           if (res) {
             if (res.success == true) {
               let id = res.result;
+               this.onLoadData(data);
               const newChild = {
                 title: '新建文件夹',
                 key: id,
@@ -609,8 +610,8 @@
               if (!data.children) {
                 this.$set(data, 'children', [])
               }
-              data.children.push(newChild)
-              // utils.box.toast("新建成功",'success');
+              data.children.push(newChild)           
+              //utils.box.toast("新建成功",'success');
             } else {
 
             }
@@ -634,6 +635,7 @@
         utils.request.put(url, params, true).then((res) => {
           if (res) {
             if (res.success == true) {
+              this.onLoadData(data);
            this.searchOption(data, this.gData, 'edit', data.title);
               utils.box.toast("修改成功", 'success');
             } else {
@@ -644,11 +646,13 @@
       },
       deleteNode(data) {
         if(data.isDefault==true) return ; //主院和废止文件不可删除
+         //this.searchOption(data, this.gData, 'delete');
         //删除
         let url = "/api/Document/folder/" + data.key;
         utils.request.delete(url, {}, true).then((res) => {
           if (res) {
             if (res.success == true) {
+               this.onLoadData(data);
               this.searchOption(data, this.gData, 'delete');
               utils.box.toast("删除成功", 'success');
             } else {
