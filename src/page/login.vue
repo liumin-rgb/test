@@ -52,10 +52,10 @@
            let accesssToken=res.result.accesssToken||'';
            utils.cache.set('userInfo',userInfo);
            utils.cache.set('TOKEN',accesssToken);       
-		   if(userInfo.userType==1){
+		 /*  if(userInfo.userType==1){
 			 this.$router.push({path:'superADM',query:{}});  
 			 return;
-		   }
+		   } */
            this.$router.push({path:'fileList',query:{}});
          }else{
           this.errorMsg=res.error.message;

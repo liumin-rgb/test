@@ -111,6 +111,11 @@ updated(){
  },
   methods:{
     toPersonal(){
+		 let userInfo=utils.cache.get("userInfo");
+		if(userInfo.userType==1){
+					 this.$router.push({path:'superADM',query:{}});
+					 return;
+		  } 
       this.$router.push({path:'editStaff',query:{flag:'edit',id:this.userId}})
     },
     toUrl1(obj){
