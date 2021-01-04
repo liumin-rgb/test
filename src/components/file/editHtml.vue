@@ -44,7 +44,8 @@
         </div>
       </div>
       <transition name="t1">
-        <div v-show="toggle2==true" :class="fullScreen?'modelEditor':'pageEditor'">
+        <div v-show="toggle2==true">
+        <div  :class="fullScreen?'modelEditor':'pageEditor'">
           <div :class="fullScreen?'modelEditor2':'pageEditor2'">
             <div class="iconPosition">
               <span class="pc-button buttonNoback" @click="saveTemplate">保存模板</span>
@@ -63,6 +64,8 @@
             </div>
             <Editor id="tinymce" :init="editorInit" v-model='tinymceHtml'></Editor>
           </div>
+          </div>
+          <div style="margin:.05rem 0;">当前标签：<span class="pc-button" v-for="obj in singleTagsName">{{obj}}</span></div>
         </div>
       </transition>
       <div class="list-head" @click="toggle3=!toggle3">
@@ -134,6 +137,7 @@
         version: '',
         fullScreen: false,
         singleTags: [],
+        singleTagsName:[],
         config: {
         operationType:1, //1：审核 2：废除 3：传阅
         ids:[]
@@ -176,10 +180,10 @@
           advlist_number_styles: 'lower-alpha lower-roman upper-alpha upper-roman',
           fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
           font_formats: '黑体=SimHei;宋体=simsun,serif;Arial=arial,helvetica;Arial Black=arial black,avant garde;',
-          link_list: [
+         // link_list: [
             //  { title: '预置链接1', value: 'http://www.tinymce.com' },
             // { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
-          ],
+        //  ],
         /*  image_class_list: [{
               title: 'None',
               value: ''
@@ -310,7 +314,10 @@
       },
       closeTagManage(val) {
         this.visible1 = false;
-        this.singleTags = val.singleTags;
+        let singleTags = val.singleTags;
+        this.singleTags=singleTags.map((item)=>{
+          return item.id;
+        })
       },
       check() {
         if (this.name == '') {

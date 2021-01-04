@@ -44,13 +44,13 @@
             </el-table-column>
             <el-table-column prop="type" label="文档类型">
               <template slot-scope="scope">
-                <span>{{typeList[+scope.row.type-1]}}</span>
+                <span>{{scope.row.type}}</span>
               </template>
             </el-table-column>
             <el-table-column prop="" label="操作">
               <template slot-scope="scope">
-                <i class="iconfont icon-yulan themeColor font16 pointer" @click="reviewFile(scope.row.url,scope.row.type)" v-if="scope.row.type==3||scope.row.type==4"></i>
-                <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editFile(scope.row.id)" v-if="scope.row.type==1"></i>
+                <i class="iconfont icon-yulan themeColor font16 pointer" @click="reviewFile(scope.row.url,scope.row.type)" v-if="scope.row.type=='PDF'||scope.row.type=='图片'"></i>
+                <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editFile(scope.row.id)" v-if="scope.row.type=='文档'"></i>
                 <i class="iconfont icon-shanchu themeColor font16 pointer" @click="deleteFile(scope.row.id)"></i>
               </template>
             </el-table-column>
@@ -108,11 +108,10 @@
       reviewFile(url,type){
        // window.location.href=url;
       // window.open(url);
-      if(type==4||type==1){
+      if(type=="视频"||type=="图片"){
         window.open(url);
-      }else if(type==3){
+      }else if(type=="PDF"){
         utils.cache.setSession('pdfurl',url);
-      //  this.$router.push({path:'viewPDF'});
         const {href} = this.$router.resolve({
         	path: 'viewPDF'
         });

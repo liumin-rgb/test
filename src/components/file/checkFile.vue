@@ -5,12 +5,14 @@
         <a-tree-select
            v-model="id"
            show-search
+           @search="search"
            style="width: 50%;margin: .02rem 0.1rem;"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            placeholder="请选择"
            allow-clear
            tree-default-expand-all
            :tree-data="treeData"
+           treeNodeFilterProp='title'
          >
          </a-tree-select>
        <!-- <input  class='pc-input' @click="showSelect=true" readonly="true" style="width:2rem;"/>
@@ -53,6 +55,7 @@ export default {
      loading:false,
      suggestion:'',
      treeExpandedKeys: [],
+     key:'',
      treeData:[],
      id:''
            }
@@ -71,9 +74,14 @@ export default {
 
   },
   methods:{
+    search(value){
+      this.key=value;
+     // this.getTreeMap();
+    },
     getTreeMap(){
       let url="/api/Document/getEmployeeTreeMap";
-      utils.request.get(url).then((res) => {
+      let params={key:this.key};
+      utils.request.post(url,params).then((res) => {
       	if(res){
           if(res.success==true){
             let treemap=res.result;
@@ -94,7 +102,7 @@ export default {
            treeList[i].disabled=true
           }else{
            treeList[i].title=treeList[i].title+'['+treeList[i].employeeNo+']'
-           //treeList[i].value=treeList[i].value+'['+treeList[i].employeeNo+']'
+           //treeList[i].value=treeList[i].title+'['+treeList[i].employeeNo+']'
           }
         if(treeList[i].children){
           this.forTree(treeList[i].children);

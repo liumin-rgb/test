@@ -10,7 +10,7 @@
           :tree-data="gData" :load-data="onLoadData" @select="onSelect" show-icon :icon='getIcon' defaultExpandParent>
           <template slot="custom" slot-scope="item">
             <span v-if="item.key==folderId&&editable" contenteditable="true" @blur="insuerEdit($event,item)"
-              @click.stop="">{{item.title}}</span>
+              @click.stop="" :class="item.key==folderId&&editable?'borderBlack':''">{{item.title}}</span>
             <span v-else>{{item.title}}</span>
             <span v-show="item.key==folderId">
               <i class='iconfont icon-jiahao themeColor' @click.stop="appendNode(item)"></i>
@@ -53,6 +53,7 @@
               <div @click="toUrl('fileManage')">批量上传</div>
             </div>
           </span>
+          <span :class="['pc-button',check3?'buttonNoback':'buttonGray']" @click="deleteFile"><i class="iconfont icon-shanchu"></i>删除</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="readFile1"><i class="iconfont icon-chuanyueicon"></i>传阅</span>
           <span :class="['pc-button',check2?'buttonNoback':'buttonGray']" @click="shareFile"><i class="iconfont icon-fenxiang"></i>分享</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="addTags"><i class="iconfont icon-icontag"></i>打标签</span>
@@ -74,7 +75,7 @@
               <i class="iconfont icon-pdf themeColor" v-show="scope.row.type==3"></i>
                <i class="iconfont icon-tupian themeColor" v-show="scope.row.type==4"></i>
                <i class="iconfont icon-html themeColor" v-show="scope.row.type==1"></i>
-              <span class="themeColor text-line pointer" @click="toDetail(scope.row.id,scope.row.documentId)">{{scope.row.name}}</span>
+              <span class="themeColor text-line pointer" @click="review(scope.row.id,scope.row.documentId,scope.row.type,scope.row.url)">{{scope.row.name}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="docNo" label="编号" width="120">
@@ -110,6 +111,7 @@
                   <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
                   <p @click="editHtml(scope.row.id)" v-show="scope.row.type==1"><i class="iconfont icon-bianji"></i>编辑</p>
                   <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
+                  <p @click="deleteFile(scope.row.id)" v-show="scope.row.status==1"><i class="iconfont icon-chuanyueicon"></i>删除</p>
                   <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                 </div>
                 <div slot="reference" class="name-wrapper">
@@ -170,22 +172,7 @@
         },
         status: 0,
         fileName: '',
-        statusList: [{
-          code: '0',
-          text: '全部'
-        }, {
-          code: '1',
-          text: '草稿'
-        }, {
-          code: '2',
-          text: '已生效'
-        }, {
-          code: '3',
-          text: '流转中'
-        }, {
-          code: '4',
-          text: '废除'
-        }],
+        statusList: [{code: '0',text: '全部'}, {code: '1',text: '草稿'}, {code: '2',text: '已生效'}, {code: '3',text: '流转中'}, {code: '4',text: '废除'}],
         typeList: ['','HTML', '视频', 'PDF', '图片'],
         operation: {
           type: 'all',
@@ -359,6 +346,13 @@
             this.visible1 = true;
         }
       },
+      deleteFile(){
+        if (this.check3) {
+          utils.box.confirm("是否确认删除？").then(()=>{
+
+          });
+        }
+      },
       queryAllTags() {
         let url = "/api/Document/DocumentTagList";
         utils.request.post(url, {}, false).then((res) => {
@@ -412,6 +406,23 @@
       },
       getSelectInfo(id) {
        this[id] = utils.common.getSelectValue(id);
+      },
+      review(id,documentId,type,url){
+        if(type==4||type==2){
+          window.open(url);
+        }else if(type==3){
+          utils.cache.setSession('pdfurl',url);
+          const {href} = this.$router.resolve({
+          	path: 'viewPDF'
+          });
+          window.open(href, '_blank')
+        }else{
+          const {href} = this.$router.resolve({
+          	path: 'reviewHtml',
+            query:{id:id}
+          });
+          window.open(href, '_blank')
+        }
       },
       toDetail(id, documentId) {
         this.$router.push({

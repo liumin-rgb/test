@@ -195,6 +195,7 @@ li {
 .border-top-line{border-top:1px solid rgba(62,62,62,0.3)}
 .borderGray{border:1px solid #efefef !important;}
 .borderBlue{border:1px solid #2e6eb4}
+.borderBlack{border:1px solid #000}
 .weight600{font-weight:600;}
 
 /*通用百分比  */

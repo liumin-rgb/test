@@ -32,6 +32,14 @@ const router = new Router({
             title : '查看PDF',
         }
   },
+  {
+    path: '/reviewHtml',
+    name:'reviewHtml',
+    component: resolve => require(['@/components/file/reviewHtml'], resolve),
+    meta : {
+        title : '预览html'
+    },
+  },
  {
        path: '/home',
        name:'home',
