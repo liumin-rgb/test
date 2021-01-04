@@ -402,15 +402,16 @@
                children: [] ,
                }
              this.editNode(item);
-
             }else{
-              utils.box.toast("添加成功","success");
+              this.selectedNode.dataRef.isLeaf=false;
                this.onLoadData(this.selectedNode);
+               utils.box.toast("添加成功","success");
+              /* console.log(this.selectedNode);
                let val={
                  name:params.name,
                  id:res.result
                }
-               this.appendNode(val);
+               this.appendNode(val); */
             }
           }else{
             utils.box.toast(res.error.message);
@@ -446,8 +447,8 @@
             if(res){
              if(res.success==true){
                this.onLoadData(this.selectedNode);
+               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
                utils.box.toast('删除成功',"success");
-               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');               
              }else{
                utils.box.toast(res.error.message);
              }

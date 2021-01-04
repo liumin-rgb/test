@@ -598,8 +598,9 @@
           if (res) {
             if (res.success == true) {
               let id = res.result;
+               data.dataRef.isLeaf=false;
                this.onLoadData(data);
-              const newChild = {
+              /* const newChild = {
                 title: '新建文件夹',
                 key: id,
                 scopedSlots: {
@@ -610,7 +611,7 @@
               if (!data.children) {
                 this.$set(data, 'children', [])
               }
-              data.children.push(newChild)           
+              data.children.push(newChild) */
               //utils.box.toast("新建成功",'success');
             } else {
 
@@ -635,7 +636,7 @@
         utils.request.put(url, params, true).then((res) => {
           if (res) {
             if (res.success == true) {
-              this.onLoadData(data);
+            //  this.onLoadData(data);
            this.searchOption(data, this.gData, 'edit', data.title);
               utils.box.toast("修改成功", 'success');
             } else {
@@ -652,8 +653,8 @@
         utils.request.delete(url, {}, true).then((res) => {
           if (res) {
             if (res.success == true) {
-               this.onLoadData(data);
-              this.searchOption(data, this.gData, 'delete');
+             this.onLoadData(data);
+             this.searchOption(data, this.gData, 'delete');
               utils.box.toast("删除成功", 'success');
             } else {
 
