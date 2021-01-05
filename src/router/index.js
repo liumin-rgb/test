@@ -33,9 +33,9 @@ const router = new Router({
         }
   },
   {
-    path: '/reviewHtml',
-    name:'reviewHtml',
-    component: resolve => require(['@/components/file/reviewHtml'], resolve),
+    path: '/previewHtml',
+    name:'previewHtml',
+    component: resolve => require(['@/components/file/previewHtml'], resolve),
     meta : {
         title : '预览html'
     },

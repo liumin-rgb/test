@@ -26,7 +26,7 @@
            <span class="pc-button buttonNoback"><i class="iconfont icon-1-icon-print"></i>打印</span>
            <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan"></i>导入</span>
             <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan1"></i>导出</span>
-            <span class="pc-button buttonNoback"><i class="iconfont icon-zhuanhuan1" @click="isCard=isCard==true?false:true"></i>切换视图</span>
+            <span class="pc-button buttonNoback" @click="isCard=isCard==true?false:true"><i class="iconfont icon-zhuanhuan1" ></i>切换视图</span>
          </div>
        </div>
        <div class="list-table">
@@ -104,11 +104,54 @@
             </div>
              </div>
             <div v-show="isCard==false">
+ <el-table :data="tableData" border height="380" style="width: 100%" stripe @selection-change="handleSelectionChange"
+   :header-cell-class-name="'table-header'">
+   <el-table-column type="selection"></el-table-column>
+   <el-table-column prop="name" label="表单模板名称" >
 
+   </el-table-column>
+   <el-table-column prop="name" label="编码" >
+
+   </el-table-column>
+   <el-table-column prop="name" label="版本号" >
+
+   </el-table-column>
+   <el-table-column prop="name" label="关联部门" >
+
+   </el-table-column>
+   <el-table-column prop="name" label="状态" >
+
+   </el-table-column>
+   <el-table-column prop="name" label="是否存在废除流程">
+
+   </el-table-column>
+   <el-table-column prop="name" label="创建日期" >
+
+   </el-table-column>
+   <el-table-column prop="" label="操作" align="center">
+     <template slot-scope="scope">
+       <el-popover trigger="hover" placement="bottom">
+         <ul class="operation">
+          <li>预览</li>
+          <li>编辑</li>
+          <li>复制</li>
+          <li>打印</li>
+          <li>发布</li>
+          <li>删除</li>
+          <li>权限配置</li>
+          <li>历史版本</li>
+          </ul>
+         <div slot="reference" class="name-wrapper">
+           <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer" />
+         </div>
+       </el-popover>
+     </template>
+   </el-table-column>
+   </el-table>
             </div>
           </a-spin>
        </div>
-       <div class="list-bottom">
+       <div class="list-bottom" v-show="isCard==false">
          <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
        </div>
   </div>
@@ -128,6 +171,7 @@ export default{
     pageSize:10,
     maxPage: 1,
     totalCount:0,
+    tableData:[]
     }
   },
   methods:{

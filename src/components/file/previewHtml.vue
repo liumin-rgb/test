@@ -15,8 +15,13 @@
       }
     },
     created(){
-     this.id=this.$route.query.id;
-     this.queryHtml();
+     this.id=this.$route.query.id||'';
+     if(this.id!=''){
+          this.queryHtml();
+     }else{
+       this.htmlContent=utils.cache.getSession("htmlContent");
+     }
+  
     },
     methods:{
       queryHtml(){

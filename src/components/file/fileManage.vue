@@ -62,6 +62,7 @@
     </div>
     <formatFileName :visible="visible" @closeModel="closeModel" />
     <CheckFile :visible="visible1" :config="config" @closeModel="closeModel1" />
+     <EnableFile :visible="visible2" @closeModel="closeModel2"/>
   </div>
 </template>
 
@@ -69,17 +70,22 @@
   import formatFileName from './formatFileName'
   import CheckFile from './checkFile'
   import Pagination from '../Pagination'
+  import EnableFile from './enableFile'
+
   export default {
     name: 'fileManage',
     components: {
       formatFileName,
       CheckFile,
-      Pagination
+      Pagination,
+      EnableFile
     },
     data() {
       return {
         visible: false,
         visible1: false,
+        visible2:false,
+        enableDate:'',
         toggle: true,
         pageIndex: 1,
         pageSize: 10,
@@ -120,23 +126,28 @@
 
       },
 		enable(){
-			if(this.ids.length==0){
+			/* if(this.ids.length==0){
 			  utils.box.toast("请上传文件");
 			  return;
-			}
-			  let url = "/api/Document/enableDocVersions";
-			  let params = this.ids
-			  utils.request.post(url, params, true).then((res) => {
-			    if (res) {
-			      if (res.success == true) {
-			        utils.box.toast("已生效","success");
-			      } else {
-			        utils.box.toast(res.error.message);
-			      }
-			    }
-			  });
-
+			} */
+			 this.visible2=true;
 		},
+    enableFile(){
+      let url = "/api/Document/enableDocVersions";
+      let params = {
+         "effectiveDate":this.enableDate,
+         "docVersionIds":this.ids
+      }
+      utils.request.post(url, params, true).then((res) => {
+        if (res) {
+          if (res.success == true) {
+            utils.box.toast("提交成功","success");
+          } else {
+            utils.box.toast(res.error.message);
+          }
+        }
+      });
+    },
       editFile(id) {
         this.$router.push({
           path: 'editHtml',
@@ -270,6 +281,13 @@
      },
       closeModel1() {
         this.visible1 = false;
+      },
+      closeModel2(val){
+        this.visible2=false;
+        if(val){
+          this.enableDate=val.date;
+          this.enableFile();
+        }
       },
       goBack() {
         this.$router.go(-1);

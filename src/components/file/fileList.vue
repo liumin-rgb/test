@@ -423,7 +423,7 @@
           window.open(href, '_blank')
         }else{
           const {href} = this.$router.resolve({
-          	path: 'reviewHtml',
+          	path: 'previewHtml',
             query:{id:id}
           });
           window.open(href, '_blank')

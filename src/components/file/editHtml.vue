@@ -48,17 +48,18 @@
         <div  :class="fullScreen?'modelEditor':'pageEditor'">
           <div :class="fullScreen?'modelEditor2':'pageEditor2'">
             <div class="iconPosition">
+              <span class="pc-button buttonNoback" @click="previewHtml">预览</span>
               <span class="pc-button buttonNoback" @click="saveTemplate">保存模板</span>
               <span class="pc-button buttonNoback" @click="loadTemplate">加载模板</span>
-              <span class="pc-button buttonNoback" @click="openTag">打标签</span>
+              <span class="pc-button buttonNoback" @click="openTag" style="margin-right:2vw">打标签</span>
               <el-popover trigger="hover" placement="bottom">
                 <div>点击缩小编辑器</div>
-                <i class="iconfont icon-suoxiao themeColor font20  pointer" v-show="fullScreen==true" slot="reference"
+                <i class="iconfont icon-suoxiao themeColor font20  pointer " v-show="fullScreen==true" slot="reference"
                   @click="fullScreen=false"></i>
               </el-popover>
               <el-popover trigger="hover" placement="bottom">
                 <div>点击放大编辑器</div>
-                <i class="iconfont icon-fangda themeColor font20  pointer" @click.stop="fullScreen=true" slot="reference"
+                <i class="iconfont icon-fangda themeColor font20  pointer " @click.stop="fullScreen=true" slot="reference"
                   v-show="fullScreen==false"></i>
               </el-popover>
             </div>
@@ -87,6 +88,7 @@
     <TagManage :visible="visible1" :operation="operation" @closeTagManage="closeTagManage" />
     <SaveTemplate :visible="visible2" :htmlContext="tinymceHtml" @closeModel="closeModel1"/>
     <LoadTemplate :visible="visible3" @closeModel="closeModel2"/>
+    <EnableFile :visible="visible4" @closeModel="closeModel3"/>
   </div>
 </template>
 
@@ -105,6 +107,7 @@
   import TagManage from './tagManage'
   import SaveTemplate from './saveTemplate'
   import LoadTemplate from './loadTemplate'
+  import EnableFile from './enableFile'
   export default {
     name: 'editHtml',
     components: {
@@ -112,7 +115,8 @@
       CheckFile,
       TagManage,
       SaveTemplate,
-      LoadTemplate
+      LoadTemplate,
+      EnableFile
     },
     data() {
       return {
@@ -125,6 +129,8 @@
         visible1: false,
         visible2: false,
         visible3:false,
+        visible4:false,
+        enableDate:'',
         operation: {
           type: 'single',
           id: '',
@@ -290,6 +296,19 @@
           });
 
       },
+      previewHtml(){
+        if(this.tinymceHtml==''){
+          utils.box.toast("预览内容为空");
+          return;
+        }
+        utils.cache.setSession("htmlContent",this.tinymceHtml);
+          const {href} = this.$router.resolve({
+          	path: 'previewHtml',
+          //  query:{id:id}
+          });
+          window.open(href, '_blank')
+        //this.$router.push({path:'previewHtml'});
+      },
       saveTemplate(){
         if(this.tinymceHtml==''){
           utils.box.toast("文本内容不能为空");
@@ -302,34 +321,39 @@
       },
       enable() {
         if (this.check()) {
-          let url = "/api/Document/enableDocVersion";
-          let params = {
-            "folderId": this.folderId,
-            "creatorId": this.creatorId,
-            "name": this.name,
-            "docNo": this.docNo,
-            "version": this.version,
-            "htmlStr": this.tinymceHtml,
-            "tagIds": this.singleTags
-          }
-          utils.request.post(url, params, true).then((res) => {
-            if (res) {
-              if (res.success == true) {
-                utils.box.toast("已生效","success");
-                this.goBack();
-              } else {
-                utils.box.toast(res.error.message);
-              }
-            }
-          });
+          this.visible4=true;
         }
+      },
+      enableFile(){
+         let url = "/api/Document/enableDocVersion";
+         let params = {
+           "folderId": this.folderId,
+           "creatorId": this.creatorId,
+           "name": this.name,
+           "docNo": this.docNo,
+           "version": this.version,
+           "htmlStr": this.tinymceHtml,
+           "tagIds": this.singleTags,
+           "effectiveDate":this.enableDate,
+         }
+         utils.request.post(url, params, true).then((res) => {
+           if (res) {
+             if (res.success == true) {
+               utils.box.toast("提交成功","success");
+               this.goBack();
+             } else {
+               utils.box.toast(res.error.message);
+             }
+           }
+         });
+
       },
       openTag() {
          let arr=[];
         if(this.documentId!=''){
-        let ids=this.documentId;    
-        arr.push(ids);  
-        }     
+        let ids=this.documentId;
+        arr.push(ids);
+        }
         this.operation = {
           type: 'single',
           ids: arr||[], //文件id
@@ -429,6 +453,13 @@
         this.visible3=false;
         if(val){
           this.tinymceHtml=val.htmlContext;
+        }
+      },
+      closeModel3(val){
+        this.visible4=false;
+        if(val){
+         this.enableDate=val.date;
+         this.enableFile();
         }
       },
       closeModel1(){
