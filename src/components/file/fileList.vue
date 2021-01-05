@@ -15,7 +15,7 @@
             <span v-show="item.key==folderId">
               <i class='iconfont icon-jiahao themeColor' @click.stop="appendNode(item)"></i>
               <i :class='["iconfont", "icon-tubiao09",!item.editable?"color999":"themeColor"]' @click.stop="editNode(item)"></i>
-              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)" v-show="!item.default"></i>
+              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)" v-show="!item.default&&item.parentId!=0"></i>
             </span>
           </template>
           <!-- <template slot='switcherIcon'>
