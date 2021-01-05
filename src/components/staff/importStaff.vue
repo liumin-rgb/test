@@ -46,12 +46,12 @@
              <el-table-column
                prop="employeeNo"
                label="工号">
-               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.employeeNo=$event.target.innerHTML" contenteditable>{{scope.row.employeeNo}}</span></template>
+               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.employeeNo=$event.target.innerHTML" contenteditable>{{scope.row.employeeNo||' '}}</span></template>
              </el-table-column>
              <el-table-column
                prop="name"
                label="姓名">
-               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.name=$event.target.innerHTML" contenteditable>{{scope.row.name}}</span></template>
+               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.name=$event.target.innerHTML" contenteditable>{{scope.row.name||' '}}</span></template>
              </el-table-column>
              <el-table-column
                prop="department"
