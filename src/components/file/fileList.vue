@@ -28,7 +28,7 @@
           <!-- <span class="pc-button buttonNoback font10 ">新建文件夹</span> -->
           <span class="pc-button buttonNoback" @click="openTagManage('all')">标签管理</span>
         </div>
-        <a-tree multiple show-icon :tree-data="gData1" @select="onSelect1" :icon='getIcon1' defaultExpandParent>
+        <a-tree multiple show-icon :tree-data="gData1" @select="onSelect1" :icon='getIcon1' defaultExpandAll>
         </a-tree>
       </div>
     </div>
@@ -109,7 +109,7 @@
               <el-popover trigger="hover" placement="bottom">
                 <div class="pointer themeColor weight600 font12">
                   <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
-                  <p @click="editHtml(scope.row.id)" v-show="scope.row.type==1"><i class="iconfont icon-bianji"></i>编辑</p>
+                  <p @click="editHtml(scope.row.id,scope.row.documentId)" v-show="scope.row.type==1"><i class="iconfont icon-bianji"></i>编辑</p>
                   <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                   <p @click="deleteFile(scope.row.id)" v-show="scope.row.status==1"><i class="iconfont icon-chuanyueicon"></i>删除</p>
                   <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
@@ -230,6 +230,11 @@
                   },
                 }
               });
+              this.folderId = this.gData[0].id;
+              this.folderName = this.gData[0].name;
+              utils.cache.setSession("folderName", this.folderName);
+              utils.cache.setSession("folderId", this.folderId);
+              this.queryInfo();
               console.log(this.gData);
             } else {
               utils.box.toast(res.error.message);
@@ -433,10 +438,10 @@
           }
         });
       },
-      editHtml(id) {
+      editHtml(id,documentId) {
         this.$router.push({
           path: 'editHtml',
-          query: {id:id}
+          query: {id:id,documentId:documentId}
         });
       },
 

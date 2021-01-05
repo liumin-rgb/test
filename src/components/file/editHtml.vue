@@ -65,7 +65,7 @@
             <Editor id="tinymce" :init="editorInit" v-model='tinymceHtml'></Editor>
           </div>
           </div>
-          <div style="margin:.05rem 0;">当前标签：<span class="pc-button" v-for="obj in singleTagsName">{{obj}}</span></div>
+          <div style="margin:.05rem 0;">当前标签：<span class="pc-button" v-for="obj in singleTagsList">{{obj.name}}</span></div>
         </div>
       </transition>
       <div class="list-head" @click="toggle3=!toggle3">
@@ -117,6 +117,7 @@
     data() {
       return {
         id:'',//文档id
+        documentId:'',
         toggle1: true,
         toggle2: true,
         toggle3: false,
@@ -137,7 +138,7 @@
         version: '',
         fullScreen: false,
         singleTags: [],
-        singleTagsName:[],
+        singleTagsList:[],
         config: {
         operationType:1, //1：审核 2：废除 3：传阅
         ids:[]
@@ -248,11 +249,30 @@
       this.folderId=utils.cache.getSession("folderId")||'';
       this.folderName=utils.cache.getSession("folderName")||'';
       this.id=this.$route.query.id||'';
+      this.documentId=this.$route.query.documentId;
       if(this.id!=''){
          this.queryHtml();
+         this.querySingleTag();
       }
     },
     methods: {
+      querySingleTag(){
+            let url="/api/Document/findTags";
+            let arr=[];
+            arr.push(this.documentId);
+            let params={
+              DocumentIds:arr
+            }
+            utils.request.post(url,params,true).then((res) => {
+            	if(res){
+                if(res.success==true){
+                  this.singleTagsList=res.result;
+                   //this.operateTags();
+                }else{
+                }
+              }
+              });
+      },
       queryHtml(){
           let url = "/api/Document/getHtmlDocVersion?docVersionId="+this.id;
           utils.request.get(url, {}, true).then((res) => {
@@ -305,9 +325,14 @@
         }
       },
       openTag() {
+         let arr=[];
+        if(this.documentId!=''){
+        let ids=this.documentId;    
+        arr.push(ids);  
+        }     
         this.operation = {
           type: 'single',
-          ids: [], //文件id
+          ids: arr||[], //文件id
           singleTag: this.singleTags
         }
         this.visible1 = true;
@@ -318,6 +343,7 @@
         this.singleTags=singleTags.map((item)=>{
           return item.id;
         })
+        this.singleTagsList=singleTags;
       },
       check() {
         if (this.name == '') {
