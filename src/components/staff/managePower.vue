@@ -595,9 +595,12 @@
       this.pageSize=val.pageSize;
       this.queryStaff();
     },
-
     onDragStart(info){
       this.drag1=info.node.dataRef;
+      if(this.drag1.key==1) {
+       utils.box.toast("主医院不可以移动!");
+        return;
+      }
        console.log(info);
     },
     onDragEnter(info) {
