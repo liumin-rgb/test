@@ -2,7 +2,7 @@
   <div class="list-main">
     <div class="list-main-one">
       <div>
-        <div class=" weight600">文件夹目录</div>
+        <div class=" weight600">文件夹目录 </div>
 
       </div>
       <div class="inner">
