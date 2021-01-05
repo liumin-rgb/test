@@ -15,7 +15,8 @@
             <span v-show="item.key==folderId">
               <i class='iconfont icon-jiahao themeColor' @click.stop="appendNode(item)"></i>
               <i :class='["iconfont", "icon-tubiao09",!item.editable?"color999":"themeColor"]' @click.stop="editNode(item)"></i>
-              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)" v-show="!item.default&&item.parentId!=0"></i>
+              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)"
+                v-show="!item.default&&item.parentId!=0"></i>
             </span>
           </template>
           <!-- <template slot='switcherIcon'>
@@ -46,14 +47,14 @@
         <div class="list-search-two"></div>
         <div class="list-search-three">
           <span class="positionR">
-            <span :class="['pc-button',folderId==''?'buttonGray':'buttonNoback']" @mouseenter="showSelect=true"><i class="iconfont icon-jiahao "></i>新建<i
-                class="iconfont icon-jiantou "></i></span>
+            <span :class="['pc-button',folderId==''?'buttonGray':'buttonNoback']" @mouseenter="showSelect=true"><i
+                class="iconfont icon-jiahao "></i>新建<i class="iconfont icon-jiantou "></i></span>
             <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
               <div @click="toUrl('editHtml')">新建HTML</div>
               <div @click="toUrl('fileManage')">批量上传</div>
             </div>
           </span>
-          <span :class="['pc-button',check3?'buttonNoback':'buttonGray']" @click="deleteFile"><i class="iconfont icon-shanchu"></i>删除</span>
+          <span :class="['pc-button',check3?'buttonNoback':'buttonGray']" @click="deleteFile1"><i class="iconfont icon-shanchu"></i>删除</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="readFile1"><i class="iconfont icon-chuanyueicon"></i>传阅</span>
           <span :class="['pc-button',check2?'buttonNoback':'buttonGray']" @click="shareFile"><i class="iconfont icon-fenxiang"></i>分享</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="addTags"><i class="iconfont icon-icontag"></i>打标签</span>
@@ -73,8 +74,8 @@
             </template>
             <template slot-scope="scope">
               <i class="iconfont icon-pdf themeColor" v-show="scope.row.type==3"></i>
-               <i class="iconfont icon-tupian themeColor" v-show="scope.row.type==4"></i>
-               <i class="iconfont icon-html themeColor" v-show="scope.row.type==1"></i>
+              <i class="iconfont icon-tupian themeColor" v-show="scope.row.type==4"></i>
+              <i class="iconfont icon-html themeColor" v-show="scope.row.type==1"></i>
               <span class="themeColor text-line pointer" @click="review(scope.row.id,scope.row.documentId,scope.row.type,scope.row.url)">{{scope.row.name}}</span>
             </template>
           </el-table-column>
@@ -172,8 +173,23 @@
         },
         status: 0,
         fileName: '',
-        statusList: [{code: '0',text: '全部'}, {code: '1',text: '草稿'}, {code: '2',text: '已生效'}, {code: '3',text: '流转中'}, {code: '4',text: '废除'}],
-        typeList: ['','HTML', '视频', 'PDF', '图片'],
+        statusList: [{
+          code: '0',
+          text: '全部'
+        }, {
+          code: '1',
+          text: '草稿'
+        }, {
+          code: '2',
+          text: '已生效'
+        }, {
+          code: '3',
+          text: '流转中'
+        }, {
+          code: '4',
+          text: '废除'
+        }],
+        typeList: ['', 'HTML', '视频', 'PDF', '图片'],
         operation: {
           type: 'all',
           id: '',
@@ -351,386 +367,424 @@
             this.visible1 = true;
         }
       },
-      deleteFile(){
+      deleteFile1() {
         if (this.check3) {
-          utils.box.confirm("是否确认删除？").then(()=>{
-
+          utils.box.confirm("是否确认删除？").then(() => {
+            let ids = [];
+            ids = this.multipleSelection.map((item) => {
+              return item.id
+            })
+            this.insureDelete(ids);
           });
-        }
-      },
-      queryAllTags() {
-        let url = "/api/Document/DocumentTagList";
-        utils.request.post(url, {}, false).then((res) => {
-          this.spinning = false;
-          if (res) {
-            if (res.success == true) {
-              let arr = res.result;
-              this.gData1[0].children = arr.map((item) => {
-                return {
-                  isLeaf: true,
-                  title: item.name,
-                  key: item.id,
+          }
+        },
+        deleteFile(id) {
+              utils.box.confirm("是否确认删除？").then(() => {
+                let ids = [];
+                ids.push(id);
+                this.insureDelete(ids);
+              });
+          },
+          insureDelete(ids) {
+            var url = "/api/Document/operateDocVersion";
+            var params = {
+              "operateType": 4,
+              "employeeId": 0,
+              "suggestion": "",
+              "docVersionIds": ids
+            };
+            utils.request.post(url, params, true).then((res) => {
+              if (res) {
+                if (res.success == true) {
+                  utils.box.toast('删除成功', 'success');
+                  this.queryInfo();
+                } else {
+                  utils.box.toast(res.error.message);
+                }
+              }
+            });
+          },
+          queryAllTags() {
+            let url = "/api/Document/DocumentTagList";
+            utils.request.post(url, {}, false).then((res) => {
+              this.spinning = false;
+              if (res) {
+                if (res.success == true) {
+                  let arr = res.result;
+                  this.gData1[0].children = arr.map((item) => {
+                    return {
+                      isLeaf: true,
+                      title: item.name,
+                      key: item.id,
+                    }
+                  });
+                  console.log(this.gData1);
+                } else {
+
+                }
+              }
+            });
+          },
+          queryInfo() {
+            let url = "/api/Document/getList";
+            let params = {
+              "floderId": this.folderId,
+              "tagIds": this.tagIds,
+              "fileName": this.fileName,
+              "status": this.status,
+              "sortField": this.sortField,
+              "isDescending": this.isDescending,
+              "pageIndex": this.pageIndex,
+              "pageSize": this.pageSize
+            }
+            this.spinning = true;
+            utils.request.post(url, params, false).then((res) => {
+              this.spinning = false;
+              if (res) {
+                if (res.success == true) {
+                  let totalCount = res.result.totalCount;
+                  this.totalCount = totalCount;
+                  this.maxPage = Math.ceil(totalCount / this.pageSize);
+                  let items = res.result.items;
+                  this.tableData = items;
+                } else {
+
+                }
+
+              }
+            });
+
+          },
+          getSelectInfo(id) {
+            this[id] = utils.common.getSelectValue(id);
+          },
+          review(id, documentId, type, url) {
+            if (type == 4 || type == 2) {
+              window.open(url);
+            } else if (type == 3) {
+              utils.cache.setSession('pdfurl', url);
+              const {
+                href
+              } = this.$router.resolve({
+                path: 'viewPDF'
+              });
+              window.open(href, '_blank')
+            } else {
+              const {
+                href
+              } = this.$router.resolve({
+                path: 'previewHtml',
+                query: {
+                  id: id
                 }
               });
-              console.log(this.gData1);
-            } else {
-
+              window.open(href, '_blank')
             }
-          }
-        });
-      },
-      queryInfo() {
-        let url = "/api/Document/getList";
-        let params = {
-          "floderId": this.folderId,
-          "tagIds": this.tagIds,
-          "fileName": this.fileName,
-          "status": this.status,
-          "sortField": this.sortField,
-          "isDescending": this.isDescending,
-          "pageIndex": this.pageIndex,
-          "pageSize": this.pageSize
-        }
-        this.spinning = true;
-        utils.request.post(url, params, false).then((res) => {
-          this.spinning = false;
-          if (res) {
-            if (res.success == true) {
-              let totalCount = res.result.totalCount;
-              this.totalCount = totalCount;
-              this.maxPage = Math.ceil(totalCount / this.pageSize);
-              let items = res.result.items;
-              this.tableData = items;
-            } else {
-
-            }
-
-          }
-        });
-
-      },
-      getSelectInfo(id) {
-       this[id] = utils.common.getSelectValue(id);
-      },
-      review(id,documentId,type,url){
-        if(type==4||type==2){
-          window.open(url);
-        }else if(type==3){
-          utils.cache.setSession('pdfurl',url);
-          const {href} = this.$router.resolve({
-          	path: 'viewPDF'
-          });
-          window.open(href, '_blank')
-        }else{
-          const {href} = this.$router.resolve({
-          	path: 'previewHtml',
-            query:{id:id}
-          });
-          window.open(href, '_blank')
-        }
-      },
-      toDetail(id, documentId) {
-        this.$router.push({
-          path: 'fileDetail',
-          query: {
-            id: id,
-            documentId: documentId
-          }
-        });
-      },
-      editHtml(id,documentId) {
-        this.$router.push({
-          path: 'editHtml',
-          query: {id:id,documentId:documentId}
-        });
-      },
-
-      readFile(id) {
-        let arr = [];
-        arr.push(id);
-        this.config = {
-            operationType: 3,
-            ids: arr,
           },
-          this.visible1 = true;
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-        this.check1 = val.length == 0 ? false : true;
-        let index1 = val.length == 0 ? 0 : val.findIndex((item) => {
-          return item.status != 2
-        });
-        this.check2 = index1 == -1 ? true : false;
-        let index2 = val.length == 0 ? 0 : val.findIndex((item) => {
-          return item.status != 1
-        });
-        this.check3 = index2 == -1 ? true : false;
-      },
-      checkSelection() {
-        if (!this.multipleSelection || this.multipleSelection.length == 0) {
-          utils.box.toast("您未选择任何文件");
-          return false;
-        }
-        return true
-      },
-      onSelect(keys, event) {
-        if (keys.length == 0) {
-          return;
-        }
-        this.folderId = keys[0];
-        this.folderName = event.node.dataRef.title;
-        utils.cache.setSession("folderName", this.folderName);
-        utils.cache.setSession("folderId", this.folderId);
-        this.queryInfo();
-      },
-      onSelect1(keys, event) { //点击标签过滤文件
-        this.tagIds = keys;
-        this.queryInfo();
-      },
-      onExpand() {
-        console.log('Trigger Expand');
-      },
-      handleMenuClick(e) {
-        console.log('click', e);
-      },
-      toUrl(url) {
-        this.showSelect = false;
-        this.$router.push({
-          path: url,
-          query: {}
-        });
-      },
-      openTagManage(type, ids, tags) {
-        let arr = [];
-        if (ids != undefined) {
-          if (Array.isArray(ids)) {
-            arr = ids;
-          } else {
-            arr.push(ids);
-          }
-        }
-        this.operation = {
-          type: type,
-          ids: arr, //文件id
-          singleTag: tags || []
-        }
-        console.log(this.operation);
-        this.visible2 = true;
-      },
-      closeTagManage(val) {
-        this.visible2 = false;
-        if (val) {
-          if (val.config == 'all') {
-            this.queryAllTags();
-          } else {
-            this.queryInfo()
-          }
-        }
-      },
-      closeCheckFile(val) {
-        this.visible1 = false;
-        if (val == true) {
-          this.queryInfo();
-        }
-      },
-      closeShareFile() {
-        this.visible3 = false;
-      },
-      onDragStart(info) {
-        this.drag1 = info.node.dataRef;
-        console.log(info);
-      },
-      onDragEnter(info) {
-        console.log(info);
-        // expandedKeys 需要受控时设置
-        // this.expandedKeys = info.expandedKeys
-      },
-      onDrop(info) {
-        console.log(info);
-        const dropKey = info.node.eventKey;
-        const dragKey = info.dragNode.eventKey;
-        const dropPos = info.node.pos.split('-');
-        const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
-        const loop = (data, key, callback) => {
-          data.forEach((item, index, arr) => {
-            if (item.key === key) {
-              return callback(item, index, arr);
-            }
-            if (item.children) {
-              return loop(item.children, key, callback);
-            }
-          });
-        };
-        const data = [...this.gData];
-
-        // Find dragObject
-        let dragObj;
-        loop(data, dragKey, (item, index, arr) => {
-          arr.splice(index, 1);
-          dragObj = item;
-        });
-        if (!info.dropToGap) {
-          // Drop on the content
-          loop(data, dropKey, item => {
-            item.children = item.children || [];
-            // where to insert 示例添加到尾部，可以是随意位置
-            item.children.push(dragObj);
-          });
-        } else if (
-          (info.node.children || []).length > 0 && // Has children
-          info.node.expanded && // Is expanded
-          dropPosition === 1 // On the bottom gap
-        ) {
-          loop(data, dropKey, item => {
-            item.children = item.children || [];
-            // where to insert 示例添加到尾部，可以是随意位置
-            item.children.unshift(dragObj);
-          });
-        } else {
-          let ar;
-          let i;
-          loop(data, dropKey, (item, index, arr) => {
-            ar = arr;
-            i = index;
-          });
-          if (dropPosition === -1) {
-            ar.splice(i, 0, dragObj);
-          } else {
-            ar.splice(i + 1, 0, dragObj);
-          }
-        }
-        this.gData = data;
-      },
-      appendNode(data) {
-        //模拟添加
-        let url = "/api/Document/folder";
-        let params = {
-          "name": "新建文件夹",
-          "parentId": data.key
-        }
-        this.spinning = true;
-        utils.request.post(url, params, false).then((res) => {
-          this.spinning = false;
-          if (res) {
-            if (res.success == true) {
-              let id = res.result;
-               data.dataRef.isLeaf=false;
-               this.onLoadData(data);
-              /* const newChild = {
-                title: '新建文件夹',
-                key: id,
-                scopedSlots: {
-                  title: 'custom'
-                },
-                children: [],
+          toDetail(id, documentId) {
+            this.$router.push({
+              path: 'fileDetail',
+              query: {
+                id: id,
+                documentId: documentId
               }
-              if (!data.children) {
-                this.$set(data, 'children', [])
+            });
+          },
+          editHtml(id, documentId) {
+            this.$router.push({
+              path: 'editHtml',
+              query: {
+                id: id,
+                documentId: documentId
               }
-              data.children.push(newChild) */
-              //utils.box.toast("新建成功",'success');
-            } else {
+            });
+          },
 
+          readFile(id) {
+            let arr = [];
+            arr.push(id);
+            this.config = {
+                operationType: 3,
+                ids: arr,
+              },
+              this.visible1 = true;
+          },
+          handleSelectionChange(val) {
+            this.multipleSelection = val;
+            this.check1 = val.length == 0 ? false : true;
+            let index1 = val.length == 0 ? 0 : val.findIndex((item) => {
+              return item.status != 2
+            });
+            this.check2 = index1 == -1 ? true : false;
+            let index2 = val.length == 0 ? 0 : val.findIndex((item) => {
+              return item.status != 1
+            });
+            this.check3 = index2 == -1 ? true : false;
+          },
+          checkSelection() {
+            if (!this.multipleSelection || this.multipleSelection.length == 0) {
+              utils.box.toast("您未选择任何文件");
+              return false;
             }
-          }
-        });
-      },
-      editNode(data) {
-        if(data.editable==false) return;
-        this.editable = true;
-
-      },
-      insuerEdit(e, data) {
-        //编辑
-        this.editable = false;
-        data.title = e.target.innerHTML;
-        let url = "/api/Document/folder/" + data.key;
-        let params = {
-          "name": data.title,
-          //"parentId": data.key
-        }
-        utils.request.put(url, params, true).then((res) => {
-          if (res) {
-            if (res.success == true) {
-            //  this.onLoadData(data);
-           this.searchOption(data, this.gData, 'edit', data.title);
-              utils.box.toast("修改成功", 'success');
-            } else {
+            return true
+          },
+          onSelect(keys, event) {
+            if (keys.length == 0) {
+              return;
             }
-          }
-        });
-
-      },
-      deleteNode(data) {
-        if(data.isDefault==true) return ; //主院和废止文件不可删除
-         //this.searchOption(data, this.gData, 'delete');
-        //删除
-        let url = "/api/Document/folder/" + data.key;
-        utils.request.delete(url, {}, true).then((res) => {
-          if (res) {
-            if (res.success == true) {
-             this.onLoadData(data);
-             this.searchOption(data, this.gData, 'delete');
-              utils.box.toast("删除成功", 'success');
-            } else {
-
+            this.folderId = keys[0];
+            this.folderName = event.node.dataRef.title;
+            utils.cache.setSession("folderName", this.folderName);
+            utils.cache.setSession("folderId", this.folderId);
+            this.queryInfo();
+          },
+          onSelect1(keys, event) { //点击标签过滤文件
+            this.tagIds = keys;
+            this.queryInfo();
+          },
+          onExpand() {
+            console.log('Trigger Expand');
+          },
+          handleMenuClick(e) {
+            console.log('click', e);
+          },
+          toUrl(url) {
+            this.showSelect = false;
+            this.$router.push({
+              path: url,
+              query: {}
+            });
+          },
+          openTagManage(type, ids, tags) {
+            let arr = [];
+            if (ids != undefined) {
+              if (Array.isArray(ids)) {
+                arr = ids;
+              } else {
+                arr.push(ids);
+              }
             }
-          }
-        });
-      },
-      //递归查找
-      searchOption(option, arr, type = 'delete', title) {
-        console.log(option, arr)
-        for (let s = 0; s < arr.length; s++) {
-          console.log(arr[s].key, option.key)
-          if (arr[s].key === option.key) {
-            if (type === 'delete') {
-              arr.splice(s, 1)
-            } else {
-              //这是模拟数据编辑数据
-              /* this.$set(arr, s, {
-                title: title,
-                key: '12121212',
-                scopedSlots: { title: 'custom' }
-              }) */
-              arr[s].title = title;
+            this.operation = {
+              type: type,
+              ids: arr, //文件id
+              singleTag: tags || []
             }
-            break
-          } else if (arr[s].children && arr[s].children.length > 0) { // 递归条件
-            this.searchOption(option, arr[s].children, type, title)
-          } else {
-            continue
-          }
-        }
-      },
-      getIcon(props) {
-        const {
-          isLeaf,
-          expanded
-        } = props;
-        /* if (isLeaf) {
-          return <a-icon type="home" />;
-        } */
-        /*  return <a-icon type={expanded ? "folder-open" : "folder"} />; */
-        return <i class = {
-          expanded ? "iconfont icon-dakaizhuangtaiwenjianjia themeColor" : "iconfont icon-wenjianjia themeColor"
-        } > < /i>;
-      },
-      getIcon1(props) {
-        const {
-          isLeaf,
-          expanded
-        } = props;
-        if (isLeaf) {
-          return <i class = "iconfont icon-biaoqian1 themeColor" > < /i>;
-        } else {
-          return <i class = "iconfont icon-biaoqian themeColor" > < /i>
-        }
-      },
+            console.log(this.operation);
+            this.visible2 = true;
+          },
+          closeTagManage(val) {
+            this.visible2 = false;
+            if (val) {
+              if (val.config == 'all') {
+                this.queryAllTags();
+              } else {
+                this.queryInfo()
+              }
+            }
+          },
+          closeCheckFile(val) {
+            this.visible1 = false;
+            if (val == true) {
+              this.queryInfo();
+            }
+          },
+          closeShareFile() {
+            this.visible3 = false;
+          },
+          onDragStart(info) {
+            this.drag1 = info.node.dataRef;
+            console.log(info);
+          },
+          onDragEnter(info) {
+            console.log(info);
+            // expandedKeys 需要受控时设置
+            // this.expandedKeys = info.expandedKeys
+          },
+          onDrop(info) {
+            console.log(info);
+            const dropKey = info.node.eventKey;
+            const dragKey = info.dragNode.eventKey;
+            const dropPos = info.node.pos.split('-');
+            const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
+            const loop = (data, key, callback) => {
+              data.forEach((item, index, arr) => {
+                if (item.key === key) {
+                  return callback(item, index, arr);
+                }
+                if (item.children) {
+                  return loop(item.children, key, callback);
+                }
+              });
+            };
+            const data = [...this.gData];
+
+            // Find dragObject
+            let dragObj;
+            loop(data, dragKey, (item, index, arr) => {
+              arr.splice(index, 1);
+              dragObj = item;
+            });
+            if (!info.dropToGap) {
+              // Drop on the content
+              loop(data, dropKey, item => {
+                item.children = item.children || [];
+                // where to insert 示例添加到尾部，可以是随意位置
+                item.children.push(dragObj);
+              });
+            } else if (
+              (info.node.children || []).length > 0 && // Has children
+              info.node.expanded && // Is expanded
+              dropPosition === 1 // On the bottom gap
+            ) {
+              loop(data, dropKey, item => {
+                item.children = item.children || [];
+                // where to insert 示例添加到尾部，可以是随意位置
+                item.children.unshift(dragObj);
+              });
+            } else {
+              let ar;
+              let i;
+              loop(data, dropKey, (item, index, arr) => {
+                ar = arr;
+                i = index;
+              });
+              if (dropPosition === -1) {
+                ar.splice(i, 0, dragObj);
+              } else {
+                ar.splice(i + 1, 0, dragObj);
+              }
+            }
+            this.gData = data;
+          },
+          appendNode(data) {
+            //模拟添加
+            let url = "/api/Document/folder";
+            let params = {
+              "name": "新建文件夹",
+              "parentId": data.key
+            }
+            this.spinning = true;
+            utils.request.post(url, params, false).then((res) => {
+              this.spinning = false;
+              if (res) {
+                if (res.success == true) {
+                  let id = res.result;
+                  data.dataRef.isLeaf = false;
+                  this.onLoadData(data);
+                  /* const newChild = {
+                    title: '新建文件夹',
+                    key: id,
+                    scopedSlots: {
+                      title: 'custom'
+                    },
+                    children: [],
+                  }
+                  if (!data.children) {
+                    this.$set(data, 'children', [])
+                  }
+                  data.children.push(newChild) */
+                  //utils.box.toast("新建成功",'success');
+                } else {
+
+                }
+              }
+            });
+          },
+          editNode(data) {
+            if (data.editable == false) return;
+            this.editable = true;
+
+          },
+          insuerEdit(e, data) {
+            //编辑
+            this.editable = false;
+            data.title = e.target.innerHTML;
+            let url = "/api/Document/folder/" + data.key;
+            let params = {
+              "name": data.title,
+              //"parentId": data.key
+            }
+            utils.request.put(url, params, true).then((res) => {
+              if (res) {
+                if (res.success == true) {
+                  //  this.onLoadData(data);
+                  this.searchOption(data, this.gData, 'edit', data.title);
+                  utils.box.toast("修改成功", 'success');
+                } else {}
+              }
+            });
+
+          },
+          deleteNode(data) {
+            if (data.isDefault == true) return; //主院和废止文件不可删除
+            //this.searchOption(data, this.gData, 'delete');
+            //删除
+            let url = "/api/Document/folder/" + data.key;
+            utils.request.delete(url, {}, true).then((res) => {
+              if (res) {
+                if (res.success == true) {
+                  this.onLoadData(data);
+                  this.searchOption(data, this.gData, 'delete');
+                  utils.box.toast("删除成功", 'success');
+                } else {
+
+                }
+              }
+            });
+          },
+          //递归查找
+          searchOption(option, arr, type = 'delete', title) {
+            console.log(option, arr)
+            for (let s = 0; s < arr.length; s++) {
+              console.log(arr[s].key, option.key)
+              if (arr[s].key === option.key) {
+                if (type === 'delete') {
+                  arr.splice(s, 1)
+                } else {
+                  //这是模拟数据编辑数据
+                  /* this.$set(arr, s, {
+                    title: title,
+                    key: '12121212',
+                    scopedSlots: { title: 'custom' }
+                  }) */
+                  arr[s].title = title;
+                }
+                break
+              } else if (arr[s].children && arr[s].children.length > 0) { // 递归条件
+                this.searchOption(option, arr[s].children, type, title)
+              } else {
+                continue
+              }
+            }
+          },
+          getIcon(props) {
+            const {
+              isLeaf,
+              expanded
+            } = props;
+            /* if (isLeaf) {
+              return <a-icon type="home" />;
+            } */
+            /*  return <a-icon type={expanded ? "folder-open" : "folder"} />; */
+            return <i class = {
+              expanded ? "iconfont icon-dakaizhuangtaiwenjianjia themeColor" : "iconfont icon-wenjianjia themeColor"
+            } > < /i>;
+          },
+          getIcon1(props) {
+            const {
+              isLeaf,
+              expanded
+            } = props;
+            if (isLeaf) {
+              return <i class = "iconfont icon-biaoqian1 themeColor" > < /i>;
+            } else {
+              return <i class = "iconfont icon-biaoqian themeColor" > < /i>
+            }
+          },
 
 
-    }
-  };
+      }
+    };
 </script>
 
 <style lang="less" scoped>
