@@ -28,7 +28,7 @@
         <div v-show="toggle2==true">
           <span class="label"><span class="icon-xing">*</span>账号</span><input class='pc-input ' v-model="userName" />
           <span class="label"><span class="icon-xing">*</span>密码</span><input class='pc-input ' v-model="password" />
-          <span class="pc-button buttonNoback">一键生成</span>
+          <span class="pc-button buttonNoback" @click="getPassword">一键生成</span>
         </div>
       </transition>
       <div class="list-head" @click="toggle3=!toggle3">
@@ -51,7 +51,7 @@
                 </div>
               </div>
             </a-upload>
-            <span class="pc-button buttonNoback verTop">删除</span>
+            <span class="pc-button buttonNoback verTop" @click="deletePicture">删除</span>
           </div>
           <div class="flex1 view2">
             <!--  <span class="label verTop">展示预览</span>
@@ -81,32 +81,58 @@
         password: ''
       }
     },
+    created() {
+      this.queryInfo();
+    },
     methods: {
+      deletePicture(){
+        this.imageUrl='';
+      },
+      queryInfo() {
+        let url = '/api/SystemConfig/hospitalAdmin';
+        utils.request.get(url, {}, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              let result = res.result;
+              this.name1 = result.hospitalName;
+              this.name2 = result.displayName;
+              this.userName = result.account;
+              this.password = result.password;
+              this.imageUrl = result.logoPath;
+            } else {
+              utils.box.toast(res.error.message);
+            }
+          }
+        })
+      },
+      getPassword() {
+        let url = '/api/SystemConfig/password';
+        utils.request.get(url, {}, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              this.password = res.result;
+            } else {
+              utils.box.toast(res.error.message);
+            }
+          }
+        })
+
+      },
+
       save() {
         if (this.check()) {
-          let url ="/api/SystemConfig/addHospital";
-          let params={
+          let url = "/api/SystemConfig/initialization";
+          let params = {
             "hospitalName": this.name1,
             "logoPath": this.imageUrl,
-            "id": 0,
             "displayName": this.name2,
-            "adminUsers": [{
-              "account": this.userName,
-              "password": this.password,
-              "isDeleted": true,
-              "deleterUserId": 0,
-              "deletionTime": "",
-              "lastModificationTime": "",
-              "lastModifierUserId": 0,
-              "creationTime": "",
-              "creatorUserId": 0,
-              "id": 0
-            }]
+            "account": this.userName,
+            "password": this.password
           }
-          utils.request.post(url, params, true).then((res) => {
+          utils.request.put(url, params, true).then((res) => {
             if (res) {
               if (res.success == true) {
-                utils.box.toast("配置成功",'success');
+                utils.box.toast("配置成功", 'success');
               } else {
                 utils.box.toast(res.error.message);
               }
@@ -127,10 +153,10 @@
           utils.box.toast('请输入密码');
           return false;
         }
-      /*  if (this.imageUrl == '') {
-          utils.box.toast('请上传图片');
-          return false;
-        } */
+        /*  if (this.imageUrl == '') {
+            utils.box.toast('请上传图片');
+            return false;
+          } */
         return true;
       },
       goBack() {
