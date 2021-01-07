@@ -34,6 +34,7 @@
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            :tree-data="treemap"
            tree-default-expand-all
+           treeCheckStrictly
          >
          </a-tree-select>
         </span>
@@ -219,7 +220,9 @@
         this.queryInfo()
       },
       onChange(value){
-        this.searchInfo.departments= value;
+        this.searchInfo.departments= value.map((item)=>{
+          return item.value
+        });
       },
       getSelectInfo(id){
         this.searchInfo[id]=this.getSelectValue(id);

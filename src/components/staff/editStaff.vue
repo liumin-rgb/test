@@ -65,6 +65,7 @@
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                  :tree-data="treemap"
                  tree-default-expand-all
+                 treeCheckStrictly
                >
                </a-tree-select>
                </span>
@@ -273,7 +274,8 @@
         for(var i in treeList){
            treeList[i].value=treeList[i].key;
            if(this.staffInfo.departments.includes(treeList[i].key)){
-             this.departments.push(treeList[i].key);
+             let obj={value:treeList[i].key,lable:treeList[i].title};
+             this.departments.push(obj);
            }
           if(treeList[i].children){
             this.forTree(treeList[i].children);
@@ -281,7 +283,9 @@
         }
       },
       saveInfo(){  //添加/修改
-      this.staffInfo.departments=this.departments;
+      this.staffInfo.departments=this.departments.map((item)=>{
+        return item.value
+      });
         let staffInfo=this.staffInfo;
         for(var key in  staffInfo){
           if(this.$refs[key]){
@@ -342,7 +346,10 @@
         })
       },
       onChange(value){
-        this.departments= value;
+        this.departments=value;
+       /* value.map((item)=>{
+          return item.value;
+        }); */
         console.log(this.departments);
       },
       getSelectInfo(id){

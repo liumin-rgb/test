@@ -18,7 +18,7 @@
                </a-tree-select>
         <!-- <input class="pc-input" v-model="department"> -->
       <!--  <span class="pc-button" @click="searchStaff">搜索</span> -->
-       <span class="floatR"><a-switch checked-children="过滤" un-checked-children=""   @change="onChange"/></span>
+      <span class="floatR"> <span>过滤已匹配岗位人员：</span><span ><a-switch checked-children="过滤" un-checked-children=""   @change="onChange"/></span></span>
        </div>
        <a-spin :spinning="sping">
           <div class="tab flexBtw marginT1VH marginB1VH">
