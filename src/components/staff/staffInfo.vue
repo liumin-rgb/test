@@ -33,7 +33,6 @@
            @change="onChange"
            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
            :tree-data="treemap"
-           :show-checked-strategy="SHOW_PARENT"
            tree-default-expand-all
          >
          </a-tree-select>
