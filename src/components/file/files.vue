@@ -8,7 +8,7 @@
         <p  class="new-publish">最新发布</p>
         <div  class="search-box">
           <div  class="el-input el-input--suffix">
-            <input class="pc-input middInput" placeholder="搜索文档" />
+            <input class="pc-input middleInput" placeholder="搜索文档" />
              <span class="pc-button" ><i class="iconfont icon-sousuo"></i>搜索</span>
            <!-- <input type="text" autocomplete="off" placeholder="搜索文档" class="el-input__inner">
             <span class="el-input__suffix"><span class="el-input__suffix-inner"><i  class="el-icon-search"></i>
