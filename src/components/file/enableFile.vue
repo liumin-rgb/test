@@ -1,7 +1,14 @@
 <template>
   <a-modal v-model="visible" title="生效" :afterClose="handleCancel" >
       <div class="format ">
-      <div><span class="label"><span class="icon-xing">*</span>生效日期：</span><el-date-picker  v-model="date" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker>
+      <div><span class="label"><span class="icon-xing">*</span>生效日期：</span><el-date-picker  v-model="date" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择"
+      :picker-options="{
+                  disabledDate: time => {
+                     return time.getTime()+24*3600 < Date.now()
+                   },
+                   selectableRange: startTimeRange
+                 }"
+      ></el-date-picker>
       </div>
       </div>
         <template slot="footer">
@@ -31,7 +38,11 @@ export default {
   },
 
   created(){
-
+     let date=new Date();
+     let year=date.getFullYear();
+     let month=date.getMonth()+1;
+     let day=date.getDate();
+     this.date=year+'-'+month+'-'+day;
   },
   methods:{
     handleCancel(){

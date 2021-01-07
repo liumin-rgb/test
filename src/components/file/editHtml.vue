@@ -255,7 +255,7 @@
       this.folderId=utils.cache.getSession("folderId")||'';
       this.folderName=utils.cache.getSession("folderName")||'';
       this.id=this.$route.query.id||'';
-      this.documentId=this.$route.query.documentId;
+      this.documentId=this.$route.query.documentId||'';
       if(this.id!=''){
          this.queryHtml();
          this.querySingleTag();

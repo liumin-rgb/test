@@ -47,7 +47,7 @@ export default {
     }
   },
   created(){
-
+     this.url=location.origin+'/ui/#/files';
   },
   methods:{
     getRadioValue(e){

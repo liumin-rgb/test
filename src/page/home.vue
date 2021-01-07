@@ -116,6 +116,7 @@ updated(){
 					 this.$router.push({path:'superADM',query:{}});
 					 return;
 		  } 
+      utils.cache.setSession("from","personal");
       this.$router.push({path:'editStaff',query:{flag:'edit',id:this.userId}})
     },
     toUrl1(obj){

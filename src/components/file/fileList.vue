@@ -224,7 +224,7 @@
     created() {
       this.queryParent(); //查询一级文件夹
       this.queryAllTags();
-      this.queryInfo();
+     // this.queryInfo();
 
       console.log(this.gData);
     },
@@ -249,8 +249,8 @@
                   },
                 }
               });
-              this.folderId = this.gData[0].id;
-              this.folderName = this.gData[0].name;
+              this.folderId = this.gData[0].key||'';
+              this.folderName = this.gData[0].title||'';
               utils.cache.setSession("folderName", this.folderName);
               utils.cache.setSession("folderId", this.folderId);
               this.queryInfo();
@@ -434,9 +434,9 @@
           queryInfo() {
             let url = "/api/Document/getList";
             let params = {
-              "floderId": this.folderId,
+              "floderId": this.folderId||'',
               "tagIds": this.tagIds,
-              "fileName": this.fileName,
+              "fileName": this.fileName||'',
               "status": this.status,
               "sortField": this.sortField,
               "isDescending": this.isDescending,
