@@ -33,7 +33,7 @@ export default {
  filesName:'',
  loading:false,
  sharePerson:1,
- url:'http://lqms-demo2.chinanorth.cloudapp.chinacloudapi.cn:8000/dist/index.html'
+ url:'',//'http://lqms-demo2.chinanorth.cloudapp.chinacloudapi.cn:8000/dist/index.html'
     }
   },
   watch:{
