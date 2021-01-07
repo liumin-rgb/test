@@ -4,7 +4,7 @@
       <div><span class="label"><span class="icon-xing">*</span>生效日期：</span><el-date-picker  v-model="date" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择"
       :picker-options="{
                   disabledDate: time => {
-                     return time.getTime()+24*3600 < Date.now()
+                     return time.getTime()< Date.now()-8.64e7
                    },
                    selectableRange: startTimeRange
                  }"
