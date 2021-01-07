@@ -45,15 +45,15 @@
       login(){
         this.errorMsg='';
 		  let url="/api/Account/Login?employeeNo="+this.displayName+"&password="+this.password;
-		 utils.request.get(url,true).then((res)=>{
+		 utils.request.post(url,true).then((res)=>{
        if(res){
          if(res.success==true){
            let userInfo=res.result.userInfo;
            let accesssToken=res.result.accesssToken||'';
            utils.cache.set('userInfo',userInfo);
-           utils.cache.set('TOKEN',accesssToken);       
+           utils.cache.set('TOKEN',accesssToken);
 		 /*  if(userInfo.userType==1){
-			 this.$router.push({path:'superADM',query:{}});  
+			 this.$router.push({path:'superADM',query:{}});
 			 return;
 		   } */
            this.$router.push({path:'fileList',query:{}});
