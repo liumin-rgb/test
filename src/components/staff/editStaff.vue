@@ -55,7 +55,7 @@
              </tr>
              <tr>
                <td><div class="textInput"><span class="label font12 weight600 verTop" ref="department"><span class="icon-xing">*</span>部门</span><span><a-tree-select
-                 v-model="department"
+                 v-model="departments"
                  allow-clear
                  tree-checkable
                  multiple
@@ -199,7 +199,7 @@
   "birthday": "",
   "age": "",
   "sex": 0,
-  "department": "",
+  "departments": [],
   "position": "",
   "positionDate": "",
   "post": "",
@@ -224,7 +224,7 @@
   "email": "",
   "id": 0
 },
- department:[],
+ departments:[],
       }
     },
     created(){
@@ -238,12 +238,12 @@
     },
     methods:{
       queryBasicInfo(){  //查询基本信息
-     let url="/api/Employee/"+this.id+"/Employee";
+     let url="/api/Employee/"+this.id;
         utils.request.get(url).then((res) => {
           if(res){
              if(res.success==true){
                this.staffInfo=res.result||this.staffInfo;
-               this.imageUrl=this.staffInfo.url;
+               this.imageUrl=this.staffInfo.photoURL;
                this.queryDepartment();
              }else{
                utils.box.toast(res.error.message);
@@ -258,7 +258,7 @@
               if(res.success==true){
               let list=res.result;
               this.treemap=JSON.parse(JSON.stringify(list).replace(/name/g,"title").replace(/id/g,"key"));
-               this.department=[];
+               this.departments=[];
                this.forTree(this.treemap);
                console.log(this.treemap);
               }else{
@@ -270,8 +270,8 @@
       forTree(treeList){
         for(var i in treeList){
            treeList[i].value=treeList[i].key;
-           if(this.staffInfo.department.includes(treeList[i].key)){
-             this.department.push(treeList[i].key);
+           if(this.staffInfo.departments.includes(treeList[i].key)){
+             this.departments.push(treeList[i].key);
            }
           if(treeList[i].children){
             this.forTree(treeList[i].children);
@@ -279,7 +279,7 @@
         }
       },
       saveInfo(){  //添加/修改
-      this.staffInfo.department=this.department;
+      this.staffInfo.departments=this.departments;
         let staffInfo=this.staffInfo;
         for(var key in  staffInfo){
           if(this.$refs[key]){
@@ -293,7 +293,7 @@
           }
         }
         if(this.flag=='add'){
-         let url="/api/Employee/insertEmployee";
+         let url="/api/Employee";
          let params=staffInfo;;
          utils.request.post(url,params,true).then((res) => {
            if(res){
@@ -306,7 +306,7 @@
            }
            })
         }else{
-          let url="/api/Employee/updateEmployee";
+          let url="/api/Employee/"+this.id;
           let params=staffInfo;;
           utils.request.put(url,params,true).then((res) => {
             if(res){
@@ -340,7 +340,7 @@
         })
       },
       onChange(value){
-        this.department= value;
+        this.departments= value;
       },
       getSelectInfo(id){
           this.staffInfo[id]=utils.common.getSelectValue(id);

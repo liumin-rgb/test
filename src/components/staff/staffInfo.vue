@@ -354,7 +354,7 @@
         		  			 });
       },
       confirmDeleteStaff(id){
-          let url="/api/Employee/deleteEmployee?id="+id;
+          let url="/api/Employee/"+id;
           utils.request.delete(url,true).then((res) => {
           	if(res){
               if(res.success==true){

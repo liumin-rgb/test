@@ -129,7 +129,7 @@
     </div>
     <TagManage :visible="visible2" :operation="operation" @closeTagManage="closeTagManage" />
     <CheckFile :visible="visible1" :config="config" @closeModel="closeCheckFile" />
-    <ShareFile :visible="visible3" @closeModel="closeShareFile" />
+    <ShareFile :visible="visible3" @closeModel="closeShareFile" :config="config1"/>
   </div>
 </template>
 
@@ -170,6 +170,9 @@
         config: {
           operationType: 1, //1：审核 2：废除 3：传阅
           ids: []
+        },
+        config1:{
+          files:[]
         },
         status: 0,
         fileName: '',
@@ -333,6 +336,9 @@
       shareFile() {
         if (this.check2) {
           this.visible3 = true;
+          this.config1={
+            files:this.multipleSelection
+          }
         }
       },
       readFile1() {

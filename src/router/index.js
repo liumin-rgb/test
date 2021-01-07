@@ -40,6 +40,14 @@ const router = new Router({
         title : '预览html'
     },
   },
+  {
+    path: '/files',
+    name:'files',
+    component: resolve => require(['@/components/file/files'], resolve),
+    meta : {
+        title : '分享汇总'
+    },
+  },
  {
        path: '/home',
        name:'home',
