@@ -54,7 +54,7 @@
                <td></td>
              </tr>
              <tr>
-               <td><div class="textInput"><span class="label font12 weight600 verTop" ref="department"><span class="icon-xing">*</span>部门</span><span><a-tree-select
+               <td><div class="textInput"><span class="label font12 weight600 verTop" ref="departments"><span class="icon-xing">*</span>部门</span><span><a-tree-select
                  v-model="departments"
                  allow-clear
                  tree-checkable
