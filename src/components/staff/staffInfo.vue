@@ -112,7 +112,7 @@
       <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
     </div>
     <ImportStaff :visible="visible1" @closeModel="closeModel" @openModel2="openModel2" />
-    <InsureImport :visible="visible2" @closeModel="closeModel2" />
+    <InsureImport :visible="visible2" @closeModel="closeModel2" :orgnize="orgnize"/>
     <CategoryManage :visible="visible3" @closeModel="closeModel3" />
   </div>
 </template>
@@ -164,12 +164,13 @@
         workStatusList:[{code:'0',text:'全部'},{code:'1',text:'在职'},{code:'2',text:'离职'},{code:'3',text:'退休'}],
         politicalList:[{code:'0',text:'全部'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'全部'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
-        orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'总院'},{code:'2',text:'分院1'},{code:'3',text:'分院2'}],
+        //orgnizeList:[{code:'0',text:'全部'},{code:'1',text:'总院'},{code:'2',text:'分院1'},{code:'3',text:'分院2'}],
         departmentList:[],
         treemap:[],
         SHOW_PARENT,
        // sexList:[{code:'0',text:'全部'},{code:'1',text:'男'},{code:'2',text:'女'}],
-        tableData: []
+        tableData: [],
+        orgnize:'',//用于上传
       }
     },
     filters:{
@@ -367,10 +368,12 @@
       },
       openImport() {
        this.visible1 = true;
-       //this.openModel2();
       },
-      openModel2() {
+      openModel2(val) {
         this.visible2 = true;
+        if(val){
+           this.orgnize=val.orgnize;
+        }
       },
       changeCategory() {
         this.visible3 = true;
@@ -389,6 +392,7 @@
         this.visible3 = false;
       },
       toStaffInfo(status,id) {
+        utils.cache.setSession("pageFrom","staffInfo");
         this.$router.push({
           path: 'editStaff',
           query: {

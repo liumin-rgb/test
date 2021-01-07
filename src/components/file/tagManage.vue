@@ -64,6 +64,8 @@ export default {
       loading:false,
       allTagsList:[],
       singleTagList:[],
+      newName:'',
+      index:0,
       tagObj:{
             "id": 0,
             "name": "新建标签",
@@ -85,7 +87,13 @@ export default {
   },
   methods:{
     addTags(){
-    this.allTagsList.unshift(this.tagObj);
+      let tagObj=JSON.parse(JSON.stringify(this.tagObj));
+      if(this.index>0){
+        tagObj.name='新建标签'+this.index;
+      }
+      //this.tagObj.id=Math.random()*10;
+    this.allTagsList.unshift(tagObj);
+    this.index+=1;
     },
     deleteTag(index){
     this.allTagsList.splice(index,1);

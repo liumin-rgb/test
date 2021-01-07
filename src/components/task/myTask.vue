@@ -38,8 +38,13 @@
        <transition name="t1">
       <div v-show="toggle2==true">
      <el-table :data="doingData2" border stripe height="30vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
-       <el-table-column prop="task" label="事项简介" ></el-table-column>
-       <el-table-column prop="deadline" label="截止日期" ></el-table-column>
+       <el-table-column prop="" label="培训名称" ></el-table-column>
+        <el-table-column prop="" label="培训类型" ></el-table-column>
+       <el-table-column prop="" label="培训负责人" ></el-table-column>
+       <el-table-column prop="" label="培训开始时间" ></el-table-column>
+        <el-table-column prop="" label="培训结束时间" ></el-table-column>
+         <el-table-column prop="" label="状态" ></el-table-column>
+           <el-table-column prop="" label="包含考核" ></el-table-column>
      </el-table>
      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>
@@ -80,7 +85,13 @@
        <transition name="t1">
        <div v-show="toggle4==true">
        <el-table :data="finishData2" border height="30vh" style="width:unset" :header-cell-class-name="'table-header'">
-       <el-table-column prop="task" label="事项简介" ></el-table-column>
+   <el-table-column prop="" label="培训名称" ></el-table-column>
+    <el-table-column prop="" label="培训类型" ></el-table-column>
+   <el-table-column prop="" label="培训负责人" ></el-table-column>
+   <el-table-column prop="" label="培训开始时间" ></el-table-column>
+    <el-table-column prop="" label="培训结束时间" ></el-table-column>
+     <el-table-column prop="" label="状态" ></el-table-column>
+       <el-table-column prop="" label="包含考核" ></el-table-column>
      </el-table>
      <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
      </div>

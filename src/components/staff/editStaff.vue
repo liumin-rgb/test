@@ -19,8 +19,8 @@
        </div> -->
          <table class="table">
            <tr>
-             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input class="pc-input backGray borderGray" v-model="workStatusList[staffInfo.workingStatus]" readonly="readonly" /></div></td>
-             <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input class="pc-input" v-model="staffInfo.employeeNo" /></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input :class="['pc-input',(pageFrom=='personal'||flag=='add')?'backGray borderGray':'']" v-model="workStatusList[staffInfo.workingStatus]" :readonly="(pageFrom=='personal'||flag=='add')?'readonly':false" /></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input :class="['pc-input',pageFrom=='personal'?'backGray borderGray':'']" v-model="staffInfo.employeeNo"  :readonly="pageFrom=='personal'?'readonly':false"/></div></td>
              <td  rowspan="4" class="center">
                  <a-upload
                      name="avatar"
@@ -225,11 +225,13 @@
   "id": 0
 },
  departments:[],
+ pageFrom:'',
       }
     },
     created(){
       this.flag=this.$route.query.flag;
       this.id=this.$route.query.id||'';
+      this.pageFrom=utils.cache.getSession("pageFrom");
       if(this.flag!='add'){
         this.queryBasicInfo();
         this.queryCategory();

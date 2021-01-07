@@ -15,7 +15,7 @@
          <!-- <a-button>请选择 <a-icon type="upload" /></a-button> -->
         </a-upload>
         </div>
-        <div><span class="weight600">所属分院</span><select class="pc-input middleInput" @change="getSelectInfo()" id="orgize"><option v-for="obj in orgnizeList" :value="obj.id" >{{obj.name}}</option></select></div>
+        <div><span class="weight600">所属分院</span><select class="pc-input middleInput" @change="getSelectInfo()" id="orgnize"><option v-for="obj in orgnizeList" :value="obj.id" >{{obj.name}}</option></select></div>
          <div @click="downloadTemplate"><span class="pc-button"><i class="iconfont icon-shangchuan1 "></i>下载模板</span></div>
          </div>
          <div class="tab">
@@ -104,7 +104,7 @@ export default {
   },
   methods:{
     getSelectInfo(){
-      this.orgnize=utils.common.getSelectedValue("orgize");
+      this.orgnize=utils.common.getSelectedValue("orgnize");
     },
       queryOrgnize(){
           let url = "/api/Organization/branch/list";
@@ -134,7 +134,8 @@ export default {
              if(status=='update'){
                if(this.tableData.length==0){
                  this.handleCancel();
-                   this.$emit("openModel2");
+                 let orgnize=this.orgnize;
+                   this.$emit("openModel2",{orgnize:orgnize});
                }
              }
            }

@@ -53,7 +53,10 @@ export default {
     visible:{
       default:false,
       type:Boolean,
-
+    },
+    orgnize:{
+      default:'',
+      type:String,
     }
   },
   data() {
@@ -123,10 +126,7 @@ export default {
     },
     handleOk(){
       this.loading=true;
-      let url = "/api/Employee/template/infos";
-     /* let params={
-       importDtos:this.selectionData
-      } */
+      let url = "/api/Employee/template/branch/"+this.orgnize+"/infos";
       	utils.request.post(url,{}).then((res) => {
           this.loading=false;
       		if(res){

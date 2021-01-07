@@ -49,7 +49,7 @@
           <span class="positionR">
             <span :class="['pc-button',folderId==''?'buttonGray':'buttonNoback']" @mouseenter="showSelect=true"><i
                 class="iconfont icon-jiahao "></i>新建<i class="iconfont icon-jiantou "></i></span>
-            <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
+            <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true&&folderId!=''">
               <div @click="toUrl('editHtml')">新建HTML</div>
               <div @click="toUrl('fileManage')">批量上传</div>
             </div>
@@ -114,7 +114,8 @@
                   <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                   <p @click="deleteFile(scope.row.id)" v-show="scope.row.status==1"><i class="iconfont icon-chuanyueicon"></i>删除</p>
                   <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
-                </div>
+                 <p @click="upgrade(scope.row.id,scope.row.documentId,scope.row.type)" v-show="scope.row.status==2"><i class="iconfont icon-update"></i>升版</p>
+               </div>
                 <div slot="reference" class="name-wrapper">
                   <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer" />
                 </div>
@@ -181,7 +182,7 @@
           text: '全部'
         }, {
           code: '1',
-          text: '草稿'
+          text: '未发布'
         }, {
           code: '2',
           text: '已生效'
@@ -536,16 +537,28 @@
           },
           onSelect(keys, event) {
             if (keys.length == 0) {
-              return;
+            this.folderId = '';
+            this.folderName = '';
+            utils.cache.setSession("folderName", '');
+            utils.cache.setSession("folderId", '');
+            this.totalCount = 0;
+            this.maxPage = 1;
+            this.tableData = [];
+            }else{
+              this.folderId = keys[0];
+              this.folderName = event.node.dataRef.title;
+              utils.cache.setSession("folderName", this.folderName);
+              utils.cache.setSession("folderId", this.folderId);
+               this.queryInfo();
             }
-            this.folderId = keys[0];
-            this.folderName = event.node.dataRef.title;
-            utils.cache.setSession("folderName", this.folderName);
-            utils.cache.setSession("folderId", this.folderId);
-            this.queryInfo();
+
           },
           onSelect1(keys, event) { //点击标签过滤文件
+          if(keys.length==0){
+            this.tagIds=[];
+          }else{
             this.tagIds = keys;
+          }
             this.queryInfo();
           },
           onExpand() {
@@ -560,6 +573,25 @@
               path: url,
               query: {}
             });
+          },
+          upgrade(id,documentId,type){
+           if(type=='1'){ //html
+             this.$router.push({
+               path: 'editHtml',
+               query: {
+                 id: id,
+                 documentId: documentId
+               }
+             });
+           }else{
+               this.$router.push({
+                 path: 'fileManage',
+                 query: {
+                   id: id,
+                   documentId: documentId
+                 }
+               });
+           }
           },
           openTagManage(type, ids, tags) {
             let arr = [];
@@ -582,10 +614,10 @@
             this.visible2 = false;
             if (val) {
               if (val.config == 'all') {
+                this.tagIds=[];
                 this.queryAllTags();
-              } else {
-                this.queryInfo()
               }
+               this.queryInfo()
             }
           },
           closeCheckFile(val) {
