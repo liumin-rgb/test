@@ -286,7 +286,7 @@
        this.showButton=false;
       }else{
         this.selectedNode=info.node; //当前选中的节点
-        this.parentId=info.node.dataRef.key;//用作添加
+        this.parentId=info.node.dataRef.parentId;//用作添加
         this.currentNodeId=info.node.dataRef.key;//用作查询和修改
         this.currentNodeType=info.node.dataRef.type;//
         if(info.node.dataRef.type==1||info.node.dataRef.type==2){
