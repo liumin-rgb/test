@@ -174,7 +174,15 @@ const router = new Router({
           name:'trainAssessmentIndex',
           component: resolve => require(['@/components/trainAssessment/trainAssessmentIndex'], resolve),
           meta : {
-              title : '参与培训考核'
+              title : '我的培训考核'
+          },
+        },
+        {
+          path: '/trainPlan',
+          name:'trainPlan',
+          component: resolve => require(['@/components/trainAssessment/trainPlan'], resolve),
+          meta : {
+              title : '我的培训计划'
           },
         },
         {

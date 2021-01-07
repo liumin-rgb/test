@@ -6,8 +6,18 @@
 
       </div>
       <div class="inner">
-        <a-tree class="draggable-tree" draggable @dragstart="onDragStart" @dragenter="onDragEnter" @drop="onDrop"
-          :tree-data="gData" :load-data="onLoadData" @select="onSelect" show-icon :icon='getIcon' defaultExpandParent>
+        <a-tree class="draggable-tree" draggable
+        @dragstart="onDragStart"
+        @dragenter="onDragEnter"
+        @drop="onDrop"
+        :tree-data="gData"
+        :load-data="onLoadData"
+        @select="onSelect"
+        show-icon
+        :icon='getIcon'
+        :defaultSelectedKeys="[1]"
+        :defaultExpandedKeys="[1]"
+        >
           <template slot="custom" slot-scope="item">
             <span v-if="item.key==folderId&&editable" contenteditable="true" @blur="insuerEdit($event,item)"
               @click.stop="" :class="item.key==folderId&&editable?'borderBlack':''">{{item.title}}</span>
@@ -54,6 +64,7 @@
               <div @click="toUrl('fileManage')">批量上传</div>
             </div>
           </span>
+          <span class="pc-button buttonNoback" ><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
           <span :class="['pc-button',check3?'buttonNoback':'buttonGray']" @click="deleteFile1"><i class="iconfont icon-shanchu"></i>删除</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="readFile1"><i class="iconfont icon-chuanyueicon"></i>传阅</span>
           <span :class="['pc-button',check2?'buttonNoback':'buttonGray']" @click="shareFile"><i class="iconfont icon-fenxiang"></i>分享</span>
@@ -161,6 +172,8 @@
         order1: false,
         order2: false,
         isDescending: false,
+        defaultId:[],
+        expandKeys:[],
         folderId: '',
         folderName: '',
         tagIds: [],
@@ -251,6 +264,10 @@
                 }
               });
               this.folderId = this.gData[0].key||'';
+              let arr=[];
+              arr.push(this.folderId);
+              this.defaultId=arr;
+              console.log(this.defaultId);
               this.folderName = this.gData[0].title||'';
               utils.cache.setSession("folderName", this.folderName);
               utils.cache.setSession("folderId", this.folderId);
@@ -709,19 +726,9 @@
                   let id = res.result;
                   data.dataRef.isLeaf = false;
                   this.onLoadData(data);
-                  /* const newChild = {
-                    title: '新建文件夹',
-                    key: id,
-                    scopedSlots: {
-                      title: 'custom'
-                    },
-                    children: [],
-                  }
-                  if (!data.children) {
-                    this.$set(data, 'children', [])
-                  }
-                  data.children.push(newChild) */
-                  //utils.box.toast("新建成功",'success');
+                  let arr=[];
+                  arr.push(data.key);
+                // this.expandKeys=arr;
                 } else {
 
                 }

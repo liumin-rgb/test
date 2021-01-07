@@ -89,7 +89,7 @@ export default {
    role:'',
    menuList: [{name:'我的任务',icon:'icon-renwu',url:'myTask',announce:1,toggle:false,subMenuList:[]},
              {name:'文件管理',icon:'icon-wenjian',url:'',toggle:false,subMenuList:[{name:'文档中心',url:'fileList'}]},
-             {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:'trainIndex'},{name:'题库管理',url:'questionBank'},{name:'培训分类',url:'classification'},{name:'我的培训考核',url:'trainAssessmentIndex'}]},
+             {name:'培训管理',icon:'icon-kejipeixun',url:'',toggle:false,subMenuList:[{name:'培训考核管理',url:'trainIndex'},{name:'题库管理',url:'questionBank'},{name:'培训分类',url:'classification'},{name:'我的培训考核',url:'trainAssessmentIndex'},{name:'我的培训计划',url:'trainPlan'}]},
              {name:'人员管理',icon:'icon-renyuan',url:'',toggle:false,subMenuList:[{name:'人员信息',url:'staffInfo'},{name:'权限分配',url:'managePower'}]},
              {name:'系统配置',icon:'icon-xitongguanli',url:'',toggle:false,subMenuList:[{name:'配置医院管理员',url:'superADM'},{name:'日志维护',url:'logMaintenance'}]},
              {name:'表单模板管理',icon:'icon-1-icon-biaodanmobanguanli',url:'formTemplate',toggle:false,subMenuList:[]},
