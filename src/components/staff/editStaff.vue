@@ -341,6 +341,7 @@
       },
       onChange(value){
         this.departments= value;
+        console.log(this.departments);
       },
       getSelectInfo(id){
           this.staffInfo[id]=utils.common.getSelectValue(id);

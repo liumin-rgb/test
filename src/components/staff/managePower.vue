@@ -488,26 +488,7 @@
             }
           }
         },
-        moveNode(){
-            //移动机构
-               let url="/api/Organization/organization/movement";
-               let params={
-                  "sourceId": 0,
-                   "sourceType": 0,
-                   "targetId": 0,
-                   "targetType": 0
-               };
-               utils.request.put(url,params,true).then((res) => {
-                 if(res){
-                  if(res.success==true){
-                    utils.box.toast('移动成功',"success");
-                  // this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
-                  }else{
-                    utils.box.toast(res.error.message);
-                  }
-                 }
-                 })
-        },
+
     queryOrgDetail(id){ //查询组织机构详情
       let url="/api/Organization/organization/"+id;
       utils.request.get(url,true).then((res) => {
@@ -597,10 +578,10 @@
     },
     onDragStart(info){
       this.drag1=info.node.dataRef;
-      if(this.drag1.key==1) {
+     /* if(this.drag1.key==1) {
        utils.box.toast("主医院不可以移动!");
         return;
-      }
+      } */
        console.log(info);
     },
     onDragEnter(info) {
@@ -609,14 +590,36 @@
          // this.expandedKeys = info.expandedKeys
        },
        //拖动完成触发
-       onDrop(info) {
+       async onDrop(info) { //drag1:拖动源对象 drag2:拖动目标对象
          this.drag2=info.node.dataRef;
-         if(this.drag1.type==1){
+        /* if(this.drag1.key==1||this.drag2.key==1){
+           utils.box.toast("主医院不可以移动!");
+            return;
+         } */
+         if(this.drag1.type==1&&this.drag2.type==1){
+           /* utils.box.toast("分院不可拖动到分院下面!");
+           return; */
+         }
+       /*  if(this.drag1.type==1){
 
          }else if(this.drag1.type==2){
 
          }else{
 
+         } */
+     let url="/api/Organization/organization/movement";
+     let params={
+                   "sourceId": this.drag1.key,
+                    "sourceType": this.drag1.type,
+                    "targetId": this.drag2.key,
+                    "targetType": this.drag2.type
+                };
+         let res=await  utils.request.put(url,params,true);
+         if(res.success==true){
+           utils.box.toast('移动成功',"success");
+         }else{
+           utils.box.toast(res.error.message);
+           return;
          }
          console.log(info);
          const dropKey = info.node.eventKey;
