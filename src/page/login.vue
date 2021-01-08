@@ -45,7 +45,11 @@
       login(){
         this.errorMsg='';
 		  let url="/api/Account/Login?employeeNo="+this.displayName+"&password="+this.password;
-		 utils.request.post(url,true).then((res)=>{
+      let params={
+         "employeeNo": this.displayName,
+         "password": this.password
+      }
+		 utils.request.post(url,params,true).then((res)=>{
        if(res){
          if(res.success==true){
            let userInfo=res.result.userInfo;
