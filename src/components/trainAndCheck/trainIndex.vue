@@ -41,7 +41,7 @@
                    <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.name}}</span>
             </template>
          </el-table-column>
-         <el-table-column prop="trainingTypeName" label="培训类型" >
+         <el-table-column prop="trainingTypeName" label="培训分类" >
 
          </el-table-column>
          <el-table-column prop="employeeName" label="培训负责人">

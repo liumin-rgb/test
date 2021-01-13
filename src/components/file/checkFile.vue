@@ -122,15 +122,11 @@ export default {
        var params={
          "approveEmployeeId": this.id,
          "suggesion": this.suggestion,
-		  "creatorUserId":utils.cache.getSession("userId")
+		     "creatorUserId":utils.cache.getSession("userId")
        }
        params=Object.assign(params,this.config.params);
        if(this.fileId!=''){ //编辑html--审核
          url="/api/Document/submitHtmlDocVersion";
-         var params={
-            "approveEmployeeId": this.id,
-            "suggesion": this.suggestion,
-          }
          params=Object.assign(params,this.config.params);
        }
       }else{

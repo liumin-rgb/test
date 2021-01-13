@@ -48,8 +48,13 @@
               </div>
             </div>
             <div class="flex paddingLR2rem gray">
+            <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训分类</span>
+              <select class="pc-input middleInput" @change="getSelectInfo('trainingType')" id="trainingType"><option v-for="obj in trainingTypeList" :value="obj.code" >{{obj.text}}</option></select>
+            </div>
+            </div>
+            <div class="flex paddingLR2rem gray">
               <div class=" textInput"><span class="label2 verTop">培训内容介绍</span>
-                <textarea class='pc-textarea textareaOne' style="width:6.5rem" v-model="trainInfo.description"/></div>
+              <textarea class='pc-textarea textareaOne' style="width:6.5rem" v-model="trainInfo.description"/></div>
     </div>
     </div>
   </transition>
@@ -125,13 +130,18 @@
   "startDate": "",
   "endDate": "",
   "description": ""
-    }
+    },
+    trainingTypeList:[]
       }
     },
     created(){
       this.id=this.$route.query.id;
     },
    methods:{
+     getSelectInfo(id){
+         this.trainInfo[id]=utils.common.getSelectValue(id);
+         console.log(this.staffInfo);
+     },
      openModel(){
        this.visible=true;
      },

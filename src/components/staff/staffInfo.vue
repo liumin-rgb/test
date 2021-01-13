@@ -225,15 +225,8 @@
         });
       },
       getSelectInfo(id){
-        this.searchInfo[id]=this.getSelectValue(id);
+        this.searchInfo[id]=utils.common.getSelectValue(id);
         console.log(this.searchInfo);
-      },
-      getSelectValue(id){
-        let Sel=document.getElementById(id);
-        let index=Sel.selectedIndex;
-        let text=Sel.options[index].text;
-        let value=Sel.options[index].value;
-        return value
       },
       changePage(val){
         this.pageIndex=val.pageIndex;
