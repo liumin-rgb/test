@@ -106,6 +106,7 @@ updated(){
    let userInfo=utils.cache.get("userInfo");
    this.userName=userInfo.userName;
    this.userId=userInfo.userId;
+   utils.cache.setSession("userId",this.userId);
    this.role=this.roleType[userInfo.userType];
    this.choosen=utils.cache.getSession("choosen");
  },

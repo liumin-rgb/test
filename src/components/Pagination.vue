@@ -20,10 +20,10 @@
 	export default{
 		name: "Pagination",
 		props:{
-			maxPage: {
+			/* maxPage: {
 			  type: Number,
 			  default: 1
-			},
+			}, */
       totalCount:{
         type: Number,
         default: 0
@@ -39,13 +39,19 @@
       pageSizeCode:0,
 			threeDot: '···',
 			tempPageNo:1,
+      maxPage:1,//由数据总条数和每页显示条数决定
      /* pageSizeList:[10,20,30,50,100], */
 		}
 		},
 		watch: {
+      totalCount(val){
+        this.maxPage=Math.ceil(this.totalCount/this.pageSizeList[this.pageSizeCode]);
+      },
       pageSizeCode(val){
         let pageSize=this.pageSizeList[val];
+        this.pageNo=1;//页码置为1
         let parentVal={pageSize:pageSize,pageIndex:this.pageNo};
+        this.maxPage=Math.ceil(this.totalCount/this.pageSizeList[this.pageSizeCode]);
         this.$emit('changePage', parentVal);
       },
 		  pageNo(val) {

@@ -25,6 +25,7 @@
      </div>
    </div>
    <div class="list-table">
+    <a-spin :spinning="spinning"  >
      <el-table
          :data="tableData1"
          border
@@ -40,20 +41,22 @@
                    <span class="themeColor text-line pointer" @click="toDetail()">{{scope.row.name}}</span>
             </template>
          </el-table-column>
-         <el-table-column prop="type" label="培训类型" >
+         <el-table-column prop="trainingTypeName" label="培训类型" >
 
          </el-table-column>
-         <el-table-column prop="owner" label="培训负责人">
+         <el-table-column prop="employeeName" label="培训负责人">
          </el-table-column>
-         <el-table-column prop="beginDate" label="培训开始时间" >
+         <el-table-column prop="startDate" label="培训开始时间" >
          </el-table-column>
          <el-table-column prop="endDate" label="培训结束时间" >
          </el-table-column>
-         <el-table-column prop="status" label="状态" >
+         <el-table-column prop="trainingStatus" label="状态" >
 
          </el-table-column>
-         <el-table-column prop="include" label="包含考核" >
-
+         <el-table-column prop="isExam" label="包含考核" >
+         <template slot-scope="scope">
+                   <span >{{scope.row.isExam?'是':'否'}}</span>
+            </template>
          </el-table-column>
          <el-table-column prop="" label="操作" align="center">
     <template slot-scope="scope">
@@ -62,7 +65,7 @@
               <p ><i class="iconfont icon-tijiao"></i>发布</p>
               <p ><i class="iconfont icon-tubiao09"></i>编辑</p>
               <p ><i class="iconfont icon-chuanyueicon"></i>复制</p>
-              <p ><i class="iconfont icon-shanchu"></i>删除</p>
+              <p @click="deleteTrain(scope.row.id)"><i class="iconfont icon-shanchu"></i>删除</p>
               </div>
               <div slot="reference" class="name-wrapper">
                <img src="../../assets/img/threeDot.png" style="width:.03rem" class="pointer"/>
@@ -71,6 +74,7 @@
           </template>
          </el-table-column>
        </el-table>
+       </a-spin>
    </div>
    <div class="list-bottom">
    <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
@@ -98,6 +102,7 @@
       </div>
     </div>
     <div class="list-table">
+       <a-spin :spinning="spinning"  >
       <el-table
           :data="tableData2"
           border
@@ -144,6 +149,7 @@
            </template>
           </el-table-column>
         </el-table>
+        </a-spin>
     </div>
     <div class="list-bottom">
     <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
@@ -191,6 +197,18 @@ import Pagination from '../Pagination'
         beginDate2:'',
         showSelect:false,
         multipleSelection:'',
+        spinning:false,
+      }
+    },
+    created(){
+      this.queryInfo1();
+    },
+    watch:{
+      tab(newVal){
+        this.pageIndex=1;
+       // this.pageSize=10;
+       // newVal==1?this.queryInfo1():this.queryInfo2()
+       this.search();
       }
     },
     methods:{
@@ -198,16 +216,73 @@ import Pagination from '../Pagination'
         this.$router.push({path:'trainRecord',query:{}})
       },
     search(){
-
+      this.tab==1?this.queryInfo1():this.queryInfo2()
     },
     toDetail(){
 
     },
-    queryInfo(){
+   queryInfo1(){//查找培训
+      let url = "/api/Training/searchTrainingByCondition?isDescending=true";
+      let params={
+        "pageIndex": this.pageIndex,
+         "pageSize": this.pageSize,
+         "name": "培训3",//this.trainName,
+         "startDate": null//this.beginDate1
+      }
+       this.spinning=true;
+      	utils.request.post(url,params,false).then((res) => {
+          this.spinning=false;
+      		if(res){
+            if(res.success==true){
+              let totalCount=res.result.totalCount;
+               this.totalCount=totalCount;
+              // this.maxPage=Math.ceil(totalCount/this.pageSize);
+              let items=res.result.items;
+               this.tableData1=items;
+            }else{
 
-    },
+            }
+          }
+          });
+   },
+   queryInfo2(){//查找考核
+      let url = "/api/Training/searchExamType";
+      let params={
+        pageIndex:this.pageIndex,
+        pageSize:this.pageSize,
+        name:this.trainName
+      }
+       this.spinning=true;
+      	utils.request.post(url,params,false).then((res) => {
+          this.spinning=false;
+      		if(res){
+            if(res.success==true){
+              let totalCount=res.result.totalCount;
+               this.totalCount=totalCount;
+               //this.maxPage=Math.ceil(totalCount/this.pageSize);
+              let items=res.result.items;
+              this.tableData2=items;
+            }else{
+
+            }
+          }
+          });
+   },
     download(){
 
+    },
+    deleteTrain(id){
+      let url = "/api/Training/"+id+"/Training";
+      	utils.request.delete(url,{},true).then((res) => {
+      		if(res){
+            if(res.success==true){
+             utils.box.toast("删除成功","success");
+             this.queryInfo1();
+            }else{
+
+            }
+          }
+          });
     },
     toUrl(type){
       this.$router.push({path:'newIndex',query:{type:type}});
@@ -215,7 +290,7 @@ import Pagination from '../Pagination'
     changePage(val){
       this.pageIndex=val.pageIndex;
       this.pageSize=val.pageSize;
-     // this.queryInfo();
+     this.search();
     },
     handleSelectionChange(val) {
        this.multipleSelection = val;

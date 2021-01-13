@@ -415,7 +415,8 @@
               "operateType": 4,
               "employeeId": 0,
               "suggestion": "",
-              "docVersionIds": ids
+              "docVersionIds": ids,
+              "creatorUserId":utils.cache.getSession("userId")
             };
             utils.request.post(url, params, true).then((res) => {
               if (res) {

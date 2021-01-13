@@ -1,28 +1,19 @@
 <template>
   <a-modal v-model="visible" :title="title" :afterClose="handleCancel">
-      <div class="format ">
-       <div class="textInput positionR"><span class="label1">{{label}}:</span>
-        <a-tree-select
-           v-model="id"
-           show-search
-           @search="search"
-           style="width: 50%;margin: .02rem 0.1rem;"
-           :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-           placeholder="请选择"
-           allow-clear
-           tree-default-expand-all
-           :tree-data="treeData"
-           treeNodeFilterProp='title'
-         >
-         </a-tree-select>
-       <!-- <input  class='pc-input' @click="showSelect=true" readonly="true" style="width:2rem;"/>
+    <div class="format ">
+      <div class="textInput positionR"><span class="label1">{{label}}:</span>
+        <a-tree-select v-model="id" show-search @search="search" style="width: 50%;margin: .02rem 0.1rem;"
+          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="请选择" allow-clear
+          tree-default-expand-all :tree-data="treeData" treeNodeFilterProp='title'>
+        </a-tree-select>
+        <!-- <input  class='pc-input' @click="showSelect=true" readonly="true" style="width:2rem;"/>
       <div @mouseleave="showSelect=false" class="pc-select selectOne" v-show="showSelect==true">
       <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
        </div> -->
 
-       </div>
-       <div><span class="label1 verTop">备注:</span>
-       <textarea class='pc-textarea' v-model="suggestion"/></div>
+      </div>
+      <div><span class="label1 verTop">备注:</span>
+        <textarea class='pc-textarea' v-model="suggestion" /></div>
       </div>
         <template slot="footer">
                <a-button key="back" @click="handleCancel">
@@ -46,6 +37,10 @@ export default {
       default:()=>{},
       type:Object
     },
+    fileId:{
+      default:"",
+      type:String
+    }
   },
   data() {
     return {
@@ -127,15 +122,25 @@ export default {
        var params={
          "approveEmployeeId": this.id,
          "suggesion": this.suggestion,
+		  "creatorUserId":utils.cache.getSession("userId")
        }
        params=Object.assign(params,this.config.params);
+       if(this.fileId!=''){ //编辑html--审核
+         url="/api/Document/submitHtmlDocVersion";
+         var params={
+            "approveEmployeeId": this.id,
+            "suggesion": this.suggestion,
+          }
+         params=Object.assign(params,this.config.params);
+       }
       }else{
        var url="/api/Document/operateDocVersion";
        var params={
           "operateType": this.config.operationType,
           "employeeId": this.id,
           "suggestion": this.suggestion,
-          "docVersionIds": this.config.ids
+          "docVersionIds": this.config.ids,
+          "creatorUserId":utils.cache.getSession("userId")
        };
       }
             utils.request.post(url,params,true).then((res) => {

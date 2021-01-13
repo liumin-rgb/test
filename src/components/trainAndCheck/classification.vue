@@ -13,12 +13,14 @@
     <div class="list-search-two"></div>
     <div class="list-search-three">
     <span class="positionR">
+      <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
      <span class="pc-button buttonNoback" @click="newClassify(1)"><i class="iconfont icon-jiahao "></i>新建分类</span>
 
     </span>
      </div>
    </div>
    <div class="list-table">
+     <a-spin :spinning="spinning"  >
      <el-table
          :data="tableData1"
          border
@@ -27,17 +29,18 @@
          stripe
          :header-cell-class-name="'table-header'"
          >
-         <el-table-column prop="type" label="培训分类"  min-width="300"></el-table-column>
+         <el-table-column prop="type" label="培训分类"  min-width="300" align="center"></el-table-column>
          <el-table-column prop="" label="操作" >
       <template slot-scope="scope">
-      <i class="iconfont icon-tubiao09 themeColor font16"></i>
-      <i class="iconfont icon-shanchu themeColor font16"></i>
+      <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editInfo(1,scope.row.id,scope.row.name)"></i>
+      <i class="iconfont icon-shanchu themeColor font16 pointer" @click="deleteInfo(1,scope.row.id)"></i>
           </template>
          </el-table-column>
        </el-table>
+       </a-spin>
    </div>
    <div class="list-bottom">
-   <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+   <Pagination    @changePage="changePage" :totalCount="totalCount"/>
     </div>
    </div>
    <div v-show="tab==2">
@@ -50,11 +53,13 @@
      <div class="list-search-two"></div>
      <div class="list-search-three">
   <span class="positionR">
+     <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
   <span class="pc-button buttonNoback" @click="newClassify(2)"><i class="iconfont icon-jiahao "></i>新建类别</span>
  </span>
  </div>
     </div>
     <div class="list-table">
+      <a-spin :spinning="spinning"  >
      <el-table
          :data="tableData2"
          border
@@ -63,17 +68,18 @@
          stripe
          :header-cell-class-name="'table-header'"
          >
-         <el-table-column prop="type" label="试题类别" min-width="300"></el-table-column>
+         <el-table-column prop="type" label="试题类别" min-width="300" align="center"></el-table-column>
          <el-table-column prop="" label="操作" >
       <template slot-scope="scope">
-      <i class="iconfont icon-tubiao09 themeColor font16"></i>
-      <i class="iconfont icon-shanchu themeColor font16"></i>
+      <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editInfo(2,scope.row.id,scope.row.name)"></i>
+      <i class="iconfont icon-shanchu themeColor font16 pointer" @click="deleteInfo(2,scope.row.id)"></i>
           </template>
          </el-table-column>
        </el-table>
+       </a-spin>
     </div>
     <div class="list-bottom">
-    <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
+    <Pagination   @changePage="changePage" :totalCount="totalCount"/>
      </div>
     </div>
     <ClassModel :visible="visible" @closeModel="closeModel" :configure="configure"/>
@@ -89,13 +95,14 @@ import Pagination from '../Pagination'
     data() {
       return{
         pageIndex:1,
-        maxPage:1,
+       // maxPage:1,
         pageSize:10,
         totalCount:0,
         visible:false,
         configure:{
           id:'',
           type:1,
+          operate:'create',
           name:''
         },
         tableData1:[
@@ -115,6 +122,18 @@ import Pagination from '../Pagination'
         beginDate2:'',
         showSelect:false,
         multipleSelection:'',
+        spinning:false,
+      }
+    },
+    created(){
+      this.queryInfo1();
+    },
+    watch:{
+      tab(newVal){
+        this.pageIndex=1;
+       // this.pageSize=10;
+       // newVal==1?this.queryInfo1():this.queryInfo2()
+       this.search();
       }
     },
     methods:{
@@ -122,18 +141,84 @@ import Pagination from '../Pagination'
       this.configure={
         id:'',
         type:type,
+        operate:'create',
         name:'',
       }
       this.visible=true;
     },
+    editInfo(type,id,name){
+      this.configure={
+        id:id,
+        type:type,
+        operate:'edit',
+        name:name,
+      }
+      this.visible=true;
+    },
+    deleteInfo(type,id){
+      let url = this.tab==1?"/api/Training/"+id:"/api/Training/"+id+"/ExamType";
+    	utils.request.delete(url,{},true).then((res) => {
+    		if(res){
+          if(res.success==true){
+            utils.box.toast("删除成功",'success');
+          }else{
+           // utils.box.toast();
+          }
+        }
+        });
+    },
     search(){
-
+     this.tab==1?this.queryInfo1():this.queryInfo2()
     },
     toDetail(){
 
     },
-    queryInfo(){
+    queryInfo1(){//查找培训分类
+       let url = "/api/Training/searchTrainingType";
+       let params={
+         pageIndex:this.pageIndex,
+         pageSize:this.pageSize,
+         name:this.trainName
+       }
+        this.spinning=true;
+       	utils.request.post(url,params,false).then((res) => {
+           this.spinning=false;
+       		if(res){
+             if(res.success==true){
+               let totalCount=res.result.totalCount;
+                this.totalCount=totalCount;
+               // this.maxPage=Math.ceil(totalCount/this.pageSize);
+               let items=res.result.items;
+                this.tableData1=items;
+             }else{
 
+             }
+
+           }
+           });
+    },
+    queryInfo2(){//查找考核分类
+       let url = "/api/Training/searchExamType";
+       let params={
+         pageIndex:this.pageIndex,
+         pageSize:this.pageSize,
+         name:this.trainName
+       }
+        this.spinning=true;
+       	utils.request.post(url,params,false).then((res) => {
+           this.spinning=false;
+       		if(res){
+             if(res.success==true){
+               let totalCount=res.result.totalCount;
+                this.totalCount=totalCount;
+                //this.maxPage=Math.ceil(totalCount/this.pageSize);
+               let items=res.result.items;
+                this.tableData2=items;
+             }else{
+
+             }
+           }
+           });
     },
     download(){
 
@@ -144,10 +229,13 @@ import Pagination from '../Pagination'
     changePage(val){
       this.pageIndex=val.pageIndex;
       this.pageSize=val.pageSize;
-     // this.queryInfo();
+     this.search();
     },
     closeModel(val){
       this.visible=false;
+      if(val){
+        this.search();
+      }
     },
     }
   };

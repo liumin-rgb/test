@@ -157,7 +157,8 @@ import Pagination from '../Pagination'
                "isTodo": this.tab==1?true:false,
                "employeeId": 1,
                "pageIndex": 1,
-               "pageSize": 10
+               "pageSize": 10,
+               "employeeId":utils.cache.getSession("userId")
                }
                utils.request.post(url,params,true).then((res) => {
                  if(res){

@@ -3,9 +3,8 @@
     <div class="list-main-top">
       <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
       <div>
-        <!--      <span class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>打标签</span>
- --> <span
-          class="pc-button" @click="saveDraft"><i class="iconfont icon-baocun"></i>保存草稿</span>
+        <span class="pc-button" @click="saveFile" v-if="id!=''"><i class="iconfont icon-baocun"></i>保存</span>
+        <span class="pc-button" @click="saveDraft" v-else><i class="iconfont icon-baocun"></i>保存草稿</span>
         <span class="pc-button" @click="submitCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
         <span class="pc-button" @click="enable"><i class="iconfont icon-tongguo1"></i>生效</span>
 
@@ -45,26 +44,26 @@
       </div>
       <transition name="t1">
         <div v-show="toggle2==true">
-        <div  :class="fullScreen?'modelEditor':'pageEditor'">
-          <div :class="fullScreen?'modelEditor2':'pageEditor2'">
-            <div class="iconPosition">
-              <span class="pc-button buttonNoback" @click="previewHtml">预览</span>
-              <span class="pc-button buttonNoback" @click="saveTemplate">保存模板</span>
-              <span class="pc-button buttonNoback" @click="loadTemplate">加载模板</span>
-              <span class="pc-button buttonNoback" @click="openTag" style="margin-right:2vw">打标签</span>
-              <el-popover trigger="hover" placement="bottom">
-                <div>点击缩小编辑器</div>
-                <i class="iconfont icon-suoxiao themeColor font20  pointer " v-show="fullScreen==true" slot="reference"
-                  @click="fullScreen=false"></i>
-              </el-popover>
-              <el-popover trigger="hover" placement="bottom">
-                <div>点击放大编辑器</div>
-                <i class="iconfont icon-fangda themeColor font20  pointer " @click.stop="fullScreen=true" slot="reference"
-                  v-show="fullScreen==false"></i>
-              </el-popover>
+          <div :class="fullScreen?'modelEditor':'pageEditor'">
+            <div :class="fullScreen?'modelEditor2':'pageEditor2'">
+              <div class="iconPosition">
+                <span class="pc-button buttonNoback" @click="previewHtml">预览</span>
+                <span class="pc-button buttonNoback" @click="saveTemplate">保存模板</span>
+                <span class="pc-button buttonNoback" @click="loadTemplate">加载模板</span>
+                <span class="pc-button buttonNoback" @click="openTag" style="margin-right:2vw">打标签</span>
+                <el-popover trigger="hover" placement="bottom">
+                  <div>点击缩小编辑器</div>
+                  <i class="iconfont icon-suoxiao themeColor font20  pointer " v-show="fullScreen==true" slot="reference"
+                    @click="fullScreen=false"></i>
+                </el-popover>
+                <el-popover trigger="hover" placement="bottom">
+                  <div>点击放大编辑器</div>
+                  <i class="iconfont icon-fangda themeColor font20  pointer " @click.stop="fullScreen=true" slot="reference"
+                    v-show="fullScreen==false"></i>
+                </el-popover>
+              </div>
+              <Editor id="tinymce" :init="editorInit" v-model='tinymceHtml'></Editor>
             </div>
-            <Editor id="tinymce" :init="editorInit" v-model='tinymceHtml'></Editor>
-          </div>
           </div>
           <div style="margin:.05rem 0;">当前标签：<span class="pc-button" v-for="obj in singleTagsList">{{obj.name}}</span></div>
         </div>
@@ -84,11 +83,11 @@
         </div>
       </transition>
     </div>
-    <CheckFile :visible="visible" :config="config" @closeModel="closeModel" />
+    <CheckFile :visible="visible" :config="config" @closeModel="closeModel" :fileId="id"/>
     <TagManage :visible="visible1" :operation="operation" @closeTagManage="closeTagManage" />
-    <SaveTemplate :visible="visible2" :htmlContext="tinymceHtml" @closeModel="closeModel1"/>
-    <LoadTemplate :visible="visible3" @closeModel="closeModel2"/>
-    <EnableFile :visible="visible4" @closeModel="closeModel3"/>
+    <SaveTemplate :visible="visible2" :htmlContext="tinymceHtml" @closeModel="closeModel1" />
+    <LoadTemplate :visible="visible3" @closeModel="closeModel2" />
+    <EnableFile :visible="visible4" @closeModel="closeModel3" />
   </div>
 </template>
 
@@ -120,36 +119,36 @@
     },
     data() {
       return {
-        id:'',//文档id
-        documentId:'',
+        id: '', //文档id
+        documentId: '',
         toggle1: true,
         toggle2: true,
         toggle3: false,
         visible: false,
         visible1: false,
         visible2: false,
-        visible3:false,
-        visible4:false,
-        enableDate:'',
+        visible3: false,
+        visible4: false,
+        enableDate: '',
         operation: {
           type: 'single',
           id: '',
           singleTag: []
         },
-        folderId:'',
-        folderName:'',
-        creatorId:0,
+        folderId: '',
+        folderName: '',
+        creatorId: 0,
         name: '',
         docNo: '',
         version: '',
-        status:'',
-        type:'',
+        status: '',
+        type: '',
         fullScreen: false,
         singleTags: [],
-        singleTagsList:[],
+        singleTagsList: [],
         config: {
-        operationType:1, //1：审核 2：废除 3：传阅
-        ids:[]
+          operationType: 1, //1：审核 2：废除 3：传阅
+          ids: []
         },
         tinymceHtml: '',
         editorInit: {
@@ -189,29 +188,29 @@
           advlist_number_styles: 'lower-alpha lower-roman upper-alpha upper-roman',
           fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
           font_formats: '黑体=SimHei;宋体=simsun,serif;Arial=arial,helvetica;Arial Black=arial black,avant garde;',
-         // link_list: [
-            //  { title: '预置链接1', value: 'http://www.tinymce.com' },
-            // { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
-        //  ],
-        /*  image_class_list: [{
-              title: 'None',
-              value: ''
-            },
-          ], */
+          // link_list: [
+          //  { title: '预置链接1', value: 'http://www.tinymce.com' },
+          // { title: '预置链接2', value: 'http://tinymce.ax-z.cn' }
+          //  ],
+          /*  image_class_list: [{
+                title: 'None',
+                value: ''
+              },
+            ], */
           importcss_append: true,
           //自定义文件选择器的回调内容
-        //  file_picker_type: 'image',
-         // file_picker_callback: function(callback, value, meta) {
-            /* if (meta.filetype === 'file') {
-              callback('https://www.baidu.com/img/bd_logo1.png', { text: 'My text' });
-            } */
+          //  file_picker_type: 'image',
+          // file_picker_callback: function(callback, value, meta) {
+          /* if (meta.filetype === 'file') {
+            callback('https://www.baidu.com/img/bd_logo1.png', { text: 'My text' });
+          } */
           /*  if (meta.filetype === 'image') {
               callback('https://www.baidu.com/img/bd_logo1.png', {
                 alt: 'My alt text'
               });
             } */
 
-        //  },
+          //  },
           automatic_uploads: false,
           /*  images_upload_url: '',
            images_upload_base_path: '/demo', */
@@ -254,116 +253,138 @@
     },
     mounted() {
       tinymce.init({});
-      this.folderId=utils.cache.getSession("folderId")||'';
-      this.folderName=utils.cache.getSession("folderName")||'';
-      this.id=this.$route.query.id||'';
-      this.documentId=this.$route.query.documentId||'';
-      if(this.id!=''){
-         this.queryHtml();
-         this.querySingleTag();
+      this.folderId = utils.cache.getSession("folderId") || '';
+      this.folderName = utils.cache.getSession("folderName") || '';
+      this.id = this.$route.query.id || '';
+      this.documentId = this.$route.query.documentId || '';
+      if (this.id != '') {
+        this.queryHtml();
+        this.querySingleTag();
       }
     },
     methods: {
-      querySingleTag(){
-            let url="/api/Document/findTags";
-            let arr=[];
-            arr.push(this.documentId);
-            let params={
-              DocumentIds:arr
-            }
-            utils.request.post(url,params,true).then((res) => {
-            	if(res){
-                if(res.success==true){
-                  this.singleTagsList=res.result;
-                   //this.operateTags();
-                }else{
-                }
-              }
-              });
+      querySingleTag() {
+        let url = "/api/Document/findTags";
+        let arr = [];
+        arr.push(this.documentId);
+        let params = {
+          DocumentIds: arr
+        }
+        utils.request.post(url, params, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              this.singleTagsList = res.result;
+              //this.operateTags();
+            } else {}
+          }
+        });
       },
-      queryHtml(){
-          let url = "/api/Document/getHtmlDocVersion?docVersionId="+this.id;
-          utils.request.get(url, {}, true).then((res) => {
-            if (res) {
-              if (res.success == true) {
-                let result=res.result;
-                this.name=result.name;
-                this.docNo=result.docNo;
-                this.version=result.version;
-                this.tinymceHtml=result.htmlStr;
-                this.status=result.status;
-                this.type=result.type;
-              } else {
-                utils.box.toast(res.error.message);
-              }
+      queryHtml() {
+        let url = "/api/Document/getHtmlDocVersion?docVersionId=" + this.id;
+        utils.request.get(url, {}, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              let result = res.result;
+              this.name = result.name;
+              this.docNo = result.docNo;
+              this.version = result.version;
+              this.tinymceHtml = result.htmlStr;
+              this.status = result.status;
+              this.type = result.type;
+            } else {
+              utils.box.toast(res.error.message);
             }
-          });
+          }
+        });
 
       },
-      previewHtml(){
-        if(this.tinymceHtml==''){
+      previewHtml() {
+        if (this.tinymceHtml == '') {
           utils.box.toast("预览内容为空");
           return;
         }
-        utils.cache.setSession("htmlContent",this.tinymceHtml);
-          const {href} = this.$router.resolve({
-          	path: 'previewHtml',
+        utils.cache.setSession("htmlContent", this.tinymceHtml);
+        const {
+          href
+        } = this.$router.resolve({
+          path: 'previewHtml',
           //  query:{id:id}
-          });
-          window.open(href, '_blank')
+        });
+        window.open(href, '_blank')
         //this.$router.push({path:'previewHtml'});
       },
-      saveTemplate(){
-        if(this.tinymceHtml==''){
+      saveTemplate() {
+        if (this.tinymceHtml == '') {
           utils.box.toast("文本内容不能为空");
           return;
         }
-        this.visible2=true;
+        this.visible2 = true;
       },
-      loadTemplate(){
-        this.visible3=true;
+      loadTemplate() {
+        this.visible3 = true;
       },
       enable() {
         if (this.check()) {
-          this.visible4=true;
+          this.visible4 = true;
         }
       },
-      enableFile(){
-         let url = "/api/Document/enableHtmlDocVersion";
-         let params =
-         {
-           "effectiveDate": this.enableDate,
-           "id": this.id,
-           "documentId": this.documentId,
-           "status": this.status,
-           "type": this.type,
-           "name": this.name,
-           "docNo": this.docNo,
-           "version": this.version,
-           "htmlStr": this.tinymceHtml,
-           "tagIds": this.singleTags
-         };
-         utils.request.post(url, params, true).then((res) => {
-           if (res) {
-             if (res.success == true) {
-               utils.box.toast("提交成功","success");
-               this.goBack();
-             } else {
-               utils.box.toast(res.error.message);
-             }
-           }
-         });
-
+      enableFile() { //编辑html--生效
+        let url = "/api/Document/enableHtmlDocVersion";
+        let params = {
+          "effectiveDate": this.enableDate,
+          "id": this.id,
+          "documentId": this.documentId,
+          "status": this.status,
+          "type": this.type,
+          "name": this.name,
+          "docNo": this.docNo,
+          "version": this.version,
+          "htmlStr": this.tinymceHtml,
+          "tagIds": this.singleTags
+        };
+        utils.request.post(url, params, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              utils.box.toast("提交成功", "success");
+              this.goBack();
+            } else {
+              utils.box.toast(res.error.message);
+            }
+          }
+        });
+      },
+      enableNewFile() { //创建html--生效
+        let url = "/api/Document/enableDocVersion";
+        let params = {
+          "effectiveDate":  this.enableDate,
+          "folderId": this.folderId,
+          "creatorId": this.creatorId,
+          "name": this.name,
+          "docNo": this.docNo,
+          "version": this.version,
+          "htmlStr": this.tinymceHtml,
+          "tagIds": this.singleTags
+        };
+        utils.request.post(url, params, true).then((res) => {
+          if (res) {
+            if (res.success == true) {
+              utils.box.toast("提交成功", "success");
+              this.goBack();
+            } else {
+              utils.box.toast(res.error.message);
+            }
+          }
+        });
       },
       openTag() {
-         let arr=[];
-        if(this.documentId!=''){
-        let ids=this.documentId;
-        arr.push(ids);
+        let arr = [];
+        if (this.documentId != '') {
+          let ids = this.documentId;
+          arr.push(ids);
         }
         this.operation = {
           type: 'single',
-          ids: arr||[], //文件id
+          ids: arr || [], //文件id
           singleTag: this.singleTags
         }
         this.visible1 = true;
@@ -371,10 +392,10 @@
       closeTagManage(val) {
         this.visible1 = false;
         let singleTags = val.singleTags;
-        this.singleTags=singleTags.map((item)=>{
+        this.singleTags = singleTags.map((item) => {
           return item.id;
         })
-        this.singleTagsList=singleTags;
+        this.singleTagsList = singleTags;
       },
       check() {
         if (this.name == '') {
@@ -393,9 +414,72 @@
       },
       saveDraft() {
         if (this.check()) {
+          let url = "/api/Document/saveDocVersion";
+          let params = {
+            "folderId": this.folderId,
+            "creatorId": this.creatorId,
+            "name": this.name,
+            "docNo": this.docNo,
+            "version": this.version,
+            "htmlStr": this.tinymceHtml,
+            "tagIds": this.singleTags
+          }
+          utils.request.post(url, params, true).then((res) => {
+            if (res) {
+              if (res.success == true) {
+                utils.box.toast("保存成功", "success");
+                this.goBack();
+              } else {
+                utils.box.toast(res.error.message);
+              }
+            }
+          });
+        }
+      },
+      saveFile() { //编辑进来的保存---更新
+        if (this.check()) {
           //console.log(this.tinymceHtml);
-            let url = "/api/Document/saveDocVersion";
-            let params = {
+          let url = "/api/Document/updateHtmlDocVersion";
+          let params = {
+            "id": this.id,
+            "documentId": this.documentId,
+            "status": this.status,
+            "type": this.type,
+            "name": this.name,
+            "docNo": this.docNo,
+            "version": this.version,
+            "htmlStr": this.tinymceHtml,
+            "tagIds": this.singleTags
+          }
+          utils.request.post(url, params, true).then((res) => {
+            if (res) {
+              if (res.success == true) {
+                utils.box.toast("保存成功", "success");
+                this.goBack();
+              } else {
+                utils.box.toast(res.error.message);
+              }
+            }
+          });
+        }
+      },
+      submitCheck() {
+        if (this.check()) {
+          this.visible = true;
+          if(this.id!=''){
+           this.config.params = {            
+              "id": this.id,
+              "documentId": this.documentId,
+              "status": this.status,
+              "type": this.type,
+             "name": this.name,
+             "docNo": this.docNo,
+             "version": this.version,
+             "htmlStr": this.tinymceHtml,
+             "tagIds": this.singleTags
+           } 
+          }else{
+            this.config.params = {
               "folderId": this.folderId,
               "creatorId": this.creatorId,
               "name": this.name,
@@ -404,30 +488,8 @@
               "htmlStr": this.tinymceHtml,
               "tagIds": this.singleTags
             }
-            utils.request.post(url, params, true).then((res) => {
-              if (res) {
-                if (res.success == true) {
-                  utils.box.toast("保存成功","success");
-                  this.goBack();
-                } else {
-                  utils.box.toast(res.error.message);
-                }
-              }
-            });
-        }
-      },
-      submitCheck() {
-        if (this.check()) {
-         this.visible=true;
-         this.config.params={
-           "folderId": this.folderId,
-           "creatorId": this.creatorId,
-           "name": this.name,
-           "docNo": this.docNo,
-           "version": this.version,
-           "htmlStr": this.tinymceHtml,
-           "tagIds": this.singleTags
-         }
+          }
+         
         }
       },
       upload(blobInfo) {
@@ -456,26 +518,31 @@
       goBack() {
         this.$router.go(-1);
       },
-      closeModel2(val){
-        this.visible3=false;
-        if(val){
-          this.tinymceHtml=val.htmlContext;
+      closeModel2(val) {
+        this.visible3 = false;
+        if (val) {
+          this.tinymceHtml = val.htmlContext;
         }
       },
-      closeModel3(val){
-        this.visible4=false;
-        if(val){
-         this.enableDate=val.date;
-         this.enableFile();
+      closeModel3(val) {
+        this.visible4 = false;
+        if (val) {
+          this.enableDate = val.date;
+          if (this.id == '') {
+            this.enableNewFile();
+          } else {
+            this.enableFile();
+          }
+
         }
       },
-      closeModel1(){
-        this.visible2=false;
+      closeModel1() {
+        this.visible2 = false;
       },
       closeModel(val) {
         this.visible = false;
-        if(val==true){
-         this.goBack();
+        if (val == true) {
+          this.goBack();
         }
       },
     },

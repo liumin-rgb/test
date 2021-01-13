@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model="visible" :title="configure.type==1?'新建分类':'新建类别'" :afterClose="handleCancel">
+  <a-modal v-model="visible" :title="(configure.operate=='create'?'新建':'修改') +(configure.type==1?'分类':'类别')" :afterClose="handleCancel">
       <div class="format ">
     <div><span><span>{{configure.type==1?'培训分类名称：':'试题类别名称'}}</span><input class="pc-input" v-model="configure.name"/></span>
     </div>
@@ -9,7 +9,7 @@
                  取消
                </a-button>
                <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
-                 提交
+                 确认
                </a-button>
         </template>
      </a-modal>
@@ -47,7 +47,42 @@ export default {
       this.$emit("closeModel");
     },
     handleOk(){
-    this.handleCancel()
+      if(this.configure.name==''){
+        utils.box.toast("请输入名称");
+        return;
+      }
+      if(this.configure.id==''){//新建
+         let params={
+           name:this.configure.name
+         }
+          let url = this.configure.type==1?"/api/Training":"/api/Training/ExamType";
+        	utils.request.post(url,params,true).then((res) => {
+        		if(res){
+              if(res.success==true){
+                utils.box.toast("新建成功",'success');
+                this.$emit("closeModel",true);
+              }else{
+               utils.box.toast(res.error.message);
+              }
+            }
+            });
+      }else{ //编辑
+         let params={
+           name:this.configure.name
+         }
+          let url = this.configure.type==1?"/api/Training/"+this.configure.id:"/api/Training/"+this.configure.id+"/ExamType";
+          utils.request.post(url,params,true).then((res) => {
+            if(res){
+              if(res.success==true){
+                utils.box.toast("修改成功",'success');
+                this.$emit("closeModel",true);
+              }else{
+               utils.box.toast(res.error.message);
+              }
+            }
+            });
+      }
+
     }
 
 
