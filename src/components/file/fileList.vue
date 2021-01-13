@@ -66,7 +66,7 @@
           </span>
           <span class="pc-button buttonNoback" ><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
           <span :class="['pc-button',check3?'buttonNoback':'buttonGray']" @click="deleteFile1"><i class="iconfont icon-shanchu"></i>删除</span>
-          <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="readFile1"><i class="iconfont icon-chuanyueicon"></i>传阅</span>
+          <span :class="['pc-button',check2?'buttonNoback':'buttonGray']" @click="readFile1"><i class="iconfont icon-chuanyueicon"></i>传阅</span>
           <span :class="['pc-button',check2?'buttonNoback':'buttonGray']" @click="shareFile"><i class="iconfont icon-fenxiang"></i>分享</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="addTags"><i class="iconfont icon-icontag"></i>打标签</span>
           <span :class="['pc-button',check1?'buttonNoback':'buttonGray']" @click="download"><i class="iconfont icon-shangchuan1"></i>下载</span>
@@ -122,7 +122,7 @@
                 <div class="pointer themeColor weight600 font12">
                   <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
                   <p @click="editHtml(scope.row.id,scope.row.documentId)" v-show="scope.row.type==1"><i class="iconfont icon-bianji"></i>编辑</p>
-                  <p @click="readFile(scope.row.id)"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
+                  <p @click="readFile(scope.row.id)" v-show="scope.row.status==2"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                   <p @click="deleteFile(scope.row.id)" v-show="scope.row.status==1"><i class="iconfont icon-chuanyueicon"></i>删除</p>
                   <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>
                  <p @click="upgrade(scope.row.id,scope.row.documentId,scope.row.type)" v-show="scope.row.status==2"><i class="iconfont icon-update"></i>升版</p>
@@ -535,15 +535,15 @@
           },
           handleSelectionChange(val) {
             this.multipleSelection = val;
-            this.check1 = val.length == 0 ? false : true;
+            this.check1 = val.length == 0 ? false : true;//true:all
             let index1 = val.length == 0 ? 0 : val.findIndex((item) => {
-              return item.status != 2
+              return item.status != 2 //过滤已生效状态
             });
-            this.check2 = index1 == -1 ? true : false;
+            this.check2 = index1 == -1 ? true : false; //true:全部为已生效
             let index2 = val.length == 0 ? 0 : val.findIndex((item) => {
-              return item.status != 1
+              return item.status != 1  //过滤未发布状态
             });
-            this.check3 = index2 == -1 ? true : false;
+            this.check3 = index2 == -1 ? true : false;//true:全部为未发布状态
           },
           checkSelection() {
             if (!this.multipleSelection || this.multipleSelection.length == 0) {

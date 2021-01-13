@@ -3,7 +3,7 @@
       <div class="format ">
         <div><span class="label">文件名称:</span><input class="pc-input" readonly="readonly" v-model="filesName"/></div>
         <div class="marginT1VH"><span class="label verTop">链接:</span><textarea class="pc-textarea textareaOne" readonly="readonly" v-model="url"/></div>
-      <div><span class="label">分享对象:</span> <a-radio-group name="radioGroup" v-model="sharePerson" @change="getRadioValue($event)"><a-radio :value="1"> 所有人</a-radio><a-radio :value="2"> 组长</a-radio><a-radio :value="3"> 组员</a-radio></a-radio-group></div>
+      <div><span class="label">分享对象:</span> <a-radio-group name="radioGroup" v-model="sharePerson" @change="getRadioValue($event)"><a-radio :value="1"> 全部</a-radio><a-radio :value="2"> 医生</a-radio><a-radio :value="3"> 护士</a-radio></a-radio-group></div>
       </div>
         <template slot="footer">
                <a-button key="back" >

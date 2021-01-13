@@ -14,6 +14,7 @@
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                  :tree-data="treemap"
                  tree-default-expand-all
+                 treeCheckStrictly
                >
                </a-tree-select>
         <!-- <input class="pc-input" v-model="department"> -->
