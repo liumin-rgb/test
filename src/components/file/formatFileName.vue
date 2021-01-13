@@ -51,13 +51,15 @@ export default {
       format1:'1',
       format2:'2',
       format3:'3',
-      symbol1:'',
-      symbol2:'',
+      symbol1:'_',
+      symbol2:'_',
       loading:false,
     }
   },
   created(){
-
+   let separator=utils.cache.get("separator");
+   this.symbol1=separator.separator_1||"_";
+   this.symbol2=separator.separator_2||"_";
   },
   methods:{
     getSelectInfo(id){
@@ -87,6 +89,7 @@ if(params.separator_1==''||params.separator_2==''){
 utils.box.toast("请输入分隔符");
 return;
 }
+  utils.cache.set("separator",{separator_1:this.symbol1,separator_2:this.symbol2});
         this.loading=true;
         utils.request.post(url,params).then((res) => {
         this.loading=false;

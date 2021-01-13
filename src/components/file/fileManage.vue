@@ -3,7 +3,7 @@
     <div class="list-main-top">
       <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
       <div>
-        <!-- <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span> -->
+        <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span>
         <span class="pc-button" @click="openCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
         <span class="pc-button" @click="enable"><i class="iconfont icon-tongguo1"></i>生效</span>
 

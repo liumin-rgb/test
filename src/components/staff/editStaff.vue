@@ -19,7 +19,9 @@
        </div> -->
          <table class="table">
            <tr>
-             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input :class="['pc-input',(pageFrom=='personal'||flag=='add')?'backGray borderGray':'']" v-model="workStatusList[staffInfo.workingStatus]" :readonly="(pageFrom=='personal'||flag=='add')?'readonly':false" /></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input  v-if="pageFrom=='personal'||flag=='add'" :class="['pc-input',(pageFrom=='personal'||flag=='add')?'backGray borderGray':'']" v-model="workStatusList[staffInfo.workingStatus]" :readonly="(pageFrom=='personal'||flag=='add')?'readonly':false" />
+             <select v-else class="pc-input" v-model="staffInfo.workingStatus" @change="getSelectInfo('workingStatus')" id="workingStatus"><option v-for="(obj,index) in workStatusList" :value="index" >{{obj}}</option></select>
+             </div></td>
              <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input :class="['pc-input',pageFrom=='personal'?'backGray borderGray':'']" v-model="staffInfo.employeeNo"  :readonly="pageFrom=='personal'?'readonly':false"/></div></td>
              <td  rowspan="4" class="center">
                  <a-upload
@@ -188,7 +190,7 @@
         basicInfo:'基本信息',
         tagList:[],
         treemap:[],
-        workStatusList:['','在职','离职','退休'],
+        workStatusList:['请选择','在职','离职','退休'],
         politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
         educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
        spinning:false,

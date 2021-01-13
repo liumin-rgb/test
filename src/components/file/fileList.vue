@@ -743,7 +743,7 @@
           insuerEdit(e, data) {
             //编辑
             this.editable = false;
-            data.title = e.target.innerHTML;
+            data.title = e.target.innerText;
             let url = "/api/Document/folder/" + data.key;
             let params = {
               "name": data.title,

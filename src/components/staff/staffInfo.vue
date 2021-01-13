@@ -4,7 +4,7 @@
       <div>
         <span><span class="label">姓名：</span><input class="pc-input" v-model="searchInfo.name"/></span>
         <span><span class="label">工号：</span><input class="pc-input" v-model="searchInfo.employeeNo"/></span>
-        <span v-show="!isOrdinarySearch"><span class="label">在职状态：</span><select class="pc-input" @change="getSelectInfo('workingStatus')" id="workingStatus"><option v-for="obj in workStatusList" :value="obj.code" >{{obj.text}}</option></select>
+        <span v-show="!isOrdinarySearch"><span class="label">在职状态：</span><select class="pc-input" @change="getSelectInfo('workingStatus')" id="workingStatus"><option v-for="obj in workStatusList" :value="obj.code" :selected="obj.code==1?true:false">{{obj.text}}</option></select>
   </span>
         <span class="floatR">
           <span class="backButton" @click="isOrdinarySearch=isOrdinarySearch==true?false:true"><i class="iconfont icon-zhuanhuan1"></i><span
@@ -153,7 +153,7 @@
         searchInfo:{
           name:'',
           employeeNo:'',
-          workingStatus:0,
+          workingStatus:1,
           political:0,
           education:0,
           departments:[],

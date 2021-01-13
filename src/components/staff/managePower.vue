@@ -52,7 +52,7 @@
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle2==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle2==false"></i>权限分配</div>
     </div>
     <transition name="t1">
-    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" ref="body2">
+    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" ref="body2" style="height:35vh;overflow: auto;">
       <!-- <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">权限分配</span>
       </div> -->
@@ -290,6 +290,7 @@
         this.currentNodeId=info.node.dataRef.key;//用作查询和修改
         this.currentNodeType=info.node.dataRef.type;//
         if(info.node.dataRef.type==1||info.node.dataRef.type==2){
+           this.toggle1=true;
           this.showButton=true;
          // this.chooseJob=false;
         }else{
@@ -297,9 +298,12 @@
           //this.chooseJob=true;
         }
         this.showDelete=true;
-        this.status=0;
+        this.status=0;//只读状态
         this.queryOrgDetail(this.currentNodeId);
         if(this.currentNodeType==3){
+          this.toggle1=false;
+          this.toggle2=false;
+          this.toggle3=true;
           this.queryPermission(this.currentNodeId);
           this.queryStaff();
         }
@@ -371,6 +375,9 @@
     },
     startEdit(){
       this.status=2;
+      this.toggle1=true;
+      this.toggle2=true;
+      this.toggle3=false;
     },
     saveDetail(){
       let params=JSON.parse(JSON.stringify(this.orgDetail));

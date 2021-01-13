@@ -142,6 +142,8 @@
         name: '',
         docNo: '',
         version: '',
+        status:'',
+        type:'',
         fullScreen: false,
         singleTags: [],
         singleTagsList:[],
@@ -289,6 +291,8 @@
                 this.docNo=result.docNo;
                 this.version=result.version;
                 this.tinymceHtml=result.htmlStr;
+                this.status=result.status;
+                this.type=result.type;
               } else {
                 utils.box.toast(res.error.message);
               }
@@ -325,17 +329,20 @@
         }
       },
       enableFile(){
-         let url = "/api/Document/enableDocVersion";
-         let params = {
-           "folderId": this.folderId,
-           "creatorId": this.creatorId,
+         let url = "/api/Document/enableHtmlDocVersion";
+         let params =
+         {
+           "effectiveDate": this.enableDate,
+           "id": this.id,
+           "documentId": this.documentId,
+           "status": this.status,
+           "type": this.type,
            "name": this.name,
            "docNo": this.docNo,
            "version": this.version,
            "htmlStr": this.tinymceHtml,
-           "tagIds": this.singleTags,
-           "effectiveDate":this.enableDate,
-         }
+           "tagIds": this.singleTags
+         };
          utils.request.post(url, params, true).then((res) => {
            if (res) {
              if (res.success == true) {
