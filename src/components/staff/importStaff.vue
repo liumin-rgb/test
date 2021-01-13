@@ -124,7 +124,8 @@ export default {
       window.open(Global.baseUrl+url,'_self');
     },
     checkInfo(status){
-      let url = "/api/Employee/template/branch/"+this.orgnize+"/misdata";
+      let orgnize=this.orgnize;
+      let url = "/api/Employee/template/branch/"+orgnize+"/misdata";
        this.spining=true;
       	utils.request.get(url).then((res) => {
           this.spining=false;
@@ -134,7 +135,6 @@ export default {
              if(status=='update'){
                if(this.tableData.length==0){
                  this.handleCancel();
-                 let orgnize=this.orgnize;
                    this.$emit("openModel2",{orgnize:orgnize});
                }
              }
