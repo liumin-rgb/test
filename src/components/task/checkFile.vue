@@ -3,7 +3,7 @@
     <div class="format ">
       <div class="textInput positionR" v-show="config.approveResult==1">
         <span class="label1">{{label}}:</span>
-        <a-tree-select  v-model="id" show-search style="width: 50%;margin: .02rem 0.1rem;" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+        <a-tree-select  v-model="id" show-search @search="search" style="width: 50%;margin: .02rem 0.1rem;" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
           placeholder="请选择" allow-clear tree-default-expand-all :tree-data="treeData">
         </a-tree-select>
       </div>
@@ -47,6 +47,7 @@ export default {
      treeExpandedKeys: [],
      treeData:[],
      id:'',
+	 key:'',
      returnEmployeeList:[],
            }
      },
@@ -71,11 +72,15 @@ export default {
 
   },
   methods:{
+	  search(value){
+	    this.key=value;
+	   // this.getTreeMap();
+	  },
     getSelectInfo(id) {
      this.id=utils.common.getSelectValue(id);
     },
     getReturnEmployee(){
-      let url="/api/Task/getReturnEmployeeList?approveNoteId=42"//this.config.docApproveNoteId;
+      let url="/api/Task/getReturnEmployeeList?approveNoteId="+this.config.docApproveNoteId;//this.config.docApproveNoteId;
       utils.request.get(url).then((res) => {
       	if(res){
           if(res.success==true){
@@ -90,7 +95,8 @@ export default {
         },
     getTreeMap(){
       let url="/api/Document/getEmployeeTreeMap";
-      utils.request.get(url).then((res) => {
+     let params={key:this.key};
+     utils.request.post(url,params).then((res) => {
       	if(res){
           if(res.success==true){
             let treemap=res.result;

@@ -17,12 +17,12 @@
      <div v-show="toggle1==true">
 
      <div class="flex paddingLR2rem gray">
-       <div class="width50 textInput"><span class="label">文件名称</span><input class='pc-input middleInput' readonly="true" v-model="name"/></div>
-       <div class="width50 textInput"><span class="label">文档编号</span><input  class='pc-input middleInput' readonly="true" v-model="docNo"/></div>
+       <div class="width50 textInput"><span class="label">文件名称</span><input class='pc-input middleInput backGray' readonly="true" v-model="name"/></div>
+       <div class="width50 textInput"><span class="label">文档编号</span><input  class='pc-input middleInput backGray' readonly="true" v-model="docNo"/></div>
      </div>
      <div class="flex paddingLR2rem gray">
-       <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input' readonly="true" v-model="version"/></div>
-       <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input' readonly="true" v-model="type"/></div>
+       <div class="width50 textInput"><span class="label">版本号</span><input  class='pc-input backGray' readonly="true" v-model="version"/></div>
+       <div class="width50 textInput"><span class="label">文档类型</span><input  class='pc-input backGray' readonly="true" v-model="type"/></div>
      </div>
      </div>
      </transition>

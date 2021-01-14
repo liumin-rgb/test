@@ -20,8 +20,8 @@
           this.queryHtml();
      }else{
        this.htmlContent=utils.cache.getSession("htmlContent");
+       utils.cache.removeSession("htmlContent");
      }
-  
     },
     methods:{
       queryHtml(){

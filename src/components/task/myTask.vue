@@ -142,6 +142,11 @@ import Pagination from '../Pagination'
         return val2[index].text;
       },
     },
+    watch:{
+      tab(newVal){
+       this.queryTaskList();
+      }
+    },
     methods:{
         changePage(val){
           this.pageIndex=val.pageIndex;

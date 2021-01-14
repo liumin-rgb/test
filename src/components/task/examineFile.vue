@@ -13,15 +13,15 @@
       <transition name="t1">
         <div v-show="toggle1==true">
           <div class="flex paddingLR2rem gray">
-            <div class="width50 textInput"><span class="label">文件名称:</span><input v-model="name" class='pc-input middleInput'
+            <div class="width50 textInput"><span class="label">文件名称:</span><input v-model="name" class='pc-input middleInput backGray'
                 readonly="true" /></div>
-            <div class="width50 textInput"><span class="label">文档编号:</span><input v-model="docNo" class='pc-input middleInput'
+            <div class="width50 textInput"><span class="label">文档编号:</span><input v-model="docNo" class='pc-input middleInput backGray'
                 readonly="true" /></div>
           </div>
           <div class="flex paddingLR2rem gray">
-            <div class="width50 textInput"><span class="label">版本号:</span><input v-model="version" class='pc-input'
+            <div class="width50 textInput"><span class="label">版本号:</span><input v-model="version" class='pc-input backGray'
                 readonly="true" /></div>
-            <div class="width50 textInput"><span class="label">文档类型:</span><input v-model="typeList[type]" class='pc-input'
+            <div class="width50 textInput"><span class="label">文档类型:</span><input v-model="typeList[type]" class='pc-input backGray'
                 readonly="true" /></div>
           </div>
         </div>
@@ -34,11 +34,9 @@
       </div>
       <transition name="t1">
         <div class="marginT1VH" v-show="toggle3==true">
-          <div v-show="type!=1"><span class="label">附件</span><span class="preview flexBtw" @click="preview"><span class="file">{{name}}</span><span>预览</span></span>
+          <div ><span class="label">附件</span><span class="preview flexBtw" @click="preview"><span class="file">{{name}}</span><span>预览</span></span>
           </div>
-          <div v-show="type==1"class="htmlStyle">
-           <div v-html="htmlStr"></div>
-          </div>
+
 
         </div>
       </transition>
@@ -169,7 +167,16 @@
 
       },
       preview(){
-        window.open(this.url);
+        if(this.type==1){
+        //  utils.cache.setSession("htmlContent",this.htmlStr);
+          const {href} = this.$router.resolve({
+            path: 'previewHtml',
+            query:{id:this.docVersionId}
+          });
+          window.open(href, '_blank')
+        }else{
+          window.open(this.url);
+        }
       },
       queryDetail() {
         let url = "/api/Task/getDocVersionInfo?docVersionId=" + this.docVersionId+"&approveNoteId="+this.docApproveNoteId;
@@ -269,6 +276,8 @@
     &-body {
       width: 100%;
       margin-top: .2rem;
+      height:70vh;
+      overflow: auto;
     }
   }
 
