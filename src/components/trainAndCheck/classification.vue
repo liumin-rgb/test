@@ -24,12 +24,12 @@
      <el-table
          :data="tableData1"
          border
-         height="60vh"
+         height="54vh"
          style="width: 100%"
          stripe
          :header-cell-class-name="'table-header'"
          >
-         <el-table-column prop="type" label="培训分类"  min-width="300" align="center"></el-table-column>
+         <el-table-column prop="name" label="培训分类"  min-width="300" align="center"></el-table-column>
          <el-table-column prop="" label="操作" >
       <template slot-scope="scope">
       <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editInfo(1,scope.row.id,scope.row.name)"></i>
@@ -63,12 +63,12 @@
      <el-table
          :data="tableData2"
          border
-         height="60vh"
+         height="54vh"
          style="width: 100%"
          stripe
          :header-cell-class-name="'table-header'"
          >
-         <el-table-column prop="type" label="试题类别" min-width="300" align="center"></el-table-column>
+         <el-table-column prop="name" label="试题类别" min-width="300" align="center"></el-table-column>
          <el-table-column prop="" label="操作" >
       <template slot-scope="scope">
       <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editInfo(2,scope.row.id,scope.row.name)"></i>
@@ -105,16 +105,8 @@ import Pagination from '../Pagination'
           operate:'create',
           name:''
         },
-        tableData1:[
-          {
-            type:'外部培训'
-          }
-        ],
-        tableData2:[
-          {
-            type:'入职考试'
-          }
-        ],
+        tableData1:[],
+        tableData2:[],
         tab:'1',
         trainName:'',
         beginDate1:'',
@@ -161,8 +153,9 @@ import Pagination from '../Pagination'
     		if(res){
           if(res.success==true){
             utils.box.toast("删除成功",'success');
+            this.tab==1?this.queryInfo1():this.queryInfo2();
           }else{
-           // utils.box.toast();
+         
           }
         }
         });
@@ -174,10 +167,8 @@ import Pagination from '../Pagination'
 
     },
     queryInfo1(){//查找培训分类
-       let url = "/api/Training/searchTrainingType";
+       let url = "/api/Training/searchTrainingType?PageIndex="+this.pageIndex+"&PageSize="+this.pageSize;
        let params={
-         pageIndex:this.pageIndex,
-         pageSize:this.pageSize,
          name:this.trainName
        }
         this.spinning=true;
@@ -198,11 +189,9 @@ import Pagination from '../Pagination'
            });
     },
     queryInfo2(){//查找考核分类
-       let url = "/api/Training/searchExamType";
+       let url = "/api/Training/searchExamType?PageIndex="+this.pageIndex+"&PageSize="+this.pageSize;
        let params={
-         pageIndex:this.pageIndex,
-         pageSize:this.pageSize,
-         name:this.trainName
+         name:this.checkName
        }
         this.spinning=true;
        	utils.request.post(url,params,false).then((res) => {

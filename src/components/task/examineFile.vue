@@ -68,11 +68,18 @@
         </div>
       </transition>
     </div>
-    <div class="list-bottom textAlignR">
+    <div class="list-bottom textAlignR" v-if="operationType==1">
       <span class="pc-button buttonNoback" @click="operate(2)" ><i class="iconfont icon-wj-thwj"></i>退回</span>
       <span class="pc-button buttonNoback" @click="operate(3)"><i class="iconfont icon-wancheng"></i>生效</span>
-      <span class="pc-button" @click="operate(1)"><i class="iconfont icon-tongguo1"></i>通过</span>
-
+      <span class="pc-button" @click="operate(1)"><i class="iconfont icon-tongguo1"></i>提交下一审核人</span>
+    </div>
+    <div class="list-bottom textAlignR" v-else-if="operationType==2">
+      <span class="pc-button buttonNoback" @click="operate(2)" ><i class="iconfont icon-wj-thwj"></i>退回</span>
+      <span class="pc-button buttonNoback" @click="operate(3)"><i class="iconfont icon-wancheng"></i>立即废除</span>
+      <span class="pc-button" @click="operate(1)"><i class="iconfont icon-tongguo1"></i>提交下一审核人</span>
+    </div>
+    <div class="list-bottom textAlignR" v-else>
+       <span class="pc-button buttonNoback" @click="operate()"><i class="iconfont icon-wancheng"></i>已阅</span>
     </div>
     <CheckFile  :visible="visible" :config="config" @closeModel="closeModel"/>
     <EnableFile  :visible="visible1"  @closeModel="closeModel1"/>
@@ -112,6 +119,7 @@
         pageSize:10,
         htmlStr:'',
         url:'',
+        operationType:'',
         flowStatusList:[{code:0,text:''},{code:1,text:'处理中'},{code:2,text:'已完成'},{code:3,text:'退回'},{code:4,text:'已读'}],
       }
     },
@@ -124,6 +132,7 @@
     created() {
       this.docVersionId = this.$route.query.docVersionId;
       this.docApproveNoteId=this.$route.query.docApproveNoteId;
+      this.operationType=this.$route.query.operationType;
       this.queryDetail();
       this.queryPreview();
       this.queryFlowList();

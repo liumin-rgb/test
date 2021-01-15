@@ -154,7 +154,7 @@ import Pagination from '../Pagination'
           this.queryTaskList();
         },
         rowClick(obj){
-          this.$router.push({path:'examineFile',query:{docVersionId:obj.docVersionId,docApproveNoteId:obj.docApproveNoteId}});
+          this.$router.push({path:'examineFile',query:{docVersionId:obj.docVersionId,docApproveNoteId:obj.docApproveNoteId,operationType:obj.operationType}});
         },
         queryTaskList(){
                let url="/api/Task/searchTaskList";

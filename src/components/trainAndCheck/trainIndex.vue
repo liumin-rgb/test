@@ -29,7 +29,7 @@
      <el-table
          :data="tableData1"
          border
-         height="60vh"
+         height="54vh"
          style="width: 100%"
          stripe
           @selection-change="handleSelectionChange"
@@ -106,7 +106,7 @@
       <el-table
           :data="tableData2"
           border
-          height="60vh"
+          height="54vh"
           style="width: 100%"
           stripe
            @selection-change="handleSelectionChange"
@@ -226,8 +226,8 @@ import Pagination from '../Pagination'
       let params={
         "pageIndex": this.pageIndex,
          "pageSize": this.pageSize,
-         "name": "培训3",//this.trainName,
-         "startDate": null//this.beginDate1
+         "name": this.trainName,
+         "startDate":this.beginDate1
       }
        this.spinning=true;
       	utils.request.post(url,params,false).then((res) => {

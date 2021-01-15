@@ -71,7 +71,7 @@ export default {
            name:this.configure.name
          }
           let url = this.configure.type==1?"/api/Training/"+this.configure.id:"/api/Training/"+this.configure.id+"/ExamType";
-          utils.request.post(url,params,true).then((res) => {
+          utils.request.put(url,params,true).then((res) => {
             if(res){
               if(res.success==true){
                 utils.box.toast("修改成功",'success');
