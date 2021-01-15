@@ -144,7 +144,7 @@
         status: '',
         type: '',
         fullScreen: false,
-        singleTags: [],
+        singleTags: [],//tagsid
         singleTagsList: [],
         config: {
           operationType: 1, //1：审核 2：废除 3：传阅
@@ -274,6 +274,7 @@
           if (res) {
             if (res.success == true) {
               this.singleTagsList = res.result;
+              this.singleTags=this.singleTagsList.map((item)=>{return item.id});
               //this.operateTags();
             } else {}
           }
@@ -384,18 +385,18 @@
         }
         this.operation = {
           type: 'single',
-          ids: arr || [], //文件id
-          singleTag: this.singleTags
+          ids: [], //文件id
+          singleTag: this.singleTagsList
         }
         this.visible1 = true;
       },
       closeTagManage(val) {
         this.visible1 = false;
-        let singleTags = val.singleTags;
-        this.singleTags = singleTags.map((item) => {
+        let singleTagsList = val.singleTagsList;
+        this.singleTags = singleTagsList.map((item) => {
           return item.id;
         })
-        this.singleTagsList = singleTags;
+        this.singleTagsList = singleTagsList;
       },
       check() {
         if (this.name == '') {
@@ -467,7 +468,7 @@
         if (this.check()) {
           this.visible = true;
           if(this.id!=''){
-           this.config.params = {            
+           this.config.params = {
               "id": this.id,
               "documentId": this.documentId,
               "status": this.status,
@@ -477,7 +478,7 @@
              "version": this.version,
              "htmlStr": this.tinymceHtml,
              "tagIds": this.singleTags
-           } 
+           }
           }else{
             this.config.params = {
               "folderId": this.folderId,
@@ -489,7 +490,7 @@
               "tagIds": this.singleTags
             }
           }
-         
+
         }
       },
       upload(blobInfo) {

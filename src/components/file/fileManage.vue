@@ -111,8 +111,10 @@
       this.symbol1=separator.separator_1||"_";
       this.symbol2=separator.separator_2||"_";
       this.format='文件名称'+this.symbol1+'文件编号'+this.symbol2+'版本号';
+      this.fileFormatId=separator.separator_id||0;
       this.folderId=utils.cache.getSession("folderId")||0;
       this.folderName=utils.cache.getSession("folderName")||'';
+
     },
     methods: {
       reviewFile(url,type){
@@ -145,7 +147,8 @@
       utils.request.post(url, params, true).then((res) => {
         if (res) {
           if (res.success == true) {
-            utils.box.toast("提交成功","success");
+            utils.box.toast("已生效","success");
+            this.goBack();
           } else {
             utils.box.toast(res.error.message);
           }
@@ -283,8 +286,11 @@
          this.fileFormatId=val.id
        }
      },
-      closeModel1() {
+      closeModel1(val) {
         this.visible1 = false;
+        if(val){
+          this.goBack()
+          }
       },
       closeModel2(val){
         this.visible2=false;

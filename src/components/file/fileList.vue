@@ -24,9 +24,8 @@
             <span v-else>{{item.title}}</span>
             <span v-show="item.key==folderId">
               <i class='iconfont icon-jiahao themeColor' @click.stop="appendNode(item)"></i>
-              <i :class='["iconfont", "icon-tubiao09",!item.editable?"color999":"themeColor"]' @click.stop="editNode(item)"></i>
-              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)"
-                v-show="!item.default&&item.parentId!=0"></i>
+              <i :class='["iconfont", "icon-tubiao09",!item.editable?"color999":"themeColor"]' @click.stop="editNode(item)" v-show="item.editable"></i>
+              <i :class='["iconfont", "icon-shanchu",item.default?"color999":"themeColor"]' @click.stop="deleteNode(item)" v-show="!item.default&&item.parentId!=0"></i>
             </span>
           </template>
           <!-- <template slot='switcherIcon'>
@@ -121,7 +120,7 @@
               <el-popover trigger="hover" placement="bottom">
                 <div class="pointer themeColor weight600 font12">
                   <p @click="toDetail(scope.row.id,scope.row.documentId)"><i class="iconfont icon-xiangqing"></i>文件详情</p>
-                  <p @click="editHtml(scope.row.id,scope.row.documentId)" v-show="scope.row.type==1"><i class="iconfont icon-bianji"></i>编辑</p>
+                  <p @click="editHtml(scope.row.id,scope.row.documentId)" v-show="scope.row.type==1&&scope.row.status==1"><i class="iconfont icon-bianji"></i>编辑</p>
                   <p @click="readFile(scope.row.id)" v-show="scope.row.status==2"><i class="iconfont icon-chuanyueicon"></i>传阅</p>
                   <p @click="deleteFile(scope.row.id)" v-show="scope.row.status==1"><i class="iconfont icon-chuanyueicon"></i>删除</p>
                   <p @click="openTagManage('single',scope.row.documentId,scope.row.tags)"><i class="iconfont icon-biaoqian"></i>标签管理</p>

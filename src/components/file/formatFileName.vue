@@ -89,7 +89,7 @@ if(params.separator_1==''||params.separator_2==''){
 utils.box.toast("请输入分隔符");
 return;
 }
-  utils.cache.set("separator",{separator_1:this.symbol1,separator_2:this.symbol2});
+ 
         this.loading=true;
         utils.request.post(url,params).then((res) => {
         this.loading=false;
@@ -97,6 +97,7 @@ return;
             if(res.success==true){
              utils.box.toast("提交成功","success");
              let id=res.result;
+             utils.cache.set("separator",{separator_1:this.symbol1,separator_2:this.symbol2,separator_id:id});
              let format=this.formatArr[+this.format1-1]+this.symbol1+this.formatArr[+this.format2-1]+this.symbol2+this.formatArr[+this.format3-1];
              this.$emit("closeModel",{format:format,id:id});
             }else{

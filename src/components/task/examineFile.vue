@@ -79,7 +79,7 @@
       <span class="pc-button" @click="operate(1)"><i class="iconfont icon-tongguo1"></i>提交下一审核人</span>
     </div>
     <div class="list-bottom textAlignR" v-else>
-       <span class="pc-button buttonNoback" @click="operate()"><i class="iconfont icon-wancheng"></i>已阅</span>
+       <span class="pc-button buttonNoback" @click="operate(3)"><i class="iconfont icon-wancheng"></i>已阅</span>
     </div>
     <CheckFile  :visible="visible" :config="config" @closeModel="closeModel"/>
     <EnableFile  :visible="visible1"  @closeModel="closeModel1"/>
@@ -120,6 +120,7 @@
         htmlStr:'',
         url:'',
         operationType:'',
+        approveResult:'',//1：通过 2：退回 3：生效、已阅、废除
         flowStatusList:[{code:0,text:''},{code:1,text:'处理中'},{code:2,text:'已完成'},{code:3,text:'退回'},{code:4,text:'已读'}],
       }
     },
@@ -139,26 +140,30 @@
     },
     methods: {
       operate(approveResult){
-        if(approveResult==3){
-         // this.enableFile();
-         this.visible1=true;
+        this.approveResult=approveResult;      
+        if(approveResult==3){ //  生效/立即废除/已阅
+         if(this.operationType==2||this.operationType==3){ // 传阅/废除任务
+           this.enableFile();
+           return;
+         }
+         this.visible1=true; //生效任务需要打开model选择生效时间
           return;
         }
        this.config={
-        operationType:1, //1：审核 2：废除 3：传阅
+        operationType:this.operationType, //1：审核 2：废除
         approveResult:approveResult,    //1：通过 2：退回 3：立刻生效
         docVersionId:this.docVersionId,
         docApproveNoteId:this.docApproveNoteId,
        }
        this.visible=true;
       },
-      enableFile(){
+      enableFile(){ //生效/已阅/废除专用
           let url = "/api/Task/approveDocVersion";
           let params={
               "docVersionId": this.docVersionId,
               "docApproveNoteId": this.docApproveNoteId,
-              "operationType": 1,
-              "approveResult": 3,
+              "operationType": this.operationType,
+              "approveResult": this.approveResult,
               "nextEmployeeId": 0,
               "suggesion": "",
               "effectiveDate":this.enableDate,
@@ -166,7 +171,7 @@
           utils.request.post(url,params,true).then((res) => {
             if (res) {
               if (res.success == true) {
-                 utils.box.toast("已生效",'success');
+                 utils.box.toast("提交成功",'success');
                  this.goBack();
               } else {
                 utils.box.toast(res.error.message);

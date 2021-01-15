@@ -117,7 +117,7 @@ export default {
                 if(this.operation.ids.length!=0){
                   this.querySingleTag();
                 }else{
-                  this.singleTagList=this.operation.singleTag;
+                  this.singleTagList=JSON.parse(JSON.stringify(this.operation.singleTag));
                   this.operateTags();
                 }
               }
@@ -159,7 +159,7 @@ export default {
             var params=this.allTagsList
           }else{
             if(this.operation.ids.length==0){
-              this.$emit("closeTagManage",{singleTags:this.singleTagList});
+              this.$emit("closeTagManage",{singleTagsList:this.singleTagList});
               return;
             }
             var url="/api/Document/batch"; //单或多个文件修改标签
