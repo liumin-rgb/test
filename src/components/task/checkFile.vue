@@ -4,7 +4,7 @@
       <div class="textInput positionR" v-show="config.approveResult==1">
         <span class="label1">{{label}}:</span>
         <a-tree-select  v-model="id" show-search @search="search" style="width: 50%;margin: .02rem 0.1rem;" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-          placeholder="请选择" allow-clear tree-default-expand-all :tree-data="treeData">
+          placeholder="请选择" allow-clear tree-default-expand-all :tree-data="treeData" treeNodeFilterProp='title'>
         </a-tree-select>
       </div>
       <div class="textInput positionR" v-show="config.approveResult==2">
@@ -47,7 +47,7 @@ export default {
      treeExpandedKeys: [],
      treeData:[],
      id:'',
-	 key:'',
+	  key:'',
      returnEmployeeList:[],
            }
      },
@@ -103,7 +103,6 @@ export default {
             this.treeData=JSON.parse(JSON.stringify(treemap).replace(/name/g,"title").replace(/id/g,"key").replace(/employees/g,"children"));
             console.log(this.treeData);
             this.forTree(this.treeData);
-
        }else{
          utils.box.toast(res.error.message);
           }
