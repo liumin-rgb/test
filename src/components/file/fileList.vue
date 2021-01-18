@@ -360,7 +360,7 @@
       },
       readFile1() {
         let ids = this.multipleSelection.map((item) => {
-          return item.documentId
+          return item.id
         });
         this.config = {
             operationType: 3,

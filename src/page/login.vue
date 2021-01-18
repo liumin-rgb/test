@@ -60,7 +60,7 @@
 			 this.$router.push({path:'superADM',query:{}});
 			 return;
 		   } */
-           this.$router.push({path:'fileList',query:{}});
+           this.$router.push({path:'myTask',query:{}});
          }else{
           this.errorMsg=res.error.message;
          }
