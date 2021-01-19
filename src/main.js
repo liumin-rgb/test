@@ -29,7 +29,8 @@ import {
   Tree,
   Switch,
   Popover,
-  DatePicker
+  DatePicker,
+  TimePicker
 } from 'element-ui'
 
 Vue.use(Table);
@@ -39,6 +40,7 @@ Vue.use(Tree);
 Vue.use(Switch);
 Vue.use(Popover);
 Vue.use(DatePicker);
+Vue.use(TimePicker);
 window.eventBus = new Vue(); //注册全局事件对象
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$MessageBox=MessageBox;

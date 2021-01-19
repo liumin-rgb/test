@@ -51,7 +51,7 @@
           <el-table :data="tableData" border style="width: 100%" :header-cell-class-name="'table-header'">
             <el-table-column type="index"  label="序号" width="60">
             </el-table-column>
-            <el-table-column prop="approveEmoloyeeName" label="审批人">
+            <el-table-column prop="approveEmoloyeeName" label="当前节点">
             </el-table-column>
             <el-table-column prop="startDate" label="到达时间">
             </el-table-column>

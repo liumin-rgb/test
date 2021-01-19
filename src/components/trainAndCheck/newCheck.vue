@@ -37,8 +37,12 @@
       </span></div>
     </div>
     <div class="flex paddingLR2rem gray">
-      <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>考核开始时间</span><input class='pc-input middleInput'/></div>
-      <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>考核结束时间</span><input  class='pc-input middleInput'/></div>
+      <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>考核开始时间</span>
+      <el-date-picker  type="datetime"  value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+      </div>
+      <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>考核结束时间</span>
+      <el-date-picker  type="datetime"  value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+      </div>
     </div>
     <div class="flex paddingLR2rem gray">
       <div class=" textInput"><span class="label2">考试时长</span><input class='pc-input middleInput'/></div>
