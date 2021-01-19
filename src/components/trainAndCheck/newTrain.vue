@@ -40,11 +40,9 @@
                 <input class='pc-input middleInput' v-model="trainInfo.address"/></div>
             </div>
             <div class="flex paddingLR2rem gray">
-              <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训开始时间</span>
-                <el-date-picker  type="datetime" v-model="trainInfo.startDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+              <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训开始时间</span><el-date-picker  type="datetime" v-model="trainInfo.startDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
               </div>
-              <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>培训结束时间</span>
-                <el-date-picker  type="datetime" v-model="trainInfo.endDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+              <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>培训结束时间</span><el-date-picker  type="datetime" v-model="trainInfo.endDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
               </div>
             </div>
             <div class="flex paddingLR2rem gray">

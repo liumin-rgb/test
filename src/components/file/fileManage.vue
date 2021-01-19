@@ -3,7 +3,7 @@
     <div class="list-main-top">
       <span class="backButton" @click="goBack"><i class="iconfont icon-fanhui"></i><span>返回上一级</span></span>
       <div>
-        <span class="pc-button"><i class="iconfont icon-baocun"></i>保存草稿</span>
+        <span class="pc-button" @click="saveDraft('draft')"><i class="iconfont icon-baocun"></i>保存草稿</span>
         <span class="pc-button" @click="openCheck"><i class="iconfont icon-tijiao"></i>提交审核</span>
         <span class="pc-button" @click="enable"><i class="iconfont icon-tongguo1"></i>生效</span>
 
@@ -96,6 +96,7 @@
         folderName:'',
         fileFormatId:0,
         ids:[],
+        savedIds:[],
         fileList:[],
         spinning:false,
         config: {
@@ -131,18 +132,51 @@
       }
 
       },
+      saveDraft(type){
+          let url = "/api/Document/saveDocVersionTemp";
+          let params = {
+             "docVersionTempIds":this.ids
+          }
+          utils.request.post(url, params, true).then((res) => {
+            if (res) {
+              if (res.success == true) {
+                this.savedIds=res.result;
+                if(type=='draft'){
+                 utils.box.toast("保存成功","success");
+                 this.goBack();
+                }else if(type=='enable'){
+                   this.visible2=true;
+                }else{
+                  this.visible1 = true;
+                  this.config.ids=this.savedIds;
+                }
+              } else {
+                utils.box.toast(res.error.message);
+                return false;
+              }
+            }
+          });
+
+      },
 		enable(){
-			/* if(this.ids.length==0){
+			 if(this.ids.length==0){
 			  utils.box.toast("请上传文件");
 			  return;
-			} */
-			 this.visible2=true;
+			}
+       this.saveDraft('enable');
 		},
+    openCheck() {
+      if(this.ids.length==0){
+        utils.box.toast("请上传文件");
+        return;
+      }
+      this.saveDraft('check');
+    },
     enableFile(){
       let url = "/api/Document/enableDocVersions";
       let params = {
          "effectiveDate":this.enableDate,
-         "docVersionIds":this.ids
+         "docVersionIds":this.savedIds
       }
       utils.request.post(url, params, true).then((res) => {
         if (res) {
@@ -249,7 +283,13 @@
         });
       },
       deleteFile(id){
-          		  utils.box.confirm("是否确认删除文件？").then(()=>{
+        utils.box.confirm("是否确认删除文件？").then(()=>{
+        let index1=this.tableData.findIndex((item)=>{return item.id==id});
+        let index2=this.ids.findIndex((item)=>{return item==id});
+        this.tableData.splice(index1,1);
+        this.ids.splice(index2,1);
+        });
+          		  /* utils.box.confirm("是否确认删除文件？").then(()=>{
           		  	let url = "/api/Document/DeleteDocVersion?docVersionId="+id;
           		  	utils.request.delete(url).then((res) => {
           		  	  if (res) {
@@ -264,16 +304,9 @@
                       }
           		  	  }
           		  	});
-          		  			 });
+          		  			 }); */
       },
-      openCheck() {
-        if(this.ids.length==0){
-          utils.box.toast("请上传文件");
-          return;
-        }
-        this.visible1 = true;
-        this.config.ids=this.ids;
-      },
+
       changePage(val){
         this.pageIndex=val.pageIndex;
         this.pageSize=val.pageSize;

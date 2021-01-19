@@ -27,6 +27,7 @@
         <span class="pc-button" @click="saveDetail()" v-show="status!=0">保存</span>
         <span :class="['pc-button',status==0&&orgDetail.name!=''?'':'buttonGray']" @click="startEdit()" v-show="status==0">编辑</span>
       </div>
+      <div class="list-main-two-inner">
       <div class="list-head" @click="toggle1=!toggle1" ref="head">
         <div><i class="iconfont icon-jiantou themeColor" v-show="toggle1==true"></i><i class="iconfont icon-jiantou1 themeColor"
             v-show="toggle1==false"></i>详情</div>
@@ -52,7 +53,7 @@
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle2==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle2==false"></i>权限分配</div>
     </div>
     <transition name="t1">
-    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" ref="body2" style="height:35vh;overflow: auto;">
+    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle2==true" ref="body2">
       <!-- <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">权限分配</span>
       </div> -->
@@ -69,16 +70,16 @@
       <div><i class="iconfont icon-jiantou themeColor" v-show="toggle3==true"></i><i class="iconfont icon-jiantou1 themeColor" v-show="toggle3==false"></i>人员列表</div>
     </div>
     <transition name="t1">
-    <div class="paddingTB1rem" v-show="currentNodeType==3&&toggle3==true">
+    <div class="paddingTB1rem positionR" v-show="currentNodeType==3&&toggle3==true">
       <!-- <div class="border-bottom-line paddingTB1rem">
         <span class="themeColor weight600">人员列表</span>
       </div> -->
-      <div class="margin05rem">
+      <div class="margin05rem marginB2VH">
       <span class="pc-button" @click="visible=true">添加</span>
        <span :class="['pc-button',multipleSelection.length==0?'buttonGray':'']" @click="removeStaff()">删除</span>
        <div class="flexBtw">
          <div class=" width33">
-  <el-table :data="tableData1" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange1">
+  <el-table :data="tableData1" border height="400" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange1">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -93,7 +94,7 @@
   </el-table>
   </div>
   <div class=" width33">
-  <el-table :data="tableData2" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange2">
+  <el-table :data="tableData2" border height="400" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange2">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -108,7 +109,7 @@
   </el-table>
   </div>
   <div class=" width33">
-    <el-table :data="tableData3" border :height="tableHeight" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange3">
+    <el-table :data="tableData3" border height="400" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange3">
           <el-table-column type="selection"></el-table-column>
           <el-table-column prop="name" label="姓名" >
             <template slot="header" slot-scope="scope">
@@ -123,17 +124,18 @@
     </el-table>
   </div>
  </div>
+ <div class="list-bottom" ref="bottom">
+   <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount" :pageSizeList="pageSizeList"/>
+ </div>
       </div>
-      <div class="list-bottom" ref="bottom">
-        <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount" :pageSizeList="pageSizeList"/>
-      </div>
+
     </div>
     </transition>
-
+      </div>
     </div>
     <AddStaff :visible="visible" @closeModel="closeModel" :orgId="currentNodeId" :parentId="parentId"/>
      <CreateOrgnization :visible="visible1" @closeModel="closeModel1"/>
-     <CreateDepartment :visible="visible2" :parentId="parentId" @closeModel="closeModel2" />
+     <CreateDepartment :visible="visible2" :id="currentNodeId" @closeModel="closeModel2" />
   </div>
 </template>
 
@@ -202,7 +204,7 @@
       multipleSelection3:function(newVal){
         this.multipleSelection=[...this.multipleSelection1,...this.multipleSelection2,...newVal];
       },
-      toggle1:function(){
+     /* toggle1:function(){
         this.$nextTick(()=>{
           this.calcHeight();
         });
@@ -216,7 +218,7 @@
          this.$nextTick(()=>{
           this.calcHeight();
         });
-        },
+        }, */
     },
     filters:{
 
@@ -712,6 +714,10 @@
       border-radius: 5px;
       padding: .1rem .2rem;
       position: relative;
+      &-inner{
+        height:77vh;
+        overflow:auto;
+      }
     }
   }
 

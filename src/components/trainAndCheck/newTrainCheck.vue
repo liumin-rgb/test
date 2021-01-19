@@ -28,8 +28,10 @@
        <div class=" textInput marginL2VW"><span class="label2">培训地点</span><input  class='pc-input middleInput'/></div>
      </div>
      <div class="flex paddingLR2rem gray">
-       <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训开始时间</span><input class='pc-input middleInput'/></div>
-       <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>培训结束时间</span><input  class='pc-input middleInput'/></div>
+       <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训开始时间</span><el-date-picker  type="datetime"  value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+       </div>
+       <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>培训结束时间</span><el-date-picker  type="datetime"  value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+       </div>
      </div>
      <div class="flex paddingLR2rem gray">
        <div class=" textInput"><span class="label2 verTop">培训内容介绍</span><textarea class='pc-textarea textareaOne' style="width:6.5rem"/></div>
@@ -163,4 +165,10 @@
   height:80vh;
   overflow: auto;
   }
+  /*时间控件*/
+   /deep/.el-table th>.cell{padding-left:5px;padding-right:0;}
+   /deep/.el-input__inner{height:.25rem;/* border: 1px solid #2e6eb4; */}
+   /deep/.el-input__icon{line-height: .25rem;}
+   /deep/.el-date-editor.el-input, .el-date-editor.el-input__inner{width:2.5rem;margin: .02rem 0.1rem;/* box-shadow: 0px 3px 6px 0px rgba(0,0,0,0.1) */}
+   /deep/.el-input--suffix .el-input__inner{padding-right:0}
 </style>

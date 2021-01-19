@@ -35,7 +35,7 @@ export default {
       default:false,
       type:Boolean
     },
-    parentId:{
+    id:{
       default:null,
       type:Number
     }
@@ -92,7 +92,7 @@ export default {
       return;
     }
     //Object.assign(this.$data, this.$options.data())
-    this.$emit("closeModel",{parentId:this.parentId,name:this.name,type:this.type,permissions:this.permissions,remark:this.remark});
+    this.$emit("closeModel",{parentId:this.id,name:this.name,type:this.type,permissions:this.permissions,remark:this.remark});
     utils.common.resetData(this);
     },
 
