@@ -257,6 +257,9 @@
                  this.maxPage=Math.ceil(totalCount/this.pageSize);
                 let items=res.result.items;
                  this.tableData=items;
+                 this.tableData.filter((item)=>{
+                   item.workingStatus==this.searchInfo.workingStatus
+                 })
               }else{
 
               }

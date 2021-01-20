@@ -1,7 +1,7 @@
 <template>
   <div class="list-main positionR">
    <div class="list-tab displayF marginB1VH">
-     <div :class="[tab!=1?'title_light_blue':'']" @click="tab=1">培训分类</div><div @click="tab=2" :class="[tab!=2?'title_light_blue':'']">试题类别</div>
+     <div :class="[tab!=1?'title_light_blue':'']" @click="tab=1">培训分类</div><div @click="tab=2" :class="[tab!=2?'title_light_blue':'']">试题分类</div>
    </div>
    <div v-show="tab==1">
   <div class="list-search">
@@ -68,7 +68,7 @@
          stripe
          :header-cell-class-name="'table-header'"
          >
-         <el-table-column prop="name" label="试题类别" min-width="300" align="center"></el-table-column>
+         <el-table-column prop="name" label="试题分类" min-width="300" align="center"></el-table-column>
          <el-table-column prop="" label="操作" >
       <template slot-scope="scope">
       <i class="iconfont icon-tubiao09 themeColor font16 pointer" @click="editInfo(2,scope.row.id,scope.row.name)"></i>

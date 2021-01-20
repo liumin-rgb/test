@@ -12,9 +12,15 @@
        <transition name="t1">
       <div v-show="toggle1==true">
      <el-table :data="doingData1" border stripe height="30vh" style="width:unset" :header-cell-class-name="'table-header'" @row-click="rowClick">
+     
        <el-table-column prop="name" label="文件名称" >
         <template slot-scope="scope">
           <div class="pointer themeColor text-line">{{scope.row.name}}</div>
+        </template>
+       </el-table-column>
+       <el-table-column prop="operationType" label="类型" >
+        <template slot-scope="scope">
+          <div>{{operationTypeList[scope.row.operationType]}}</div>
         </template>
        </el-table-column>
        <el-table-column prop="docNo" label="编号" ></el-table-column>
@@ -131,6 +137,7 @@ import Pagination from '../Pagination'
         ],
         tab:'1',
         statusList:[{code:'0',text:''},{code:'1',text:'草稿'},{code:'2',text:'已生效'},{code:'3',text:'流转中'},{code:'4',text:'废除'}],
+        operationTypeList:['','审核','传阅','废除'],
       }
     },
     created(){

@@ -1,5 +1,7 @@
 <template>
-  <div class="list-main">
+  <div>
+    <div class="templateToggle"><span @click="toggleTab">模板库</span><span>我创建的模板</span></div>
+<div class="tempMain">
    <div class="list-search" ref="search">
          <div class="flexWrap">
            <span>
@@ -21,14 +23,18 @@
              <span class="pc-button" @click="search"><i class="iconfont icon-sousuo"></i>搜索</span>
          </div>
          <div class="list-search-three">
-           <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan1 "></i>权限配置</span>
-           <span class="pc-button buttonNoback"><i class="iconfont icon-tijiao "></i>发布</span>
-           <span class="pc-button buttonNoback"><i class="iconfont icon-1-icon-print"></i>打印</span>
-           <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan"></i>导入</span>
-            <span class="pc-button buttonNoback"><i class="iconfont icon-shangchuan1"></i>导出</span>
-            <span class="pc-button buttonNoback" @click="isCard=isCard==true?false:true"><i class="iconfont icon-zhuanhuan1" ></i>切换视图</span>
+            <span class="pc-button "><i class="iconfont icon-shangchuan1 "></i>打标签</span>
+            <span class="pc-button "><i class="iconfont icon-tijiao "></i>发布</span>
+           <span class="pc-button "><i class="iconfont  "></i>禁用</span>
+             <span class="pc-button "><i class="iconfont  "></i>启用</span>
+           <span class="pc-button "><i class="iconfont icon-feichu "></i>废除</span>
+           <span class="pc-button "><i class="iconfont icon-1-icon-print"></i>打印</span>
+           <span class="pc-button "><i class="iconfont icon-shangchuan"></i>导入</span>
+            <span class="pc-button "><i class="iconfont icon-shangchuan1"></i>导出</span>
+            <span class="pc-button " @click="isCard=isCard==true?false:true"><i class="iconfont icon-zhuanhuan1" ></i>切换视图</span>
          </div>
        </div>
+        <div class="list-main">
        <div class="list-table">
           <a-spin :spinning="spinning">
             <div v-show="isCard==true" class="flex flexWrap">
@@ -44,14 +50,14 @@
                 <span></span>
                <el-popover trigger="hover" placement="top">
                  <ul class="operation">
-                  <li>预览</li>
-                  <li>编辑</li>
-                  <li>复制</li>
-                  <li>打印</li>
-                  <li>发布</li>
-                  <li>删除</li>
-                  <li>权限配置</li>
-                  <li>历史版本</li>
+                  <!-- <li>预览</li> -->
+                   <li>编辑</li>
+                   <li>复制</li>
+                  <!-- <li>打印</li>
+                   <li>发布</li>
+                   <li>删除</li>
+                   <li>权限配置</li> -->
+                   <li>历史版本</li>
                   </ul>
                  <span slot="reference" class="name-wrapper"><i class="iconfont icon-1-icon-function"></i></span>
                 </el-popover>
@@ -110,35 +116,35 @@
    <el-table-column prop="name" label="表单模板名称" >
 
    </el-table-column>
-   <el-table-column prop="name" label="编码" >
+   <<!-- el-table-column prop="name" label="编码" >
 
    </el-table-column>
    <el-table-column prop="name" label="版本号" >
 
-   </el-table-column>
+   </el-table-column> -->
    <el-table-column prop="name" label="关联部门" >
 
    </el-table-column>
-   <el-table-column prop="name" label="状态" >
+   <el-table-column prop="name" label="当前状态" >
 
    </el-table-column>
-   <el-table-column prop="name" label="是否存在废除流程">
+   <el-table-column prop="name" label="标签">
 
    </el-table-column>
-   <el-table-column prop="name" label="创建日期" >
+   <el-table-column prop="name" label="创建时间" >
 
    </el-table-column>
    <el-table-column prop="" label="操作" align="center">
      <template slot-scope="scope">
        <el-popover trigger="hover" placement="bottom">
          <ul class="operation">
-          <li>预览</li>
+          <!-- <li>预览</li> -->
           <li>编辑</li>
           <li>复制</li>
-          <li>打印</li>
+         <!-- <li>打印</li>
           <li>发布</li>
           <li>删除</li>
-          <li>权限配置</li>
+          <li>权限配置</li> -->
           <li>历史版本</li>
           </ul>
          <div slot="reference" class="name-wrapper">
@@ -154,6 +160,8 @@
        <div class="list-bottom" v-show="isCard==false">
          <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount"/>
        </div>
+  </div>
+  </div>
   </div>
 </template>
 
@@ -175,6 +183,9 @@ export default{
     }
   },
   methods:{
+ toggleTab(){
+     this.$router.push({path:'templateLibrary'});
+    },
  search(){
 
  },
@@ -191,13 +202,17 @@ export default{
 </script>
 
 <style scoped lang="less">
+  .tempMain{
+    height:89vh;
+    overflow: auto;
+  }
  .list-main {
-    height: 100%;
+    //height: 100%;
     border-radius: 5px;
     background: #fff;
     padding: .1rem;
     position: relative;
-    overflow: auto;
+    //overflow: auto;
   }
   .list-search {
     border: 1px dashed #cccccc;
@@ -307,4 +322,10 @@ export default{
       font-weight: 600;
     }
   }
+  .templateToggle{position: absolute;top:20px;left:20%;cursor: pointer;
+  &>span:nth-child(1){margin-right:.2rem;}
+  &>span:nth-child(2){color:#0e72d8;}
+  &>span{color:#000;font-weight: 600;}
+  }
+
 </style>

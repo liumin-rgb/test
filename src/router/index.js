@@ -237,11 +237,19 @@ const router = new Router({
                }
          },
          {
-               path: '/formTemplate',
-               name:'formTemplate',
-               component: resolve => require(['@/components/template/formTemplate'], resolve),
+               path: '/myTemplate',
+               name:'myTemplate',
+               component: resolve => require(['@/components/template/myTemplate'], resolve),
                meta : {
-                   title : '表单模板',
+                   title : '我创建的模板',
+               }
+         },
+         {
+               path: '/templateLibrary',
+               name:'templateLibrary',
+               component: resolve => require(['@/components/template/templateLibrary'], resolve),
+               meta : {
+                   title : '模板库',
                }
          },
          {

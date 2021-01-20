@@ -413,14 +413,14 @@
              this.editNode(item);
             }else{
               this.selectedNode.dataRef.isLeaf=false;
-               this.onLoadData(this.selectedNode);
+              // this.onLoadData(this.selectedNode);
                utils.box.toast("添加成功","success");
-              /* console.log(this.selectedNode);
+               console.log(this.selectedNode);
                let val={
                  name:params.name,
                  id:res.result
                }
-               this.appendNode(val); */
+               this.appendNode(val);
             }
           }else{
             utils.box.toast(res.error.message);
@@ -474,9 +474,10 @@
                 arr.splice(s, 1)
               } else if(type=='add'){
                 const newChild = {
+                   parentId:this.currentNodeId,
                    title: val.name,
                    key: val.id,
-                   scopedSlots: { title: 'custom' },
+                   //scopedSlots: { title: 'custom' },
                    isLeaf:true,
                    children: [] ,
                    }
