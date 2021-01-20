@@ -21,12 +21,12 @@
         <transition name="t1">
           <div v-show="toggle1==true">
             <div class="flex paddingLR2rem gray">
-              <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训名称</span>
+              <div class=" textInput"><span class="label2" ref="name"><span class="icon-xing">*</span>培训名称</span>
                 <input class='pc-input middleInput' v-model="trainInfo.name"/></div>
-              <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>培训负责人</span>
+              <div class=" textInput marginL2VW"><span class="label2" ref="employeeName"><span class="icon-xing">*</span>培训负责人</span>
                 <span>
                   <a-tree-select allow-clear tree-checkable size="small" style="width:2.5rem;height:.25rem;margin: .02rem 0.1rem;"
-                    @change="onChange" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" :tree-data="treemap"
+                    v-model='owners' @change="onChange" :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" :tree-data="treemap"
                     tree-default-expand-all>
                     <!-- :show-checked-strategy="SHOW_PARENT" -->
                   </a-tree-select>
@@ -40,14 +40,14 @@
                 <input class='pc-input middleInput' v-model="trainInfo.address"/></div>
             </div>
             <div class="flex paddingLR2rem gray">
-              <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训开始时间</span><el-date-picker  type="datetime" v-model="trainInfo.startDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+              <div class=" textInput"><span class="label2" ref="startDate"><span class="icon-xing">*</span>培训开始时间</span><el-date-picker  type="datetime" v-model="trainInfo.startDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
               </div>
-              <div class=" textInput marginL2VW"><span class="label2"><span class="icon-xing">*</span>培训结束时间</span><el-date-picker  type="datetime" v-model="trainInfo.endDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
+              <div class=" textInput marginL2VW"><span class="label2" ref="endDate"><span class="icon-xing">*</span>培训结束时间</span><el-date-picker  type="datetime" v-model="trainInfo.endDate" value-format="yyyy-MM-dd"  placeholder=" 请选择"></el-date-picker>
               </div>
             </div>
             <div class="flex paddingLR2rem gray">
-            <div class=" textInput"><span class="label2"><span class="icon-xing">*</span>培训分类</span>
-              <select class="pc-input middleInput" @change="getSelectInfo('trainingType')" id="trainingType"><option v-for="obj in trainingTypeList" :value="obj.code" >{{obj.text}}</option></select>
+            <div class=" textInput"><span class="label2" ref="trainingTypeName"><span class="icon-xing">*</span>培训分类</span>
+              <select class="pc-input middleInput" @change="getSelectInfo('trainingTypeName')" id="trainingTypeName"><option v-for="obj in trainingTypeList" :value="obj.name" >{{obj.name}}</option></select>
             </div>
             </div>
             <div class="flex paddingLR2rem gray">
@@ -121,19 +121,21 @@
       trainInfo:{
   "type": 1,
   "name": "",
-  "trainingTypeName": "",
   "employeeName": "",
   "speaker": "",
   "address": "",
   "startDate": "",
   "endDate": "",
+  "trainingTypeName": "",
   "description": ""
     },
-    trainingTypeList:[]
+    trainingTypeList:[],
+    owners:[],
       }
     },
     created(){
       this.id=this.$route.query.id;
+      this.getClassification();
     },
    methods:{
      getSelectInfo(id){
@@ -152,12 +154,32 @@
      changeStep(val){
        this.step=val||1;
      },
+     check(){//校验必填
+     let trainInfo=this.trainInfo;
+       for(var key in  trainInfo){
+         if(this.$refs[key]){
+           if(this.$refs[key].firstChild.className=='icon-xing'){
+             if(trainInfo[key]==''||trainInfo[key]==[]){
+               let text=this.$refs[key].innerText.substr(1);
+               utils.box.toast("请填写"+text);
+               return false;
+             }
+           }
+         }
+       }
+       return true;
+     },
      saveDraft(){
-      this.edit();
+       if(this.check()){
+         this.edit();
+       }
+
      },
      nextStep(){
-       this.edit();
-       this.changeStep(3);
+       if(this.check()){
+         this.edit();
+         this.changeStep(3);
+       }
      },
      deleteFile(){
 
@@ -202,6 +224,23 @@
           });
 
          }
+      },
+      getClassification(){
+        //查找培训分类
+           let url = "/api/Training/searchTrainingType?PageIndex=1&PageSize="+100;
+           let params={
+             name:''
+           }
+           	utils.request.post(url,params,false).then((res) => {
+           		if(res){
+                 if(res.success==true){
+                   let items=res.result.items;
+                    this.trainingTypeList=items;
+                 }else{
+                 }
+
+               }
+               });
       },
       upload(){
 
