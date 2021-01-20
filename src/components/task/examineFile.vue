@@ -47,24 +47,43 @@
         </div>
       </div>
       <transition name='t1'>
-        <div class="marginT1VH" v-show="toggle2==true">
-          <el-table :data="tableData" border style="width: 100%" :header-cell-class-name="'table-header'">
-            <el-table-column type="index"  label="序号" width="60">
-            </el-table-column>
-            <el-table-column prop="approveEmoloyeeName" label="当前节点">
-            </el-table-column>
-            <el-table-column prop="startDate" label="到达时间">
-            </el-table-column>
-            <el-table-column prop="suggestion" label="意见">
-            </el-table-column>
-            <el-table-column prop="endDate" label="完成时间">
-            </el-table-column>
-            <el-table-column prop="status" label="状态">
-              <template slot-scope="scope">
-                <div>{{scope.row.status| filter1(flowStatusList)}}</div>
-              </template>
-            </el-table-column>
-          </el-table>
+        <div class="marginT1VH" v-show="toggle2==true">      
+          <el-table
+              :data="tableData"
+              border
+              style="width: 100%"
+             :header-cell-class-name="'table-header'">
+              <el-table-column
+               type="index"
+                label="序号"
+                width="50"
+               >
+              </el-table-column>
+              <el-table-column
+                prop="approveEmoloyeeName"
+                label="当前节点"
+                >
+              </el-table-column>
+              <el-table-column
+                prop="startDate"
+                label="到达时间">
+              </el-table-column>
+              <el-table-column
+                prop="suggestion"
+                label="意见">
+              </el-table-column>
+              <el-table-column
+                prop="endDate"
+                label="完成时间">
+              </el-table-column>
+              <el-table-column
+                prop="status"
+                label="状态">
+               <template slot-scope="scope">
+                   <span>{{scope.row.status}}</span>
+               </template>
+              </el-table-column>
+            </el-table>
         </div>
       </transition>
     </div>
@@ -140,7 +159,7 @@
     },
     methods: {
       operate(approveResult){
-        this.approveResult=approveResult;      
+        this.approveResult=approveResult;
         if(approveResult==3){ //  生效/立即废除/已阅
          if(this.operationType==2||this.operationType==3){ // 传阅/废除任务
            this.enableFile();
