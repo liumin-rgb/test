@@ -108,14 +108,15 @@
       }
     },
     created(){
-      let separator=utils.cache.get("separator");
-      this.symbol1=separator.separator_1||"_";
-      this.symbol2=separator.separator_2||"_";
-      this.format='文件名称'+this.symbol1+'文件编号'+this.symbol2+'版本号';
-      this.fileFormatId=separator.separator_id||0;
       this.folderId=utils.cache.getSession("folderId")||0;
       this.folderName=utils.cache.getSession("folderName")||'';
-
+      let separator=utils.cache.get("separator");
+      if(separator){
+        this.symbol1=separator.separator_1||"_";
+        this.symbol2=separator.separator_2||"_";
+        this.format='文件名称'+this.symbol1+'文件编号'+this.symbol2+'版本号';
+        this.fileFormatId=separator.separator_id||0;
+      }
     },
     methods: {
       reviewFile(url,type){
