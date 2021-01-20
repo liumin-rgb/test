@@ -4,7 +4,7 @@
         <div>
         <span class="label font12 width1rem">人员姓名/工号：</span><input class="pc-input" v-model="key">
         <span class="label font12 ">部门：</span><a-tree-select
-                 v-model="department"
+                 v-model="departments"
                  allow-clear
                  tree-checkable
                  multiple
@@ -101,22 +101,20 @@ export default {
        loading:false,
        pageSizeList:[30,60,90,120,150,300],
        treemap:[],
-       department:[],
+       departments:[],
     }
   },
   watch:{
     visible:function(newVal){
       if(newVal==true){
-        let arr=[]
-        arr.push(this.parentId)
-        this.department=arr;
+        this.queryDepartment();
         this.searchStaff();
       }
     },
     key:function(){
        this.searchStaff();
     },
-    department:function(){
+    departments:function(){
         this.searchStaff();
     },
     isFilter:function(){
@@ -125,7 +123,7 @@ export default {
 
   },
   created(){
-   this.queryDepartment();
+  // this.queryDepartment();
   },
   methods:{
     handleSelectionChange1(val) {
@@ -155,6 +153,10 @@ export default {
      forTree(treeList){
        for(var i in treeList){
           treeList[i].value=treeList[i].key;
+          if(this.parentId==treeList[i].key){
+            let obj={value:treeList[i].key,lable:treeList[i].title};
+            this.departments.push(obj);
+          }
          if(treeList[i].children){
            this.forTree(treeList[i].children);
          }
@@ -170,7 +172,7 @@ export default {
             let url="/api/Organization/searchEmployeeList";
             let params={
   "key": this.key,
-  "department": this.department,
+  "department": this.departments.map((item)=>{return item.value}),
   "orgId": this.orgId||'',
   "isFilter": this.isFilter,
   "pageIndex": this.pageIndex,
@@ -197,7 +199,7 @@ export default {
        this.isFilter=checked;
        },
     onChange1(value){
-       this.department= value;
+       this.departments= value;
       },
     handleCancel(){
       this.$emit("closeModel");
