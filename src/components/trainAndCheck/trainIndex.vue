@@ -21,7 +21,7 @@
      <div @click="toUrl(3)">培训+考核</div>
     </div>
     </span>
-    <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>导出</span>
+    <span class="pc-button buttonNoback" @click="download1"><i class="iconfont icon-shangchuan1 "></i>导出</span>
      </div>
    </div>
    <div class="list-table">
@@ -98,7 +98,7 @@
       <div @click="toUrl(3)">培训+考核</div>
      </div>
      </span>
-     <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>导出</span>
+     <span class="pc-button buttonNoback" @click="download2"><i class="iconfont icon-shangchuan1 "></i>导出</span>
       </div>
     </div>
     <div class="list-table">
@@ -268,8 +268,11 @@ import Pagination from '../Pagination'
           }
           });
    },
-    download(){
-
+    download1(){
+      window.open(Global.baseUrl+'/api/Training/exportTraining','_self');
+    },
+    download2(){
+      
     },
     deleteTrain(id){
       let url = "/api/Training/"+id+"/Training";

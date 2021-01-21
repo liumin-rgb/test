@@ -13,7 +13,7 @@
     <div class="list-search-two"></div>
     <div class="list-search-three">
     <span class="positionR">
-      <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
+      <span class="pc-button buttonNoback" @click="download1"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
      <span class="pc-button buttonNoback" @click="newClassify(1)"><i class="iconfont icon-jiahao "></i>新建分类</span>
 
     </span>
@@ -53,7 +53,7 @@
      <div class="list-search-two"></div>
      <div class="list-search-three">
   <span class="positionR">
-     <span class="pc-button buttonNoback" @click="download"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
+     <span class="pc-button buttonNoback" @click="download2"><i class="iconfont icon-shangchuan1 "></i>列表导出</span>
   <span class="pc-button buttonNoback" @click="newClassify(2)"><i class="iconfont icon-jiahao "></i>新建类别</span>
  </span>
  </div>
@@ -155,7 +155,7 @@ import Pagination from '../Pagination'
             utils.box.toast("删除成功",'success');
             this.tab==1?this.queryInfo1():this.queryInfo2();
           }else{
-         
+
           }
         }
         });
@@ -209,8 +209,11 @@ import Pagination from '../Pagination'
            }
            });
     },
-    download(){
-
+    download1(){
+      window.open(Global.baseUrl+'/api/Training/exportTrainingType','_self');
+    },
+    download2(){
+      window.open(Global.baseUrl+'/api/Training/exportExamType','_self');
     },
     toUrl(type){
       this.$router.push({path:'newIndex',query:{type:type}});

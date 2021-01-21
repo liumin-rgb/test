@@ -58,7 +58,7 @@
                  <span class="pointer" @click="takeOrder(true)"><span class="gray ">工号</span><i class="iconfont icon-paixu themeColor"></i></span>
                 </template>
                 <template slot-scope="scope">
-                      <span class="gray pointer" @click="toStaffInfo('edit',scope.row.id)">{{scope.row.employeeNo}}</span>
+                      <span class="themeColor pointer text-line" @click="toStaffInfo('edit',scope.row.id)">{{scope.row.employeeNo}}</span>
                 </template>
         </el-table-column>
         <el-table-column prop="name" label="姓名"  width="70">
@@ -66,7 +66,7 @@
                  <span class="pointer" @click="takeOrder(false)"><span class="gray ">姓名</span><i class="iconfont icon-paixu themeColor"></i></span>
            </template>
           <template slot-scope="scope">
-                 <span class="gray pointer"  @click="toStaffInfo('edit',scope.row.id)">{{scope.row.name}}</span>
+                 <span class="themeColor pointer text-line"  @click="toStaffInfo('edit',scope.row.id)">{{scope.row.name}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="sex" label="性别" width="50">
@@ -77,13 +77,15 @@
 <!--        <el-table-column prop="marriage" label="婚姻" width="50">
           <template slot-scope="scope"> <span>{{scope.row.marriage==0?'未知':scope.row.marriage==1?'已婚':'未婚'}}</span></template>
         </el-table-column> -->
-        <el-table-column prop="political" label="政治面貌">
+        <el-table-column prop="political" label="政治面貌" width="70">
           <template slot-scope="scope"> <span>{{scope.row.political | filter1(politicalList)}}</span></template>
         </el-table-column>
-        <el-table-column prop="workingDate" label="入职时间"></el-table-column>
+        <el-table-column prop="workingDate" label="入职时间" width="100"></el-table-column>
         <el-table-column prop="mobile" label="手机长号"></el-table-column>
       <!--  <el-table-column prop="seniority" label="工作年限" width="70"></el-table-column> -->
-        <el-table-column prop="department" label="部门" min-width="100"></el-table-column>
+        <el-table-column prop="department" label="部门" min-width="250">
+          <template slot-scope="scope"> <span :title="scope.row.department">{{scope.row.department.length>26?scope.row.department.substr(0,26)+'...':scope.row.department}}</span></template>
+        </el-table-column>
         <el-table-column prop="education" label="学历" width="50">
           <template slot-scope="scope"> <span>{{scope.row.education| filter1(educationList)}}</span></template>
         </el-table-column>

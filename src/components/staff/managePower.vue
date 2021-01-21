@@ -450,19 +450,21 @@
 
      deleteNode(){
        if(this.showDelete==false) return;
-       //删除机构
-          let url="/api/Organization/organization/"+this.currentNodeId;
-          utils.request.delete(url,true).then((res) => {
-            if(res){
-             if(res.success==true){
-               this.onLoadData(this.selectedNode);
-               this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
-               utils.box.toast('删除成功',"success");
-             }else{
-               utils.box.toast(res.error.message);
-             }
-            }
-            })
+     utils.box.confirm("是否确认删除？").then(()=>{
+     			//删除机构
+     			   let url="/api/Organization/organization/"+this.currentNodeId;
+     			   utils.request.delete(url,true).then((res) => {
+     			     if(res){
+     			      if(res.success==true){
+     			        this.onLoadData(this.selectedNode);
+     			        this.searchOption(this.selectedNode.dataRef, this.treeData,'delete');
+     			        utils.box.toast('删除成功',"success");
+     			      }else{
+     			        utils.box.toast(res.error.message);
+     			      }
+     			     }
+     			     })
+     			 });    
      },
      //递归查找
     searchOption (option, arr, type = 'delete',val) {

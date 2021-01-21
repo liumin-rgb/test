@@ -29,6 +29,7 @@
              <el-table-column
                type=""
                label=""
+               width="50"
               >
               <template slot-scope="scope"><i class="iconfont icon-shanchu themeColor pointer" @click="deleteErrorInfo(scope.row.id)"></i></template>
              </el-table-column>
@@ -67,7 +68,7 @@
                  取消
                </a-button>
                <a-button key="submit" type="primary" :loading="loading" @click="handleOk">
-                 提交
+                 下一步
                </a-button>
         </template>
      </a-modal>
@@ -133,7 +134,7 @@ export default {
            if(res.success==true){
              this.tableData=res.result||[];
              if(status=='update'){
-               if(this.tableData.length==0){
+               if(this.tableData.length==0){               
                  this.handleCancel();
                    this.$emit("openModel2",{orgnize:orgnize});
                }

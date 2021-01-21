@@ -67,6 +67,10 @@
   padding:5px 50px !important;
   }
 
+ .el-table--enable-row-hover .el-table__body tr:hover>td{
+ background-color: #eaedf1 !important;
+ }
+
 /* .el-table td, .el-table th.is-leaf {
     border-bottom: 1px solid #EBEEF5;
 } */
