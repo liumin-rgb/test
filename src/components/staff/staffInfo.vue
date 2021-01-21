@@ -258,10 +258,12 @@
                  this.totalCount=totalCount;
                  this.maxPage=Math.ceil(totalCount/this.pageSize);
                 let items=res.result.items;
-                 this.tableData=items;
-                 this.tableData.filter((item)=>{
-                   item.workingStatus==this.searchInfo.workingStatus
+                this.tableData=items;
+                if(this.searchInfo.workingStatus==1){ //普通搜索默认搜在职状态
+                 this.tableData=items.filter((item)=>{
+                   return item.workingStatus==1
                  })
+                }
               }else{
 
               }

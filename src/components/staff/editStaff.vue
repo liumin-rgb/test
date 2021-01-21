@@ -56,13 +56,13 @@
                <td></td>
              </tr>
              <tr>
-               <td><div class="textInput"><span class="label font12 weight600 verTop" ref="departments"><span class="icon-xing">*</span>部门</span><span><a-tree-select
+               <td colspan="3"><div class="textInput"><span class="label font12 weight600 verTop" ref="departments"><span class="icon-xing">*</span>部门</span><span><a-tree-select
                  v-model="departments"
                  allow-clear
                  tree-checkable
                  multiple
                  size="small"
-                 style="width:2rem;height:.25rem;margin: .02rem 0.1rem;"
+                 style="width:5.1rem;height:.25rem;margin: .02rem 0.1rem;"
                  @change="onChange"
                  :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                  :tree-data="treemap"
@@ -73,13 +73,12 @@
                </span>
               <!-- <input class='pc-input'  v-model="staffInfo.department"/> -->
                </div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">职称</span><input class='pc-input'  v-model="staffInfo.position"/></div></td>
-               <td></td>
+
              </tr>
              <tr>
+               <td><div class=" textInput"><span class="label font12 weight600">职称</span><input class='pc-input'  v-model="staffInfo.position"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600">获得职称时间</span><input class='pc-input'  v-model="staffInfo.positionDate"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600">职务</span><input class='pc-input'  v-model="staffInfo.post"/></div></td>
-               <td></td>
              </tr>
              <tr>
                <td><div class=" textInput"><span class="label font12 weight600" ref="workingDate">参加工作时间</span><el-date-picker  v-model="staffInfo.workingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getworkAge"></el-date-picker></div></td>

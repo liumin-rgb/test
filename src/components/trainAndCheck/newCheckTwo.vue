@@ -41,10 +41,10 @@
                     </template>
                </el-table-column>
               <el-table-column prop="number" label="试题编号"></el-table-column>
-                <el-table-column prop="type" label="试题类型"></el-table-column>
-                <el-table-column prop="category" label="专业分类"></el-table-column>
+              <!--  <el-table-column prop="type" label="试题类型"></el-table-column> -->
+               <el-table-column prop="category" label="试题分类"></el-table-column>
                 <el-table-column prop="easy" label="难易程度"></el-table-column>
-                <el-table-column prop="type1" label="试题类别"></el-table-column>
+               <!-- <el-table-column prop="type1" label="试题类别"></el-table-column> -->
                 <el-table-column prop="trueOption" label="正确选项"></el-table-column>
                 <el-table-column prop="content" label="试题题目内容（文字）"  min-width="120"></el-table-column>
                 <el-table-column prop="score" label="试题题目分数"></el-table-column>
