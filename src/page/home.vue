@@ -17,7 +17,7 @@
       </a-menu>
     </a-layout-sider> -->
     <div class="sider pointer" :style="{width:collapsed?'.6rem':'1.5rem'}">
-    <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
+    <div class="menuLogo"><img :src="hospitalLogo"/></div>
       <div class="menuLarge" v-show="!collapsed">
         <div class="menu" v-for="obj in menuList">
           <div :class="['menuitem',choosen==obj.name?'choosen':'']" @click="toggleMenu(obj)"><i :class="['iconfont', obj.icon]"></i><span :class="['title',choosen==obj.name?'weight600':'']">{{obj.name}}</span><i class="announce" v-show="obj.announce&&obj.announce!=0">{{obj.announce}}</i><i :class="['iconfont', obj.subMenuList.length==0?'':'icon-jiantouarrow483',obj.toggle?'rotate':'','angle']"></i></div>
@@ -48,7 +48,7 @@
 
           </div>
           <div class="pc-header-two flex">
-            <span class="pointer" @click="toPersonal"><img src="../assets/img/background_easy.png" class="headerImg"/></span>
+            <span class="pointer" @click="toPersonal"><img :src="avatar" class="headerImg"/></span>
             <div class="color999  flexCol headerUser pointer" @click="toPersonal"><span>{{userName}}<br>{{role}}</span></div>
             <el-popover trigger="hover" placement="bottom">
               <div class="pointer themeColor weight600 font12">
@@ -96,7 +96,8 @@ export default {
              {name:'仪器管理',icon:'icon-1-icon-yiqiguanli',url:'instrumentList',toggle:false,subMenuList:[]}
              ],
    roleType:['','罗氏管理员','医院管理员','员工'],
-
+   hospitalLogo:'',
+    avatar:''
     };
   },
 updated(){
@@ -106,6 +107,8 @@ updated(){
    let userInfo=utils.cache.get("userInfo");
    this.userName=userInfo.userName;
    this.userId=userInfo.userId;
+   this.hospitalLogo=userInfo.hospitalLogo;
+   this.avatar=userInfo.avatar;
    utils.cache.setSession("userId",this.userId);
    this.role=this.roleType[userInfo.userType];
    this.choosen=utils.cache.getSession("choosen");

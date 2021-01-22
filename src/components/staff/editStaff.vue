@@ -86,7 +86,7 @@
                <td><div class=" textInput"><span class="label font12 weight600">工作年限</span><input class='pc-input smallInput backGray'  v-model="staffInfo.seniority"/></div></td>
              </tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600">微信号</span><input class='pc-input'  v-model="staffInfo.wechart"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">微信号</span><input class='pc-input'  v-model="staffInfo.Wechat"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600">手机长号</span><input class='pc-input'  v-model="staffInfo.mobile"/></div></td>
                <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input smallInput '  v-model="staffInfo.shortMobile"/></div></td>
              </tr>
@@ -209,7 +209,7 @@
   "workingDate": "",
   "officeWorkingDate": "",
   "shortMobile": "",
-  "wechart": "",
+  "Wechat": "",
   "mobile": "",
   "photo": "",
   "idCard": "",
