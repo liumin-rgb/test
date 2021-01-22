@@ -210,10 +210,10 @@ import Pagination from '../Pagination'
            });
     },
     download1(){
-      window.open(Global.baseUrl+'/api/Training/exportTrainingType','_self');
+      window.open(this.GLOBAL.baseUrl+'/api/Training/exportTrainingType','_self');
     },
     download2(){
-      window.open(Global.baseUrl+'/api/Training/exportExamType','_self');
+      window.open(this.GLOBAL.baseUrl+'/api/Training/exportExamType','_self');
     },
     toUrl(type){
       this.$router.push({path:'newIndex',query:{type:type}});
