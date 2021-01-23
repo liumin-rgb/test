@@ -269,7 +269,7 @@ import Pagination from '../Pagination'
           });
    },
     download1(){
-      window.open(Global.baseUrl+'/api/Training/exportTraining','_self');
+      window.open(this.GLOBAL.baseUrl+'/api/Training/exportTraining','_self');
     },
     download2(){
       
