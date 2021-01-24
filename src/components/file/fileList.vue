@@ -74,6 +74,7 @@
         </div>
       </div>
       <div class="list-table">
+        <a-spin :spinning="spinning"  >
         <el-table :data="tableData" border height="380" style="width: 100%" stripe @selection-change="handleSelectionChange"
           :header-cell-class-name="'table-header'">
           <el-table-column type="selection"></el-table-column>
@@ -133,6 +134,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </a-spin>
       </div>
       <div class="list-bottom">
         <Pagination :maxPage="maxPage" @changePage="changePage" :totalCount="totalCount" />
@@ -159,6 +161,7 @@
     },
     data() {
       return {
+        spinning:false,
         pageIndex: 1,
         maxPage: 1,
         pageSize: 10,
@@ -221,6 +224,7 @@
           },
           multipleSelection: '',
           children: [],
+         
         }]
       }
     },
@@ -431,7 +435,6 @@
           queryAllTags() {
             let url = "/api/Document/DocumentTagList";
             utils.request.post(url, {}, false).then((res) => {
-              this.spinning = false;
               if (res) {
                 if (res.success == true) {
                   let arr = res.result;
@@ -718,9 +721,7 @@
               "name": "新建文件夹",
               "parentId": data.key
             }
-            this.spinning = true;
             utils.request.post(url, params, false).then((res) => {
-              this.spinning = false;
               if (res) {
                 if (res.success == true) {
                   let id = res.result;

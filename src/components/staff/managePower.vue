@@ -78,8 +78,8 @@
       <span class="pc-button" @click="visible=true">添加</span>
        <span :class="['pc-button',multipleSelection.length==0?'buttonGray':'']" @click="removeStaff()">删除</span>
        <div class="flexBtw">
-         <div class=" width33">
-  <el-table :data="tableData1" border height="400" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange1">
+         <div class="shadow2 width33">
+  <el-table :data="tableData1" border height="390" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange1">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -93,8 +93,8 @@
         </el-table-column>
   </el-table>
   </div>
-  <div class=" width33">
-  <el-table :data="tableData2" border height="400" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange2">
+  <div class="shadow2 width33">
+  <el-table :data="tableData2" border height="390" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange2">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="name" label="姓名" >
           <template slot="header" slot-scope="scope">
@@ -108,8 +108,8 @@
         </el-table-column>
   </el-table>
   </div>
-  <div class=" width33">
-    <el-table :data="tableData3" border height="400" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange3">
+  <div class="shadow2 width33">
+    <el-table :data="tableData3" border height="390" style="width:unset" :header-cell-class-name="'table-header'"  @selection-change="handleSelectionChange3">
           <el-table-column type="selection"></el-table-column>
           <el-table-column prop="name" label="姓名" >
             <template slot="header" slot-scope="scope">
@@ -124,7 +124,7 @@
     </el-table>
   </div>
  </div>
- <div class="list-bottom" ref="bottom">
+ <div class="" ref="bottom">
    <Pagination  :maxPage="maxPage"  @changePage="changePage" :totalCount="totalCount" :pageSizeList="pageSizeList"/>
  </div>
       </div>
@@ -464,7 +464,7 @@
      			      }
      			     }
      			     })
-     			 });    
+     			 });
      },
      //递归查找
     searchOption (option, arr, type = 'delete',val) {
@@ -723,7 +723,7 @@
       }
     }
   }
-
+.shadow2{box-shadow: 2px 2px 2px #efefef;}
 /deep/.ant-col-6{margin:0.03rem 0;}
 
 </style>

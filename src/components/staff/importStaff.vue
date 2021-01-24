@@ -47,17 +47,20 @@
              <el-table-column
                prop="employeeNo"
                label="工号">
-               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.employeeNo=$event.target.innerHTML" contenteditable>{{scope.row.employeeNo||' '}}</span></template>
+               <template slot-scope="scope"><input class="borderBlue paddingLR1rem inputStyle"  v-model="scope.row.employeeNo"  ></template>
              </el-table-column>
              <el-table-column
                prop="name"
                label="姓名">
-               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.name=$event.target.innerHTML" contenteditable>{{scope.row.name||' '}}</span></template>
+               <template slot-scope="scope"><input class="borderBlue paddingLR1rem inputStyle" v-model="scope.row.name"   ></template>
              </el-table-column>
              <el-table-column
                prop="department"
                label="部门">
-               <template slot-scope="scope"><span class="borderBlue paddingLR1rem " @blur="scope.row.department=$event.target.innerHTML" contenteditable>{{scope.row.department}}</span></template>
+               <template slot-scope="scope">
+				   <select class="borderBlue paddingLR1rem inputStyle" @change="getSelectInfo1('department',scope.$index)" id="department" v-model="scope.row.department"><option v-for="obj in departmentList" :value="obj.name" >{{obj.name}}</option></select>
+				  <!-- <input class="borderBlue paddingLR1rem inputStyle" v-model="scope.row.department||''"> -->
+				  </template>
              </el-table-column>
            </el-table>
            </a-spin>
@@ -91,6 +94,7 @@ export default {
       orgnizeList:[],
       tableData:[],
       fileList:[],
+	  departmentList:[]
     }
   },
   watch:{
@@ -98,7 +102,10 @@ export default {
       if(val==true){
         this.queryOrgnize();
       }
-    }
+    },
+	orgnize:function(val){
+		this.queryDepartment();
+	}
   },
   created(){
 
@@ -107,6 +114,12 @@ export default {
     getSelectInfo(){
       this.orgnize=utils.common.getSelectedValue("orgnize");
     },
+	getSelectInfo1(id,index){
+		this.tableData[index][id]=utils.common.getSelectedValue(id);
+	},
+  changeValue(id,index,value){
+    this.tableData[index][id]=value;
+  },
       queryOrgnize(){
           let url = "/api/Organization/branch/list";
           	utils.request.get(url,true).then((res) => {
@@ -119,6 +132,19 @@ export default {
              }
            })
       },
+	  queryDepartment(){
+		      let url = "/api/Employee/template/branch/"+this.orgnize+"/departments";
+		      	utils.request.get(url,true).then((res) => {
+		         if(res){
+		           if(res.success==true){
+		             this.departmentList=res.result;
+		            // this.orgnize=this.orgnizeList[0].id;
+		             //this.orgnizeList=orgnizeList.unshift('全部');
+		           }
+		         }
+		       })
+
+	  },
     downloadTemplate(){
       let url='/api/Employee/template/branch/'+this.orgnize;
       //utils.download.downLoadFile(url,'模板');
@@ -133,12 +159,12 @@ export default {
          if(res){
            if(res.success==true){
              this.tableData=res.result||[];
-             if(status=='update'){
-               if(this.tableData.length==0){               
+            // if(status=='update'){
+               if(this.tableData.length==0){
                  this.handleCancel();
                    this.$emit("openModel2",{orgnize:orgnize});
                }
-             }
+           //  }
            }
          }
        })
@@ -267,7 +293,7 @@ export default {
     } */
   }
   }
-
+ .inputStyle{min-width:.2rem;max-width:1rem;}
 .uploadS{font-size: .1rem; padding-left:.1rem;line-height: .25rem;}
 .tab/deep/.el-table{font-size: .12rem}
 
