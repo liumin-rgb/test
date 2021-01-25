@@ -22,7 +22,7 @@
              <td><div class=" textInput"><span class="label font12 weight600">在职状态</span><input  v-if="pageFrom=='personal'||flag=='add'" :class="['pc-input',(pageFrom=='personal'||flag=='add')?'backGray borderGray':'']" v-model="workStatusList[staffInfo.workingStatus]" :readonly="(pageFrom=='personal'||flag=='add')?'readonly':false" />
              <select v-else class="pc-input" v-model="staffInfo.workingStatus" @change="getSelectInfo('workingStatus')" id="workingStatus"><option v-for="(obj,index) in workStatusList" :value="index" >{{obj}}</option></select>
              </div></td>
-             <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input :class="['pc-input',pageFrom=='personal'?'backGray borderGray':'']" v-model="staffInfo.employeeNo"  :readonly="pageFrom=='personal'?'readonly':false"/></div></td>
+             <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>工号</span><input :class="['pc-input',pageFrom=='personal'?'backGray borderGray':'']" v-model="staffInfo.employeeNo"  :readonly="pageFrom=='personal'?'readonly':false" maxlength="36"/></div></td>
              <td  rowspan="4" class="center">
                  <a-upload
                      name="avatar"
@@ -44,11 +44,11 @@
              </td>
            </tr>
             <tr>
-            <td><div class=" textInput"><span class="label font12 weight600" ref="name"><span class="icon-xing">*</span>姓名</span><input class='pc-input' v-model="staffInfo.name"/></div></td>
+            <td><div class=" textInput"><span class="label font12 weight600" ref="name"><span class="icon-xing">*</span>姓名</span><input class='pc-input' v-model="staffInfo.name" maxlength="36"/></div></td>
              <td><div class=" textInput"><span class="label font12 weight600" ref="birthday">出生日期</span><el-date-picker  v-model="staffInfo.birthday" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getAge"></el-date-picker></div></td>
              <td></td></tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600" ref="age">年龄</span><input class='pc-input smallInput backGray'  v-model="staffInfo.age" readonly="true"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600" ref="age">年龄</span><input class='pc-input smallInput backGray'  v-model="staffInfo.age" readonly="true" /></div></td>
                <td><div class=" textInput"><span class="label font12 weight600" ref="sex"><span class="icon-xing">*</span>性别</span>
                <a-radio-group name="radioGroup" v-model="staffInfo.sex" @change="getRadioValue($event,'sex')"><a-radio :value="1"> 男</a-radio><a-radio :value="2"> 女</a-radio></a-radio-group>
                </div>
@@ -76,19 +76,19 @@
 
              </tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600">职称</span><input class='pc-input'  v-model="staffInfo.position"/></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">获得职称时间</span><input class='pc-input'  v-model="staffInfo.positionDate"/></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">职务</span><input class='pc-input'  v-model="staffInfo.post"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">职称</span><input class='pc-input'  v-model="staffInfo.position" maxlength="36"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">获得职称时间</span><input class='pc-input'  v-model="staffInfo.positionDate" maxlength="36"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">职务</span><input class='pc-input'  v-model="staffInfo.post" maxlength="36"/></div></td>
              </tr>
              <tr>
                <td><div class=" textInput"><span class="label font12 weight600" ref="workingDate">参加工作时间</span><el-date-picker  v-model="staffInfo.workingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" @change="getworkAge"></el-date-picker></div></td>
                <td><div class=" textInput"><span class="label font12 weight600" ref="officeWorkingDate">科室工作时间</span><el-date-picker  v-model="staffInfo.officeWorkingDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">工作年限</span><input class='pc-input smallInput backGray'  v-model="staffInfo.seniority"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">工作年限</span><input class='pc-input smallInput backGray'  v-model="staffInfo.seniority" maxlength="36"/></div></td>
              </tr>
              <tr>
-               <td><div class=" textInput"><span class="label font12 weight600">微信号</span><input class='pc-input'  v-model="staffInfo.Wechat"/></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">手机长号</span><input class='pc-input'  v-model="staffInfo.mobile"/></div></td>
-               <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input smallInput '  v-model="staffInfo.shortMobile"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">微信号</span><input class='pc-input'  v-model="staffInfo.Wechat" maxlength="36"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">手机长号</span><input class='pc-input'  v-model="staffInfo.mobile" maxlength="36"/></div></td>
+               <td><div class=" textInput"><span class="label font12 weight600">手机短号</span><input class='pc-input smallInput '  v-model="staffInfo.shortMobile" maxlength="36"/></div></td>
              </tr>
          </table>
        <div class="list-head" style="margin-left:2vw" @click="toggle11=toggle11==true?false:true">
@@ -97,26 +97,26 @@
          <transition name="t1">
              <table class="table " v-show="toggle11==true">
                <tr>
-                 <td><div class=" textInput"><span class="label font12 weight600">身份证号</span><input class='pc-input'   v-model="staffInfo.idCard"/></div></td>
+                 <td><div class=" textInput"><span class="label font12 weight600">身份证号</span><input class='pc-input'   v-model="staffInfo.idCard" maxlength="36"/></div></td>
                  <td><div class=" textInput"><span class="label font12 weight600">学历</span><select class="pc-input" v-model="staffInfo.education" @change="getSelectInfo('education')" id="education"><option v-for="obj in educationList" :value="obj.code" >{{obj.text}}</option></select></div></td>
-                 <td><div class=" textInput"><span class="label font12 weight600">籍贯</span><input class='pc-input'  v-model="staffInfo.native"/></div></td>
+                 <td><div class=" textInput"><span class="label font12 weight600">籍贯</span><input class='pc-input'  v-model="staffInfo.native" maxlength="36"/></div></td>
                </tr>
                 <tr>
-                <td><div class=" textInput"><span class="label font12 weight600">民族</span><input class='pc-input' v-model="staffInfo.nation" /></div></td>
+                <td><div class=" textInput"><span class="label font12 weight600">民族</span><input class='pc-input' v-model="staffInfo.nation" maxlength="36"/></div></td>
                  <td><div class=" textInput"><span class="label font12 weight600"><span class="icon-xing">*</span>婚姻状况</span><a-radio-group name="radioGroup1" v-model="staffInfo.marriage" @change="getRadioValue($event,'marriage')"><a-radio :value="0"> 未知</a-radio><a-radio :value="1"> 已婚</a-radio><a-radio :value="2"> 未婚</a-radio></a-radio-group>
                  </div>
                  </td>
                  <td><div class=" textInput"><span class="label font12 weight600">政治面貌</span><select class="pc-input" v-model="staffInfo.political"  @change="getSelectInfo('political')" id="political"><option v-for="obj in politicalList" :value="obj.code" >{{obj.text}}</option></select></div></td>
                  </tr>
                  <tr>
-                   <td><div class=" textInput"><span class="label font12 weight600">现居地址</span><input class='pc-input' v-model="staffInfo.address"/></div></td>
-                   <td><div class=" textInput"><span class="label font12 weight600">毕业院校</span><input class='pc-input'  v-model="staffInfo.graduated"/></div></td>
-                   <td><div class=" textInput"><span class="label font12 weight600">专业</span><input class='pc-input'   v-model="staffInfo.profession"/></div></td>
+                   <td><div class=" textInput"><span class="label font12 weight600">现居地址</span><input class='pc-input' v-model="staffInfo.address" maxlength="36"/></div></td>
+                   <td><div class=" textInput"><span class="label font12 weight600">毕业院校</span><input class='pc-input'  v-model="staffInfo.graduated" maxlength="36"/></div></td>
+                   <td><div class=" textInput"><span class="label font12 weight600">专业</span><input class='pc-input'   v-model="staffInfo.profession" maxlength="36"/></div></td>
                  </tr>
                  <tr>
-                   <td><div class=" textInput"><span class="label font12 weight600">学位</span><input class='pc-input'  v-model="staffInfo.degree"/></div></td>
+                   <td><div class=" textInput"><span class="label font12 weight600">学位</span><input class='pc-input'  v-model="staffInfo.degree" maxlength="36"/></div></td>
                    <td><div class=" textInput"><span class="label font12 weight600">毕业时间</span><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
-                   <td><div class=" textInput"><span class="label font12 weight600">邮箱</span><input class='pc-input'  v-model="staffInfo.email"/></div></td>
+                   <td><div class=" textInput"><span class="label font12 weight600">邮箱</span><input class='pc-input'  v-model="staffInfo.email" maxlength="36"/></div></td>
                  </tr>
              </table>
              </transition>
