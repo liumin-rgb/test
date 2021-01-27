@@ -51,7 +51,7 @@
                </tr>
               <tr>
                 <td><div class=" textInput"><span class="label font12 weight600">投入运行时间</span><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
-                <td><div class=" textInput"><span class="label font12 weight600">维修期</span><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" > - </el-date-picker><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
+                <td><div class=" textInput"><span class="label font12 weight600">维修期</span><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ><span>-</span></el-date-picker><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
               </tr>
              </table>
           </transition>
@@ -61,7 +61,7 @@
          <transition name="t1">
              <table class="table " v-show="toggle3==true">
                <tr>
-                 <td><div class=" textInput"><span class="label font12 weight600">采购申请附件</span><span data-v-38740d0e="" class="pc-button">上传附件</span></div></td>
+                 <td><div class=" textInput"><span class="label font12 weight600">采购申请附件</span><span  class="pc-button">上传附件</span></div></td>
                </tr>
               <tr>
                 <td><div class=" textInput"><span class="label font12 weight600">采购日期</span><el-date-picker  v-model="staffInfo.graduationDate" value-format="yyyy-MM-dd" type="date" placeholder=" 请选择" ></el-date-picker></div></td>
@@ -133,15 +133,11 @@
         toggle4:false,
         flag:'add' ,//add 添加 edit 编辑 check 查看
         loading: false,
-        imageUrl: '',
-        basicInfo:'基本信息',
-        tagList:[],
-        treemap:[],
-        workStatusList:['请选择','在职','离职','退休'],
-        politicalList:[{code:'0',text:'请选择'},{code:'1',text:'党员'},{code:'2',text:'团员'},{code:'3',text:'群众'}],
-        educationList:[{code:'0',text:'请选择'},{code:'1',text:'博士'},{code:'2',text:'硕士'},{code:'3',text:'本科'},{code:'4',text:'大专'},{code:'5',text:'中专'},{code:'6',text:'初中'}],
-       spinning:false,
-       id:'',//员工id
+        // imageUrl: '',
+        // basicInfo:'基本信息',
+        // tagList:[],
+        // treemap:[],
+      //  id:'',//员工id
        staffInfo:{
   "workingStatus": 1,
   "employeeNo": "",
