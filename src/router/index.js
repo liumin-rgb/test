@@ -121,6 +121,14 @@ const router = new Router({
            },
          },
          {
+          path: '/editInstrument',
+          name:'editInstrument',
+          component: resolve => require(['@/components/instrument/editInstrument'], resolve),
+          meta : {
+              title : '编辑仪器信息'
+          },
+        },
+         {
            path: '/managePower',
            name:'managePower',
            component: resolve => require(['@/components/staff/managePower'], resolve),

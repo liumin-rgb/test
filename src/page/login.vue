@@ -8,10 +8,13 @@
 	    <div class="tab-inner-login">
 	    <div class="tab-text-login">账号密码登录</div>
 	    <div class="tab-con-login">
-	    <div class="context"><span><img src="../assets/img/icon-user.png"/></span><input class="login-input" placeholder="请输入账号"  v-model="displayName" @keyup.enter="skipInput"/>
+	    <div class="context"><span><img src="../assets/img/icon-user.png"/></span>
+      <input class="login-input" placeholder="请输入账号"  v-model="displayName" 
+      @keyup.enter="skipInput"/>
       <span></span>
       </div>
-	    <div class="context positionR"><span><img src="../assets/img/icon-passward.png"/></span><input class="login-input" v-model="password" placeholder="请输入密码"  :type="ifShow?'text':'password'"  @keyup.enter="skipInput"/>
+	    <div class="context positionR"><span><img src="../assets/img/icon-passward.png"/></span>
+      <input class="login-input" v-model="password" placeholder="请输入密码"  :type="ifShow?'text':'password'"  @keyup.enter="skipInput"/>
       <span class="eye" @click="ifShow=!ifShow"><i :class="['iconfont', 'themeColor','font20',ifShow?'icon-kejian':'icon-bukejian']"></i></span>
       <div class="errInfo" v-show="errorMsg!=''"><img src="../assets/img/icon-warning.png"/><span>{{errorMsg}}</span></div>
       </div>
@@ -56,10 +59,6 @@
            let accesssToken=res.result.accesssToken||'';
            utils.cache.set('userInfo',userInfo);
            utils.cache.set('TOKEN',accesssToken);
-		 /*  if(userInfo.userType==1){
-			 this.$router.push({path:'superADM',query:{}});
-			 return;
-		   } */
            this.$router.push({path:'myTask',query:{}});
          }else{
           this.errorMsg=res.error.message;

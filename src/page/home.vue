@@ -1,21 +1,5 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" style="min-height:100vh">
-   <!-- <a-layout-sider  theme="light" class="container" v-model="collapsed" collapsible collapsedWidth="80px" :trigger="null" :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-     <div class="menuLogo"><img src="../assets/img/logo_white.png"/></div>
-      <a-menu theme="dark" mode="inline"   class="leftMenu" >
-        <a-menu-item  @click="toUrl('myTask')">
-         <i class="iconfont icon-renwu font16"></i>
-        <span v-show="collapsed==false">我的任务</span>
-        </a-menu-item>
-        <a-sub-menu :key="'menu'+index" v-for="(obj,index) in menuList" style="background:none;" >
-                   <span slot="title"><i :class="['iconfont','font16',obj.icon]"></i><span v-show="collapsed==false"> {{obj.name}}</span></span>
-                   <a-menu-item :key="'subMenu'+index+index1" v-for="(obj1,index1) in obj.subMenuList" @click="toUrl(obj1.url)" style="background:none;">
-                     {{obj1.name}}
-                   </a-menu-item>
-        </a-sub-menu>
-
-      </a-menu>
-    </a-layout-sider> -->
     <div class="sider pointer" :style="{width:collapsed?'.6rem':'1.5rem'}">
     <div class="menuLogo"><img :src="hospitalLogo"/></div>
       <div class="menuLarge" v-show="!collapsed">
